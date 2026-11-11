@@ -70,7 +70,7 @@ async function startServer() {
 async function captureMobile(browser) {
   const server = await startServer();
   const errors = [];
-  const device = (viewport, ua) => ({ viewport, screen: viewport, userAgent: ua, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'fr-FR' });
+  const device = (viewport, ua) => ({ viewport, screen: viewport, userAgent: ua, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'fr-FR', reducedMotion: 'reduce' });
   const open = async (viewport, ua) => {
     const ctx = await browser.newContext(device(viewport, ua));
     await ctx.addInitScript(() => { try { delete Window.prototype.showDirectoryPicker; delete window.showDirectoryPicker; } catch (e) { /* */ } }); // as on Android
@@ -149,7 +149,7 @@ async function captureMobile(browser) {
 // ---------------------------------------------------------------------------
 async function main() {
   const browser = await chromium.launch({ channel: 'chrome', headless: true });
-  const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: 'fr-FR', deviceScaleFactor: 1 });
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 }, locale: 'fr-FR', deviceScaleFactor: 1, reducedMotion: 'reduce' }); // no half-finished animation in the images
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));

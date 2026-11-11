@@ -39,6 +39,14 @@
     return base + when + '.';
   }
 
+  /** Decorative ribbon (header, dialogs): one segment per attente, in the config colours. */
+  function setConfetti(attentes) {
+    var cols = attentes.map(function (a) { return a.couleur; }).filter(function (c) { return /^#[0-9a-fA-F]{3,8}$/.test(String(c || '')); });
+    if (!cols.length) { document.documentElement.style.removeProperty('--confetti'); return; }
+    var stops = cols.map(function (c, i) { return c + ' ' + (100 * i / cols.length).toFixed(2) + '% ' + (100 * (i + 1) / cols.length).toFixed(2) + '%'; });
+    document.documentElement.style.setProperty('--confetti', 'linear-gradient(90deg, ' + stops.join(', ') + ')');
+  }
+
   function renderBanner() {
     var meta = store.state.meta;
     var val = store.state.validation;
@@ -72,6 +80,7 @@
     cr.hidden = !n;
     cr.textContent = String(n);
     document.getElementById('app-subtitle').textContent = store.state.config.titre || 'Profils de joueurs';
+    setConfetti(store.state.config.attentes || []);
   }
 
   function start() {

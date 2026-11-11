@@ -9,8 +9,8 @@
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#f4eee3",
-  "theme_color": "#2f2622",
+  "background_color": "#f3f2fb",
+  "theme_color": "#2e2276",
   "categories": ["productivity", "games"],
   "icons": [
     { "src": "app/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },

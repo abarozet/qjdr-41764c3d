@@ -471,7 +471,13 @@ and download the exact same string as a file.
   `<meta charset>`, viewport, `<title>` and `<style>` containing the whole
   `reports.CSS` string. The only `<script>` is `SORT_SCRIPT` in the global
   report (column sorting via `data-v` attributes, opening a `<details>` when
-  its anchor is targeted). Fonts are system stacks; charts are inline `<svg>`.
+  its anchor is targeted). The display font (Fredoka SemiBold, SIL OFL) is embedded
+  as a base64 `@font-face` (`FONT_WOFF2`, ~21 KB; `sync.test.js` checks it equals
+  `app/vendor/fonts/fredoka-600.woff2`), body text uses a system stack; charts are inline `<svg>`.
+  Layout: a "character sheet" hero (ribbon of the attente colours, player name, d20),
+  radar + dominant card, one section per attente (rank token, tinted head, score bar
+  with threshold gaps, level badge + pips). `@media print` turns the hero white and keeps
+  the colour accents (`print-color-adjust: exact`).
   Unit tests assert that no `src`/`href` points to `http(s):`, `//` or an
   external `.css/.js/.png`.
 - **Escaping**: every piece of user/config text goes through `charts.esc`
@@ -838,8 +844,8 @@ extend `miniConfig()` in the tests.
   French, with French typography (`«  »`, spaces before `: ; ! ?`, decimal
   comma via `formatNumber`/`fmt`).
 - **No runtime network** beyond the browser fetching the app's own files (web
-  version): no CDN, no fonts, no analytics, no upload; libraries are
-  vendored in `app/vendor/`. Exported reports must stay self-contained (a unit
+  version): no CDN, no remote fonts, no analytics, no upload; libraries and the
+  Fredoka font (with its OFL licence) are vendored in `app/vendor/`. Exported reports must stay self-contained (a unit
   test enforces it).
 - **No bundler**: edit the files under `QuestionnaireJDR/app/` and reload
   the page. The generated artefacts are `config-par-defaut.js`,

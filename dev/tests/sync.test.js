@@ -91,3 +91,10 @@ test('every file referenced by index.html, the manifest and the scripts exists a
   assert.ok(manifest.icons.some((i) => i.purpose === 'maskable' && i.sizes === '512x512'));
   assert.match(index, /<meta name="robots" content="noindex, nofollow">/);
 });
+
+test('the report font embedded in reports.js is the vendored woff2', () => {
+  const reports = require(path.join(APP, 'app/js/reports.js'));
+  const woff2 = fs.readFileSync(path.join(APP, 'app/vendor/fonts/fredoka-600.woff2'));
+  assert.equal(reports.FONT_WOFF2, woff2.toString('base64'), 'update FONT_WOFF2 in reports.js');
+  assert.ok(fs.existsSync(path.join(APP, 'app/vendor/fonts/OFL-Fredoka.txt')), 'font licence shipped next to the font');
+});

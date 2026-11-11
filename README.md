@@ -19,7 +19,7 @@ responses file is processed on the device only: nothing is uploaded.
 
 Everything runs from static files, with no server logic: plain
 HTML/CSS/JS, classic `<script>` tags (ES modules do not load over `file://`),
-two vendored libraries (js-yaml, JSZip), no build step and no network access.
+two vendored libraries (js-yaml, JSZip) and one vendored font (Fredoka, SIL OFL), no build step and no network access.
 The scoring rules, questions, weights and report texts live in a small
 `configuration/` folder of YAML files, which the end user can also edit through
 the in-app **Configuration** tab: on Chromium browsers (Edge, Chrome) the app
@@ -58,7 +58,7 @@ the system share sheet).
 │   │   │   ├── ui-donnees.js, ui-individuels.js, ui-global.js, ui-config.js, ui-aide.js  ← tabs
 │   │   │   └── main.js           ← start-up, tab switching, configuration banner
 │   │   ├── icons/                ← GENERATED PWA icons (192/512, maskable, apple-touch)
-│   │   └── vendor/               ← js-yaml.min.js, jszip.min.js (no CDN)
+│   │   └── vendor/               ← js-yaml.min.js, jszip.min.js, fonts/ (Fredoka woff2 + OFL licence; no CDN)
 │   ├── configuration/            ← the shipped configuration (source of truth for the default)
 │   │   ├── questionnaire.yaml    ← title, column names, attente order, questions, answers, weights
 │   │   ├── rapport.yaml          ← general report texts
@@ -153,8 +153,8 @@ hourly). A new version installs in the background, waits, and the app shows
 (`SKIP_WAITING`) and reloads. Old caches are deleted on activation. It is never
 registered over `file://`.
 
-Icons (`app/icons/`) come from `node dev/tools/make_icons.mjs` (system Chrome),
-only needed if the logo changes.
+Icons (`app/icons/`) come from `node dev/tools/make_icons.mjs` (system Chrome;
+the d20 logo, "20" set in the vendored Fredoka), only needed if the logo changes.
 
 ### Guide screenshots
 

@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#2f2622">
+<meta name="theme-color" content="#2e2276">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Questionnaire JDR">
 <title>Questionnaire JDR – profils de joueurs</title>
 <link rel="stylesheet" href="app/css/app.css">
 <link rel="apple-touch-icon" href="app/icons/apple-touch-icon.png">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='6' fill='%238e3b1f'/%3E%3Ccircle cx='10' cy='10' r='2.6' fill='%23fff'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%23fff'/%3E%3Ccircle cx='22' cy='22' r='2.6' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cg stroke='%23fff' stroke-width='1.6' stroke-linejoin='round'%3E%3Cpath d='M20 2.5 5 11.2l15-.7z' fill='%2356B4E9'/%3E%3Cpath d='M20 2.5l15 8.7-15-.7z' fill='%23CC79A7'/%3E%3Cpath d='M5 11.2l5.6 15.2 9.4-15.9z' fill='%230072B2'/%3E%3Cpath d='M35 11.2l-5.6 15.2-9.4-15.9z' fill='%23D55E00'/%3E%3Cpath d='M5 11.2v17.6l5.6-2.4z' fill='%23009E73'/%3E%3Cpath d='M35 11.2v17.6l-5.6-2.4z' fill='%23E69F00'/%3E%3Cpath d='M5 28.8l15 8.7-9.4-11.1zM35 28.8l-15 8.7 9.4-11.1z' fill='%233B2A9E'/%3E%3Cpath d='M10.6 26.4h18.8L20 37.5z' fill='%235A3FD8'/%3E%3Cpath d='M20 10.5l9.4 15.9H10.6z' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E">
 </head>
 <body>
 <noscript><p style="padding:24px">Cette application a besoin de JavaScript. Ouvrez cette page avec Google Chrome, Microsoft Edge ou Firefox.</p></noscript>
@@ -20,10 +20,14 @@
   <div class="inner">
     <div class="brand">
       <svg viewBox="0 0 40 40" aria-hidden="true">
-        <rect x="3" y="3" width="34" height="34" rx="8" fill="#8e3b1f" stroke="#b0842f" stroke-width="2"/>
-        <circle cx="12.5" cy="12.5" r="3.2" fill="#f6efe3"/><circle cx="27.5" cy="12.5" r="3.2" fill="#f6efe3"/>
-        <circle cx="20" cy="20" r="3.2" fill="#f6efe3"/>
-        <circle cx="12.5" cy="27.5" r="3.2" fill="#f6efe3"/><circle cx="27.5" cy="27.5" r="3.2" fill="#f6efe3"/>
+        <g stroke="#fff" stroke-width="1.3" stroke-linejoin="round">
+          <path d="M20 2.5 5 11.2l15-.7z" fill="#56B4E9"/><path d="M20 2.5l15 8.7-15-.7z" fill="#CC79A7"/>
+          <path d="M5 11.2l5.6 15.2 9.4-15.9z" fill="#0072B2"/><path d="M35 11.2l-5.6 15.2-9.4-15.9z" fill="#D55E00"/>
+          <path d="M5 11.2v17.6l5.6-2.4z" fill="#009E73"/><path d="M35 11.2v17.6l-5.6-2.4z" fill="#E69F00"/>
+          <path d="M5 28.8l15 8.7-9.4-11.1zM35 28.8l-15 8.7 9.4-11.1z" fill="#3B2A9E"/>
+          <path d="M10.6 26.4h18.8L20 37.5z" fill="#5A3FD8"/><path d="M20 10.5l9.4 15.9H10.6z" fill="#fff"/>
+        </g>
+        <text x="20" y="23.4" text-anchor="middle" font-family="Fredoka, Arial, sans-serif" font-weight="700" font-size="8" fill="#2e2276">20</text>
       </svg>
       <div>
         <h1>Questionnaire JDR</h1>
@@ -31,11 +35,11 @@
       </div>
     </div>
     <nav class="tabs" role="tablist" aria-label="Sections">
-      <button class="tab" role="tab" data-tab="donnees" aria-selected="true">Données</button>
-      <button class="tab" role="tab" data-tab="individuels" aria-selected="false">Rapports individuels <span class="count" id="count-resp" hidden></span></button>
-      <button class="tab" role="tab" data-tab="global" aria-selected="false">Rapport global</button>
-      <button class="tab" role="tab" data-tab="config" aria-selected="false">Configuration <span class="count" id="count-config" hidden></span></button>
-      <button class="tab" role="tab" data-tab="aide" aria-selected="false">Aide</button>
+      <button class="tab" role="tab" data-tab="donnees" aria-selected="true"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h10a2 2 0 0 1 2 2v12a2 2 0 0 0 2 2H8a2 2 0 0 1-2-2z"/><path d="M6 4a2 2 0 0 0-2 2v2h2"/><path d="M9 9h6M9 13h6"/></svg></span>Données</button>
+      <button class="tab" role="tab" data-tab="individuels" aria-selected="false"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a3 3 0 1 1 0 6 3 3 0 0 1 0-6zM8.6 10.5C6 11 3.5 12 3.5 13.6c0 1 1.5 1.3 3.4 1L5.5 20h4.5l2-4 2 4h4.5l-1.4-5.4c1.9.3 3.4 0 3.4-1 0-1.6-2.5-2.6-5.1-3.1"/></svg></span>Rapports individuels <span class="count" id="count-resp" hidden></span></button>
+      <button class="tab" role="tab" data-tab="global" aria-selected="false"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.6v8.8L12 21l-8-4.6V7.6z"/><path d="M12 8l4 3-1.5 5h-5L8 11z"/></svg></span>Rapport global</button>
+      <button class="tab" role="tab" data-tab="config" aria-selected="false"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/><path d="M4 12h4.8M13.2 12h6.8"/><circle cx="11" cy="12" r="2.2"/></svg></span>Configuration <span class="count" id="count-config" hidden></span></button>
+      <button class="tab" role="tab" data-tab="aide" aria-selected="false"><span class="ti" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9.8 9.6a2.3 2.3 0 1 1 3 2.2c-.6.3-.8.7-.8 1.3"/><path d="M12 16h.01"/></svg></span>Aide</button>
     </nav>
   </div>
 </header>

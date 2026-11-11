@@ -76,7 +76,7 @@
           type: 'button', 'aria-current': i === selected ? 'true' : 'false',
           onclick: function () { selected = i; listOpen = false; render(); }
         },
-          h('span', { class: 'dot', style: { background: dom ? dom.couleur : (r.dominant.length > 1 ? 'conic-gradient(' + r.dominant.map(function (id, k) { return byId[id].couleur + ' ' + (k * 100 / r.dominant.length) + '% ' + ((k + 1) * 100 / r.dominant.length) + '%'; }).join(',') + ')' : '#c9beb2') } }),
+          h('span', { class: 'dot', style: { background: dom ? dom.couleur : (r.dominant.length > 1 ? 'conic-gradient(' + r.dominant.map(function (id, k) { return byId[id].couleur + ' ' + (k * 100 / r.dominant.length) + '% ' + ((k + 1) * 100 / r.dominant.length) + '%'; }).join(',') + ')' : '#c9c6da') } }),
           h('span', { class: 'nm' }, r.name),
           h('span', { class: 'sub' }, sub))));
       });

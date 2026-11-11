@@ -167,10 +167,10 @@
   // Printing a report
   // ---------------------------------------------------------------------------
 
-  var PRINT_BAR = '<div class="no-print" style="position:sticky;top:0;z-index:20;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;padding:10px 12px;background:#2f2622;color:#f6efe3;font:15px system-ui,sans-serif">' +
+  var PRINT_BAR = '<div class="no-print" style="position:sticky;top:0;z-index:20;display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;padding:10px 12px;background:#2e2276;color:#fff;font:15px system-ui,sans-serif">' +
     '<span>Aperçu avant impression</span>' +
-    '<button type="button" onclick="window.print()" style="font:600 16px system-ui,sans-serif;min-height:44px;padding:8px 18px;border-radius:9px;border:0;background:#8e3b1f;color:#fff">Imprimer / PDF</button>' +
-    '<button type="button" onclick="window.close()" style="font:600 16px system-ui,sans-serif;min-height:44px;padding:8px 18px;border-radius:9px;border:1px solid #b0842f;background:transparent;color:#f6efe3">Fermer</button></div>';
+    '<button type="button" onclick="window.print()" style="font:600 16px system-ui,sans-serif;min-height:44px;padding:8px 18px;border-radius:12px;border:0;background:#ffc93c;color:#1e1b3a">Imprimer / PDF</button>' +
+    '<button type="button" onclick="window.close()" style="font:600 16px system-ui,sans-serif;min-height:44px;padding:8px 18px;border-radius:12px;border:1.5px solid #cfc6ff;background:transparent;color:#fff">Fermer</button></div>';
   var AUTO_PRINT = '<script>window.addEventListener("load",function(){setTimeout(function(){window.print();},500);});<\/script>';
 
   /** Report HTML with a print bar and an automatic print() call (used in a new tab). */

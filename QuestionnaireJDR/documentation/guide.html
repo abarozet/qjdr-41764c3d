@@ -6,122 +6,145 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Guide d’utilisation – Questionnaire JDR</title>
 <style>
+  /* Same look as the application (app/css/app.css): lavender table, royal-violet header,
+     confetti ribbon of the attente colours, Fredoka headings (vendored, SIL OFL; falls back to a rounded/system font). */
+  @font-face { font-family: 'Fredoka'; src: url('../app/vendor/fonts/fredoka-600.woff2') format('woff2'); font-weight: 500 600; font-display: swap; }
+  @font-face { font-family: 'Fredoka'; src: url('../app/vendor/fonts/fredoka-700.woff2') format('woff2'); font-weight: 700 800; font-display: swap; }
   :root {
-    --paper: #f4eee3; --paper-2: #ece3d3; --card: #fffdf8;
-    --ink: #2a2320; --ink-2: #5c5048; --muted: #84776b;
-    --line: #e2d6c2; --line-2: #d3c3a8;
-    --leather: #2f2622; --accent: #8e3b1f; --accent-soft: #f6e4da; --brass: #b0842f;
-    --ok: #2f6b3a; --ok-soft: #e4f0e2; --warn: #9a5a00; --warn-soft: #fbefd6; --err: #a1261b; --err-soft: #fbe3df;
-    --info: #2d5b86; --info-soft: #e3edf7;
-    --radius: 12px;
-    --serif: 'Palatino Linotype', 'Book Antiqua', Palatino, 'Iowan Old Style', Georgia, serif;
+    --bg: #f3f2fb; --bg-2: #e9e7f7; --card: #ffffff;
+    --ink: #1e1b3a; --ink-2: #47436b; --muted: #64607f;
+    --line: #e3e0f2; --line-2: #cdc8e6;
+    --brand: #5a3fd8; --brand-deep: #2e2276; --brand-soft: #ece8ff; --sun: #ffc93c;
+    --ok: #17734a; --ok-soft: #e1f5ea; --warn: #8f5200; --warn-soft: #fff1d6; --err: #c0262d; --err-soft: #fde4e4;
+    --info: #0063a0; --info-soft: #e3f1fb;
+    --c1: #d55e00; --c2: #0072b2; --c3: #cc79a7; --c4: #009e73; --c5: #e69f00; --c6: #56b4e9;
+    --confetti: linear-gradient(90deg, var(--c1) 0 16.66%, var(--c2) 0 33.33%, var(--c3) 0 50%, var(--c4) 0 66.66%, var(--c5) 0 83.33%, var(--c6) 0);
+    --radius: 18px;
+    --shadow: 0 1px 2px rgba(46, 34, 118, .06), 0 8px 24px -6px rgba(46, 34, 118, .12);
+    --display: 'Fredoka', 'Nunito', 'Segoe UI Rounded', 'Arial Rounded MT Bold', 'Segoe UI', system-ui, sans-serif;
     --sans: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 var(--sans); }
-  h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.2; color: var(--ink); }
-  a { color: var(--accent); }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.6 var(--sans); }
+  h1, h2, h3, h4 { font-family: var(--display); font-weight: 600; line-height: 1.2; color: var(--ink); }
+  a { color: var(--brand); }
   p { margin: 0 0 12px; }
   ul, ol { margin: 0 0 12px; padding-left: 24px; }
   li { margin-bottom: 4px; }
-  code { font-family: Consolas, 'Courier New', monospace; font-size: 0.92em; background: var(--paper-2); padding: 1px 5px; border-radius: 4px; }
-  pre { background: #2f2622; color: #f6efe3; padding: 14px 16px; border-radius: 10px; overflow: auto; font-size: 13.5px; line-height: 1.5; }
+  code { font-family: Consolas, 'Courier New', monospace; font-size: 0.92em; background: var(--bg-2); padding: 1px 5px; border-radius: 5px; }
+  pre { background: var(--brand-deep); color: #f1eeff; padding: 14px 16px; border-radius: 14px; overflow: auto; font-size: 13.5px; line-height: 1.5; }
   pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
-  pre .c { color: #b9a78c; } pre .k { color: #f3c27a; } pre .s { color: #cfe8c9; }
+  pre .c { color: #a9a0e0; } pre .k { color: #ffd96b; } pre .s { color: #9fe3c4; }
 
   /* ----- header ----- */
-  .top { background: var(--leather); color: #f6efe3; border-bottom: 3px solid var(--brass); }
-  .top .inner { max-width: 960px; margin: 0 auto; padding: 26px 24px 22px; display: flex; gap: 18px; align-items: center; }
-  .top svg { width: 52px; height: 52px; flex: none; }
-  .top h1 { margin: 0; font-size: 30px; color: #fff; }
-  .top p { margin: 4px 0 0; color: #cdbfa9; font-size: 15px; }
+  .top { position: relative; overflow: hidden; color: #fff;
+    background: radial-gradient(circle at 90% -40%, rgba(255,255,255,.16) 0 30%, transparent 30.5%), linear-gradient(115deg, var(--brand-deep) 0%, #4129b0 45%, var(--brand) 100%); }
+  .top::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--confetti); }
+  .top .inner { max-width: 960px; margin: 0 auto; padding: 32px 24px 26px; display: flex; gap: 18px; align-items: center; }
+  .top svg { width: 64px; height: 64px; flex: none; transform: rotate(-8deg); filter: drop-shadow(0 6px 10px rgba(10,5,50,.4)); }
+  .top h1 { margin: 0; font-size: 34px; font-weight: 700; color: #fff; }
+  .top p { margin: 4px 0 0; color: #d9d2ff; font-size: 15px; }
 
   /* ----- layout ----- */
-  .page { max-width: 960px; margin: 0 auto; padding: 22px 24px 60px; }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 24px; margin: 0 0 22px; box-shadow: 0 1px 2px rgba(60,40,20,.05), 0 6px 20px rgba(60,40,20,.06); }
-  section.chap { margin-top: 36px; }
-  section.chap > h2 { font-size: 28px; margin: 0 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--line-2); }
-  section.chap > h2 .num { color: var(--accent); margin-right: 10px; }
-  h3 { font-size: 20px; margin: 26px 0 10px; }
-  h4 { font-size: 16.5px; margin: 20px 0 6px; font-family: var(--sans); font-weight: 600; }
+  .page { max-width: 960px; margin: 0 auto; padding: 24px 24px 60px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 26px; margin: 0 0 22px; box-shadow: var(--shadow); }
+  section.chap { margin-top: 40px; }
+  section.chap > h2 { font-size: 30px; margin: 0 0 16px; display: flex; align-items: center; gap: 14px; }
+  section.chap > h2::after { content: ''; flex: 1; height: 6px; border-radius: 3px; background: var(--confetti); opacity: .9; min-width: 40px; }
+  section.chap > h2 .num { flex: none; width: 46px; height: 50px; display: inline-grid; place-items: center; color: #fff; background: var(--brand); font-size: 22px;
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); }
+  h3 { font-size: 21px; margin: 28px 0 10px; }
+  h4 { font-size: 17px; margin: 20px 0 6px; }
   .lead { font-size: 17px; color: var(--ink-2); }
   .back { font-size: 13px; margin: 18px 0 0; text-align: right; }
 
   /* ----- table of contents ----- */
-  .toc h2 { margin: 0 0 10px; font-size: 22px; }
+  .toc { position: relative; overflow: hidden; }
+  .toc h2 { margin: 0 0 12px; font-size: 24px; }
   .toc ol { margin: 0; padding-left: 0; list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
-  .toc li { counter-increment: toc; margin: 0 0 6px; break-inside: avoid; padding-left: 30px; position: relative; }
-  .toc li::before { content: counter(toc); position: absolute; left: 0; top: 2px; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
-  .toc a { text-decoration: none; color: var(--ink); font-weight: 600; }
-  .toc a:hover { color: var(--accent); text-decoration: underline; }
+  .toc li { --tc: var(--c2); counter-increment: toc; margin: 0 0 10px; break-inside: avoid; padding-left: 40px; position: relative; }
+  .toc li:nth-child(6n+2) { --tc: var(--c4); } .toc li:nth-child(6n+3) { --tc: var(--c3); } .toc li:nth-child(6n+4) { --tc: var(--c1); }
+  .toc li:nth-child(6n+5) { --tc: var(--c5); } .toc li:nth-child(6n) { --tc: var(--c6); }
+  .toc li::before { content: counter(toc); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 9px; background: var(--tc); color: var(--ink); font: 700 15px/28px var(--display); text-align: center; transform: rotate(-6deg); }
+  .toc a { text-decoration: none; color: var(--ink); font-weight: 600; font-family: var(--display); font-size: 17px; }
+  .toc a:hover { color: var(--brand); text-decoration: underline; }
   .toc .sub { display: block; font-size: 13px; color: var(--muted); font-weight: 400; }
 
   /* ----- steps ----- */
   ol.steps { list-style: none; padding: 0; counter-reset: step; margin: 10px 0 16px; }
-  ol.steps > li { counter-increment: step; position: relative; padding: 8px 12px 8px 46px; margin: 0 0 6px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
-  ol.steps > li::before { content: counter(step); position: absolute; left: 12px; top: 9px; width: 24px; height: 24px; border-radius: 50%; background: var(--leather); color: #fff; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+  ol.steps > li { counter-increment: step; position: relative; padding: 10px 14px 10px 52px; margin: 0 0 8px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; }
+  ol.steps > li::before { content: counter(step); position: absolute; left: 12px; top: 10px; width: 28px; height: 28px; border-radius: 9px; background: var(--brand); color: #fff; font: 700 15px/28px var(--display); text-align: center; transform: rotate(-6deg); }
 
   /* ----- callouts ----- */
-  .box { border-radius: 10px; padding: 12px 16px 12px 48px; margin: 14px 0 18px; position: relative; border: 1px solid; }
-  .box::before { position: absolute; left: 14px; top: 11px; width: 24px; height: 24px; border-radius: 50%; color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .box { border-radius: 16px; padding: 13px 16px 13px 52px; margin: 14px 0 18px; position: relative; border: 1px solid; }
+  .box::before { position: absolute; left: 14px; top: 12px; width: 26px; height: 26px; border-radius: 8px; color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; }
   .box p:last-child, .box ul:last-child { margin-bottom: 0; }
-  .box b.t { display: block; margin-bottom: 2px; }
-  .tip { background: var(--ok-soft); border-color: #c7dcc3; } .tip::before { content: '✓'; background: var(--ok); }
-  .warn { background: var(--warn-soft); border-color: #ead9b3; } .warn::before { content: '!'; background: var(--warn); }
-  .info { background: var(--info-soft); border-color: #c4d6e8; } .info::before { content: 'i'; background: var(--info); font-family: var(--serif); font-style: italic; }
-  .danger { background: var(--err-soft); border-color: #ecc5bf; } .danger::before { content: '✕'; background: var(--err); }
+  .box b.t { display: block; margin-bottom: 2px; font-family: var(--display); font-weight: 600; font-size: 17px; }
+  .tip { background: var(--ok-soft); border-color: #b9e2cb; } .tip::before { content: '✓'; background: var(--ok); }
+  .warn { background: var(--warn-soft); border-color: #f2d595; } .warn::before { content: '!'; background: var(--warn); }
+  .info { background: var(--info-soft); border-color: #bcdcf1; } .info::before { content: 'i'; background: var(--info); font-family: Georgia, serif; font-style: italic; }
+  .danger { background: var(--err-soft); border-color: #f4bcbc; } .danger::before { content: '✕'; background: var(--err); }
 
   /* ----- UI names ----- */
-  .ui { display: inline-block; border: 1px solid var(--line-2); background: #fff; border-radius: 7px; padding: 0 8px; font-size: 0.9em; font-weight: 600; line-height: 1.6; white-space: nowrap; vertical-align: baseline; color: var(--ink); }
-  .ui.p { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .tab { display: inline-block; font-weight: 700; color: var(--accent); white-space: nowrap; }
-  .banner-ex { display: inline-block; border-left: 5px solid; padding: 2px 10px; background: var(--card); border-radius: 0 6px 6px 0; font-size: 14px; margin: 2px 0; }
+  .ui { display: inline-block; border: 1.5px solid var(--line-2); background: #fff; border-radius: 8px; padding: 0 8px; font-size: 0.9em; font-weight: 600; line-height: 1.6; white-space: nowrap; vertical-align: baseline; color: var(--ink); }
+  .ui.p { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .tab { display: inline-block; font-weight: 700; color: var(--brand); white-space: nowrap; }
+  .banner-ex { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); padding: 2px 12px 2px 8px; background: var(--card); border-radius: 999px; font-size: 14px; margin: 2px 0; }
+  .banner-ex::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--p, var(--muted)); }
 
   /* ----- figures ----- */
   figure { margin: 14px 0 22px; }
-  figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; box-shadow: 0 2px 10px rgba(60,40,20,.08); }
+  figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line-2); border-radius: 12px; background: #fff; box-shadow: 0 4px 14px -4px rgba(46,34,118,.18); }
   figure.small img { max-width: 560px; }
   figure.phone img { max-width: 320px; }
   figure.center { text-align: center; } figure.center img { margin: 0 auto; }
   figcaption { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
-  @media (max-width: 760px) { .two { grid-template-columns: 1fr; } .toc ol { columns: 1; } }
+  @media (max-width: 760px) { .two { grid-template-columns: 1fr; } .toc ol { columns: 1; } .top .inner { padding: 26px 16px 20px; } .top h1 { font-size: 28px; } .top svg { width: 52px; height: 52px; } .page { padding: 18px 14px 48px; } .card { padding: 18px 16px; } section.chap > h2 { font-size: 25px; } }
 
   /* ----- tables ----- */
-  table.t { border-collapse: collapse; width: 100%; margin: 10px 0 16px; font-size: 14.5px; background: var(--card); }
-  table.t th, table.t td { border: 1px solid var(--line-2); padding: 7px 10px; text-align: left; vertical-align: top; }
-  table.t th { background: var(--paper-2); font-weight: 600; }
+  table.t { border-collapse: separate; border-spacing: 0; width: 100%; margin: 10px 0 16px; font-size: 14.5px; background: var(--card); border: 1px solid var(--line-2); border-radius: 12px; overflow: hidden; }
+  table.t th, table.t td { border-bottom: 1px solid var(--line); border-right: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+  table.t th:last-child, table.t td:last-child { border-right: 0; }
+  table.t tr:last-child td { border-bottom: 0; }
+  table.t th { background: var(--brand-soft); font-weight: 600; }
   table.t td.n, table.t th.n { text-align: center; }
-  table.t tr.total td { font-weight: 700; background: var(--accent-soft); }
+  table.t tr.total td { font-weight: 700; background: var(--brand-soft); }
   .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
 
   /* ----- FAQ ----- */
-  details.faq { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0 16px; margin-bottom: 8px; }
-  details.faq summary { cursor: pointer; font-weight: 600; padding: 11px 0; list-style: none; position: relative; padding-left: 22px; }
-  details.faq summary::before { content: '▸'; position: absolute; left: 2px; color: var(--accent); }
-  details.faq[open] summary::before { content: '▾'; }
-  details.faq .a { padding: 0 0 12px 22px; color: var(--ink-2); }
+  details.faq { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 0 16px; margin-bottom: 8px; }
+  details.faq[open] { box-shadow: var(--shadow); }
+  details.faq summary { cursor: pointer; font-weight: 600; padding: 12px 0; list-style: none; position: relative; padding-left: 24px; }
+  details.faq summary::-webkit-details-marker { display: none; }
+  details.faq summary::before { content: ''; position: absolute; left: 3px; top: 19px; width: 8px; height: 8px; border-right: 2.5px solid var(--brand); border-bottom: 2.5px solid var(--brand); transform: rotate(-45deg); transition: transform .15s; }
+  details.faq[open] summary::before { transform: rotate(45deg); }
+  details.faq .a { padding: 0 0 12px 24px; color: var(--ink-2); }
 
   footer.end { margin-top: 40px; color: var(--muted); font-size: 13.5px; text-align: center; border-top: 1px solid var(--line); padding-top: 14px; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 
   /* ----- print ----- */
   @media print {
     body { background: #fff; font-size: 12pt; }
-    .top { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .top { background: #fff; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; border-bottom: 2px solid var(--line); }
+    .top h1 { color: var(--ink); } .top p { color: var(--ink-2); } .top svg { filter: none; }
+    .top::before, section.chap > h2::after, section.chap > h2 .num, .toc li::before, ol.steps > li::before, .box::before { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     .page { max-width: none; padding: 0 6mm; }
-    .card, ol.steps > li, .box, figure img { box-shadow: none; }
+    .card, ol.steps > li, .box, figure img, details.faq[open] { box-shadow: none; }
     .back, .noprint { display: none; }
     section.chap { page-break-before: always; }
     section.chap:first-of-type { page-break-before: auto; }
     figure, .box, ol.steps > li, table.t, pre { page-break-inside: avoid; }
     details.faq { page-break-inside: avoid; }
-    details.faq summary::before { content: ''; }
+    details.faq summary::before { content: none; }
     details.faq > .a { display: block !important; }
     a { text-decoration: none; color: inherit; }
     .toc ol { columns: 2; }
-    pre { background: #f2ece0; color: #2a2320; border: 1px solid var(--line-2); }
-    pre .c { color: #7a6a5c; } pre .k { color: #8e3b1f; } pre .s { color: #2f6b3a; }
+    pre { background: var(--bg); color: var(--ink); border: 1px solid var(--line-2); }
+    pre .c { color: var(--muted); } pre .k { color: var(--brand); } pre .s { color: var(--ok); }
   }
 </style>
 </head>
@@ -130,10 +153,14 @@
 <header class="top" id="haut">
   <div class="inner">
     <svg viewBox="0 0 40 40" aria-hidden="true">
-      <rect x="3" y="3" width="34" height="34" rx="8" fill="#8e3b1f" stroke="#b0842f" stroke-width="2"/>
-      <circle cx="12.5" cy="12.5" r="3.2" fill="#f6efe3"/><circle cx="27.5" cy="12.5" r="3.2" fill="#f6efe3"/>
-      <circle cx="20" cy="20" r="3.2" fill="#f6efe3"/>
-      <circle cx="12.5" cy="27.5" r="3.2" fill="#f6efe3"/><circle cx="27.5" cy="27.5" r="3.2" fill="#f6efe3"/>
+      <g stroke="#fff" stroke-width="1.3" stroke-linejoin="round">
+        <path d="M20 2.5 5 11.2l15-.7z" fill="#56B4E9"/><path d="M20 2.5l15 8.7-15-.7z" fill="#CC79A7"/>
+        <path d="M5 11.2l5.6 15.2 9.4-15.9z" fill="#0072B2"/><path d="M35 11.2l-5.6 15.2-9.4-15.9z" fill="#D55E00"/>
+        <path d="M5 11.2v17.6l5.6-2.4z" fill="#009E73"/><path d="M35 11.2v17.6l-5.6-2.4z" fill="#E69F00"/>
+        <path d="M5 28.8l15 8.7-9.4-11.1zM35 28.8l-15 8.7 9.4-11.1z" fill="#3B2A9E"/>
+        <path d="M10.6 26.4h18.8L20 37.5z" fill="#5A3FD8"/><path d="M20 10.5l9.4 15.9H10.6z" fill="#fff"/>
+      </g>
+      <text x="20" y="23.4" text-anchor="middle" font-family="Fredoka, Arial, sans-serif" font-weight="700" font-size="8" fill="#2e2276">20</text>
     </svg>
     <div>
       <h1>Guide d’utilisation</h1>
@@ -147,7 +174,7 @@
 <nav class="card toc" aria-label="Sommaire">
   <h2>Sommaire</h2>
   <ol>
-    <li><a href="#bref">En bref</a><span class="sub">Ouvrir l’application sur la tablette, l’installer, la mettre à jour (et sur un ordinateur)</span></li>
+    <li><a href="#bref">En bref</a><span class="sub">Ce que fait l’application, ce qu’il vous faut, premier coup d’œil</span></li>
     <li><a href="#forms">Récupérer les réponses</a><span class="sub">Sur la tablette avec Google Sheets, ou sur un ordinateur avec Google Forms</span></li>
     <li><a href="#charger">Charger les réponses</a><span class="sub">Lire la vérification du fichier et les avertissements</span></li>
     <li><a href="#individuels">Les rapports individuels</a><span class="sub">Consulter, partager, faire un PDF, envoyer à un joueur</span></li>
@@ -156,39 +183,28 @@
     <li><a href="#config">Modifier la configuration</a><span class="sub">Textes, seuils, poids, attentes, questions, enregistrement</span></li>
     <li><a href="#fichiers">Modifier les fichiers à la main</a><span class="sub">Pour les curieux : les fichiers YAML</span></li>
     <li><a href="#faq">Questions fréquentes et problèmes</a><span class="sub">Accents, pseudos, autorisations…</span></li>
+    <li><a href="#installer">Installer ou réinstaller l’application</a><span class="sub">Sur la tablette avec le lien, sur un ordinateur, ou sans Internet avec le .zip ; mettre à jour</span></li>
   </ol>
 </nav>
 
 <!-- ============================================================ 1 -->
 <section class="chap" id="bref">
-  <h2><span class="num">1.</span>En bref</h2>
+  <h2><span class="num">1</span>En bref</h2>
 
   <p class="lead">Cette application lit les réponses de votre questionnaire Google Forms et en tire, pour chaque joueur, un <b>profil de joueur de wargame</b> : un score par « attente ludique » (compétition, stratégie, narration, immersion, convivialité, hasard), un niveau, et un texte qui le décrit. Elle produit aussi un <b>rapport global</b> qui résume l’ensemble des réponses. Les textes, les questions et les points de chaque réponse se modifient sans programmer, dans l’onglet <span class="tab">Configuration</span>.</p>
 
+  <div class="box info"><b class="t">L’application est déjà ouverte ?</b><p>Vous pouvez passer directement à <a href="#forms">la partie 2</a> pour récupérer les réponses. Pour installer l’application sur un nouvel appareil, la réinstaller après l’avoir supprimée, ou l’utiliser sans Internet sur un ordinateur, voir <a href="#installer">la partie 10</a>.</p></div>
+
   <h3>Ce qu’il vous faut</h3>
   <ul>
-    <li>Une <b>tablette Android</b> avec <b>Google Chrome</b> (c’est l’usage prévu). Un téléphone convient aussi, l’écran est simplement plus petit. Un ordinateur reste possible : voir <a href="#ordinateur">plus bas</a>.</li>
-    <li>Le <b>lien de l’application</b> qu’on vous a transmis (une adresse qui commence par <code>https://</code>).</li>
+    <li>Une <b>tablette Android</b> avec <b>Google Chrome</b> (c’est l’usage prévu). Un téléphone convient aussi, l’écran est simplement plus petit. Un ordinateur reste possible (<a href="#ordinateur">partie 10</a>).</li>
+    <li>Le <b>lien de l’application</b> qu’on vous a transmis (une adresse qui commence par <code>https://</code>), ou, sur un ordinateur sans Internet, le fichier <code>QuestionnaireJDR.zip</code>.</li>
     <li>Une connexion Internet <b>la première fois seulement</b>. Ensuite, l’application fonctionne aussi hors connexion.</li>
     <li>Pas de compte, rien à payer.</li>
   </ul>
 
-  <h3 id="tablette">Ouvrir l’application sur la tablette</h3>
-  <ol class="steps">
-    <li>Ouvrez le lien de l’application dans <b>Chrome</b> (touchez le lien reçu par e-mail ou message ; s’il s’ouvre dans une autre application, choisissez « Ouvrir dans Chrome »).</li>
-    <li>L’application s’affiche. Patientez quelques secondes : un message « L’application est maintenant disponible hors connexion sur cet appareil » confirme qu’elle est enregistrée sur la tablette.</li>
-    <li>Pour la retrouver d’un geste, installez-la sur l’écran d’accueil : touchez le menu <span class="ui">⋮</span> de Chrome (en haut à droite), puis <span class="ui">Ajouter à l’écran d’accueil</span> ou <span class="ui">Installer l’application</span> (le libellé dépend de la version de Chrome), puis confirmez. Chrome peut aussi vous le proposer de lui-même dans un bandeau.</li>
-    <li>Une icône « Questionnaire JDR » (un dé rouge) apparaît sur l’écran d’accueil. Touchez-la : l’application s’ouvre en plein écran, comme une application normale, <b>même sans connexion</b>.</li>
-  </ol>
-  <figure><img src="images/40-tablette-accueil.png" alt="L’application sur une tablette en mode portrait : onglets en haut, cadre « Choisissez le fichier des réponses » avec les boutons Choisir un fichier… et Charger l’exemple, puis les étapes Google Sheets"><figcaption>L’application sur la tablette, à l’ouverture.</figcaption></figure>
-
   <div class="box warn"><b class="t">Ce lien est privé</b><p>L’adresse de l’application n’est pas publiée et n’apparaît pas dans les moteurs de recherche. <b>Ne la diffusez pas</b> (pas sur un forum, pas dans un groupe de joueurs) : gardez-la pour vous et les personnes qui gèrent le questionnaire. Les joueurs n’en ont pas besoin, ils reçoivent leur rapport sous forme de fichier.</p></div>
   <div class="box info"><b class="t">Les réponses des joueurs ne quittent pas la tablette</b><p>Le lien sert seulement à télécharger l’application elle-même. Le fichier des réponses que vous choisissez ensuite est <b>lu et traité sur l’appareil uniquement</b> : il n’est envoyé à aucun serveur, ni au site qui héberge l’application, ni à personne d’autre. La configuration et les réponses chargées sont gardées dans la mémoire de Chrome, sur cette tablette.</p></div>
-
-  <h3 id="maj">Mettre à jour l’application</h3>
-  <p>Quand une nouvelle version est publiée, vous n’avez rien à réinstaller. À l’ouverture suivante (avec une connexion), l’application la télécharge discrètement, puis affiche en bas de l’écran :</p>
-  <figure class="small"><img src="images/47-mise-a-jour.png" alt="Message « Nouvelle version disponible. » avec un bouton Recharger et une croix pour fermer"></figure>
-  <p>Touchez <span class="ui p">Recharger</span> : la page se recharge avec la nouvelle version. Vos réponses chargées et votre configuration sont conservées. Si vous fermez le message avec la croix, la nouvelle version sera utilisée la prochaine fois que vous rouvrirez l’application.</p>
 
   <h3>Premier coup d’œil</h3>
   <ul>
@@ -201,35 +217,13 @@
   <p>Sur un téléphone, la rangée d’onglets glisse de côté avec le doigt. Tout fonctionne aussi en tenant la tablette à l’horizontale, qui donne plus de place aux rapports.</p>
   <div class="box tip"><b class="t">Pour essayer sans attendre</b><p>Touchez <span class="ui">Charger l’exemple</span> dans l’onglet <span class="tab">Données</span> : 30 réponses fictives sont chargées. Vous pouvez alors visiter tous les onglets. Quand vous aurez vos vraies réponses, touchez <span class="ui">Changer de fichier…</span>.</p></div>
 
-  <h3 id="ordinateur">Sur un ordinateur Windows (autre possibilité)</h3>
-  <p>Sur un ordinateur, le plus simple est d’ouvrir <b>le même lien</b> dans Chrome ou Edge : tout fonctionne de la même façon, et Chrome/Edge proposent aussi « Installer l’application ». On peut aussi utiliser l’application <b>sans Internet du tout</b>, à partir d’un fichier compressé, par exemple <code>QuestionnaireJDR.zip</code> :</p>
-  <ol class="steps">
-    <li>Enregistrez le fichier .zip quelque part sur votre ordinateur (par exemple dans <b>Documents</b>).</li>
-    <li>Faites un <b>clic droit</b> sur le fichier .zip, puis <span class="ui">Extraire tout…</span>, puis <span class="ui">Extraire</span>. Windows crée un dossier normal à côté du .zip.</li>
-    <li>Ouvrez ce nouveau dossier, puis le dossier <code>QuestionnaireJDR</code> qu’il contient.</li>
-    <li><b>Double-cliquez sur <code>Questionnaire JDR.html</code></b>. L’application s’ouvre dans votre navigateur (Microsoft Edge ou Google Chrome de préférence ; Firefox et Safari fonctionnent aussi, avec une petite différence pour l’enregistrement, voir <a href="#enregistrer">7.8</a>).</li>
-  </ol>
-  <div class="box warn"><b class="t">Important : ne lancez pas l’application depuis l’intérieur du .zip</b>
-    <p>Quand on double-clique sur un .zip, Windows en montre le contenu comme s’il s’agissait d’un dossier, mais ce n’en est pas un : l’application s’ouvrirait incomplète et ne pourrait rien enregistrer. Faites toujours <span class="ui">Extraire tout…</span> d’abord, puis travaillez dans le dossier extrait.</p></div>
-  <div class="box tip"><b class="t">Astuce</b><p>Pour retrouver l’application facilement, faites un clic droit sur <code>Questionnaire JDR.html</code> → <span class="ui">Envoyer vers</span> → <span class="ui">Bureau (créer un raccourci)</span>.</p></div>
-
-  <h4>Ce que contient le dossier</h4>
-  <table class="t">
-    <tr><th style="width:38%">Élément</th><th>Rôle</th></tr>
-    <tr><td><code>Questionnaire JDR.html</code></td><td>L’application. C’est le seul fichier à ouvrir (<code>index.html</code> est la même page, utilisée par la version en ligne).</td></tr>
-    <tr><td><code>configuration/</code></td><td>Les fichiers de configuration (questions, points, textes des rapports). Voir <a href="#config">parties 7</a> et <a href="#fichiers">8</a>.</td></tr>
-    <tr><td><code>documentation/</code></td><td>Ce guide (<code>guide.html</code>) et ses images.</td></tr>
-    <tr><td><code>exemples/</code></td><td>Un fichier de réponses fictives pour essayer.</td></tr>
-    <tr><td><code>app/</code></td><td>Le moteur de l’application. Ne rien modifier ici (les autres petits fichiers, comme <code>sw.js</code> ou <code>manifest.webmanifest</code>, servent à la version en ligne).</td></tr>
-  </table>
-  <p>Gardez ces éléments ensemble : si vous déplacez l’application, déplacez tout le dossier <code>QuestionnaireJDR</code>.</p>
-  <figure><img src="images/01-accueil.png" alt="L’application sur un ordinateur : onglet Données, zone de dépôt du fichier et rappel des étapes Google Forms"><figcaption>La même application sur un ordinateur : on peut y glisser le fichier des réponses dans le cadre pointillé.</figcaption></figure>
+  <figure><img src="images/01-accueil.png" alt="L’application sur un ordinateur : onglet Données, zone de dépôt du fichier et rappel des étapes Google Forms"><figcaption>L’application sur un ordinateur : on peut y glisser le fichier des réponses dans le cadre pointillé.</figcaption></figure>
   <p class="back"><a href="#haut">↑ Sommaire</a></p>
 </section>
 
 <!-- ============================================================ 2 -->
 <section class="chap" id="forms">
-  <h2><span class="num">2.</span>Récupérer les réponses</h2>
+  <h2><span class="num">2</span>Récupérer les réponses</h2>
   <p>Les réponses au formulaire Google sont rangées dans une feuille de calcul Google Sheets associée au formulaire. Il faut en faire un fichier que l’application lira : un classeur Excel (<code>.xlsx</code>) ou un fichier <code>.csv</code>.</p>
 
   <h3 id="sheets">Sur la tablette, avec l’application Google Sheets</h3>
@@ -260,7 +254,7 @@
 
 <!-- ============================================================ 3 -->
 <section class="chap" id="charger">
-  <h2><span class="num">3.</span>Charger les réponses</h2>
+  <h2><span class="num">3</span>Charger les réponses</h2>
   <ol class="steps">
     <li>Ouvrez l’onglet <span class="tab">Données</span>.</li>
     <li>Touchez <span class="ui p">Choisir un fichier…</span> : le sélecteur de fichiers d’Android s’ouvre. Allez dans <b>Téléchargements</b> (ou l’emplacement choisi à l’étape précédente) et touchez le fichier .xlsx, .csv ou .zip. Sur un ordinateur, vous pouvez aussi glisser le fichier dans le grand cadre pointillé.</li>
@@ -309,7 +303,7 @@
 
 <!-- ============================================================ 4 -->
 <section class="chap" id="individuels">
-  <h2><span class="num">4.</span>Les rapports individuels</h2>
+  <h2><span class="num">4</span>Les rapports individuels</h2>
   <p>L’onglet <span class="tab">Rapports individuels</span> montre le rapport de chaque joueur, tel qu’il le recevra.</p>
   <figure><img src="images/06-individuels.png" alt="Onglet Rapports individuels : liste des répondants à gauche, rapport du répondant 3 à droite avec radar et encart « Votre attente principale »"><figcaption>À gauche la liste des répondants, à droite le rapport du joueur sélectionné.</figcaption></figure>
 
@@ -328,13 +322,13 @@
   <h3>Ce que contient un rapport</h3>
   <figure><img src="images/08b-individuel-haut.png" alt="Haut d’un rapport : graphique radar à six axes et encart « Votre attente principale : Convivialité, L’animateur de soirées – 55 % »"><figcaption>Le radar et l’encart de l’attente principale.</figcaption></figure>
   <ol>
-    <li><b>Le titre et l’introduction</b> (modifiables dans <span class="tab">Configuration</span> → <span class="ui">Textes des rapports</span>).</li>
+    <li><b>L’en-tête</b>, comme une fiche de personnage : le titre du rapport, le nom (ou pseudo) du joueur en grand et la date de ses réponses ; puis <b>l’introduction</b> (titre et introduction modifiables dans <span class="tab">Configuration</span> → <span class="ui">Textes des rapports</span>).</li>
     <li><b>Le graphique radar</b> : un axe par attente ludique, avec le score du joueur en %. Plus la forme s’étire vers un axe, plus cette attente est forte chez lui.</li>
-    <li><b>L’encart « Votre attente principale »</b> : l’attente qui a le score le plus élevé, avec le titre du niveau atteint et la description de l’attente. Si plusieurs attentes sont à égalité, l’encart indique <b>Profil mixte</b> et les cite toutes.</li>
-    <li><b>Une section par attente</b>, de la plus forte à la plus faible : une barre de score (les petits traits sont les seuils des niveaux), le pourcentage, le niveau atteint (« Niveau 3/4 »), puis le titre et le texte de ce niveau.</li>
+    <li><b>L’encart « Votre attente principale »</b> : l’attente qui a le score le plus élevé, avec le titre du niveau atteint, le score, le niveau (« Niveau 3/4 » et des pastilles) et la description de l’attente. Si plusieurs attentes sont à égalité, l’encart indique <b>Profil mixte</b> et les cite toutes.</li>
+    <li><b>Une section par attente</b>, aux couleurs de l’attente, de la plus forte à la plus faible (le numéro dans l’hexagone donne ce rang) : le pourcentage, une barre de score (les petites coupures blanches sont les seuils des niveaux), le niveau atteint (« Niveau 3/4 », avec une pastille pleine par niveau franchi), puis le titre et le texte de ce niveau.</li>
     <li><b>La conclusion et le pied de page.</b></li>
   </ol>
-  <figure><img src="images/08-individuel-attente.png" alt="Section d’une attente : « Quel joueur social êtes-vous ? », barre de score à 55 %, badge Niveau 3/4, titre « L’animateur de soirées » et texte du niveau"><figcaption>Une section d’attente. Les traits sur la barre marquent les seuils des niveaux (ici 20, 40 et 60 %).</figcaption></figure>
+  <figure><img src="images/08-individuel-attente.png" alt="Section d’une attente : « Quel joueur social êtes-vous ? », barre de score à 55 %, badge Niveau 3/4, titre « L’animateur de soirées » et texte du niveau"><figcaption>Une section d’attente. Les coupures dans la barre marquent les seuils des niveaux (ici 20, 40 et 60 %).</figcaption></figure>
 
   <h3 id="partager">Envoyer un rapport à un joueur depuis la tablette</h3>
   <figure class="small"><img src="images/43-tablette-barre.png" alt="Barre d’outils sur la tablette : Répondant 1, boutons précédent et suivant avec 1 / 30, Exporter ce rapport (.html), Partager… et Imprimer / PDF"></figure>
@@ -369,16 +363,16 @@
 
 <!-- ============================================================ 5 -->
 <section class="chap" id="global">
-  <h2><span class="num">5.</span>Le rapport global</h2>
+  <h2><span class="num">5</span>Le rapport global</h2>
   <p>L’onglet <span class="tab">Rapport global</span> rassemble toutes les réponses en une synthèse destinée à vous, le créateur du questionnaire. Les boutons en haut : <span class="ui">Exporter le rapport (.html)</span> (un fichier complet, qui inclut aussi tous les rapports individuels à la fin), <span class="ui">Partager…</span> (sur tablette : l’envoyer par e-mail, WhatsApp, Drive…), <span class="ui">Exporter les scores (.csv pour Excel)</span> (un tableau des scores, voir plus bas) et <span class="ui p">Imprimer / PDF</span> (même fonctionnement que pour un rapport individuel, voir <a href="#pdf">4</a>).</p>
   <figure><img src="images/09-global.png" alt="Onglet Rapport global : titre Synthèse des réponses, quatre chiffres clés (30 répondants, période, 32 questions, 6 attentes), puis les boutons de navigation vers chaque section"><figcaption>Le haut du rapport global. Les petits boutons permettent de sauter directement à une section.</figcaption></figure>
 
   <h3>Profil moyen</h3>
   <div class="two">
-    <figure><img src="images/10-global-profil-moyen.png" alt="Radar du profil moyen : la moyenne du groupe en couleur, un fin trait gris par répondant"></figure>
+    <figure><img src="images/10-global-profil-moyen.png" alt="Radar du profil moyen : la moyenne du groupe en couleur, un fin trait violet clair par répondant"></figure>
     <div>
-      <p>Le même radar que dans les rapports individuels, mais pour le groupe entier : la forme en couleur relie la <b>moyenne</b> des scores de chaque attente ; chaque fin trait gris est un répondant.</p>
-      <p>Lecture : les axes où la forme colorée s’étire sont les attentes fortes dans votre communauté ; les traits gris montrent si les joueurs se ressemblent (traits groupés) ou non (traits très dispersés).</p>
+      <p>Le même radar que dans les rapports individuels, mais pour le groupe entier : la forme en couleur relie la <b>moyenne</b> des scores de chaque attente ; chaque fin trait violet clair est un répondant.</p>
+      <p>Lecture : les axes où la forme colorée s’étire sont les attentes fortes dans votre communauté ; les traits violet clair montrent si les joueurs se ressemblent (traits groupés) ou non (traits très dispersés).</p>
     </div>
   </div>
 
@@ -437,7 +431,7 @@
 
 <!-- ============================================================ 6 -->
 <section class="chap" id="scores">
-  <h2><span class="num">6.</span>Comment les scores sont calculés</h2>
+  <h2><span class="num">6</span>Comment les scores sont calculés</h2>
   <p class="lead">Le principe tient en trois lignes : chaque réponse donne des <b>points</b> à une ou plusieurs attentes ; on additionne les points obtenus par le joueur pour chaque attente ; on les compare au <b>maximum possible</b> pour obtenir un pourcentage.</p>
 
   <h3>1. Les points (ou « poids ») de chaque réponse</h3>
@@ -495,7 +489,7 @@
 
 <!-- ============================================================ 7 -->
 <section class="chap" id="config">
-  <h2><span class="num">7.</span>Modifier la configuration</h2>
+  <h2><span class="num">7</span>Modifier la configuration</h2>
   <p class="lead">L’onglet <span class="tab">Configuration</span> permet de modifier tout ce qui fait le questionnaire et les rapports, sans toucher à un fichier. Chaque changement est appliqué <b>immédiatement</b> aux rapports : vous pouvez aller voir le résultat dans les autres onglets, puis revenir.</p>
   <figure><img src="images/16-config-attentes.png" alt="Onglet Configuration, section Attentes ludiques : menu à gauche (Général, Attentes ludiques, Textes des rapports, Questions et poids, Ouvrir / Enregistrer), attente Compétition dépliée avec nom, couleur, titre, description et tableau des niveaux"><figcaption>L’onglet Configuration. Le menu de gauche donne accès aux cinq parties ; l’encadré vert « Configuration valide » devient rouge s’il y a des erreurs à corriger.</figcaption></figure>
   <ul>
@@ -614,10 +608,10 @@
   <figure><img src="images/24-bandeau-dossier.png" alt="Bandeau : Configuration active : Dossier · dossier « configuration » · configuration valide"></figure>
   <table class="t">
     <tr><th style="width:32%">Le bandeau affiche</th><th>Ce que cela veut dire</th></tr>
-    <tr><td><span class="banner-ex" style="border-color:#84776b">Par défaut</span></td><td>Vous utilisez la configuration <b>intégrée à l’application</b>, telle qu’elle a été livrée. Rien n’a été modifié.</td></tr>
-    <tr><td><span class="banner-ex" style="border-color:#2f6b3a">Dossier</span></td><td>La configuration a été lue depuis (ou enregistrée dans) le dossier <code>configuration</code>, et n’a pas été modifiée depuis. Vous êtes à jour.</td></tr>
-    <tr><td><span class="banner-ex" style="border-color:#2f6b3a">Fichiers</span></td><td>Même chose, mais la configuration vient de fichiers ouverts un par un ou d’un fichier .zip (cas des navigateurs sans accès direct au dossier).</td></tr>
-    <tr><td><span class="banner-ex" style="border-color:#9a5a00">Modifiée – non enregistrée</span></td><td>Vous avez changé quelque chose depuis le dernier chargement ou enregistrement. Les changements sont gardés en mémoire sur cet ordinateur, mais pas encore écrits dans le dossier. Le bouton <span class="ui p">Enregistrer…</span> apparaît dans le bandeau.</td></tr>
+    <tr><td><span class="banner-ex" style="--p:#5a3fd8">Par défaut</span></td><td>Vous utilisez la configuration <b>intégrée à l’application</b>, telle qu’elle a été livrée. Rien n’a été modifié.</td></tr>
+    <tr><td><span class="banner-ex" style="--p:#17734a">Dossier</span></td><td>La configuration a été lue depuis (ou enregistrée dans) le dossier <code>configuration</code>, et n’a pas été modifiée depuis. Vous êtes à jour.</td></tr>
+    <tr><td><span class="banner-ex" style="--p:#17734a">Fichiers</span></td><td>Même chose, mais la configuration vient de fichiers ouverts un par un ou d’un fichier .zip (cas des navigateurs sans accès direct au dossier).</td></tr>
+    <tr><td><span class="banner-ex" style="--p:#e69f00">Modifiée – non enregistrée</span></td><td>Vous avez changé quelque chose depuis le dernier chargement ou enregistrement. Les changements sont gardés en mémoire sur cet ordinateur, mais pas encore écrits dans le dossier. Le bouton <span class="ui p">Enregistrer…</span> apparaît dans le bandeau.</td></tr>
   </table>
   <p>À droite, « configuration valide », « N remarques » ou « N erreurs » résume la vérification ; <span class="ui">Gérer</span> ouvre directement la section <span class="ui">Ouvrir / Enregistrer</span>.</p>
 
@@ -661,7 +655,7 @@
 
 <!-- ============================================================ 8 -->
 <section class="chap" id="fichiers">
-  <h2><span class="num">8.</span>Modifier les fichiers à la main (facultatif)</h2>
+  <h2><span class="num">8</span>Modifier les fichiers à la main (facultatif)</h2>
   <p class="lead">Tout ce que fait l’onglet Configuration peut aussi se faire en éditant directement les fichiers du dossier <code>configuration</code>. C’est utile pour relire tous les textes d’un coup, ou pour un gros chantier de réécriture. Si vous préférez les écrans de l’application, vous pouvez sauter cette partie.</p>
 
   <h3>Les fichiers</h3>
@@ -726,7 +720,7 @@
 
 <!-- ============================================================ 9 -->
 <section class="chap" id="faq">
-  <h2><span class="num">9.</span>Questions fréquentes et problèmes</h2>
+  <h2><span class="num">9</span>Questions fréquentes et problèmes</h2>
 
   <details class="faq" id="faq-pseudo" open>
     <summary>Les joueurs s’appellent « Répondant 1 », « Répondant 3 »… Comment avoir leurs noms ?</summary>
@@ -805,7 +799,7 @@
 
   <details class="faq">
     <summary>La page est blanche, ou tout est en vrac</summary>
-    <div class="a"><p>Sur la tablette : vérifiez que vous utilisez Chrome à jour, puis rechargez la page (tirez l’écran vers le bas, ou menu <span class="ui">⋮</span> → ⟳). Sur un ordinateur : ouvrez <code>Questionnaire JDR.html</code> avec Microsoft Edge, Google Chrome ou Firefox (clic droit → <span class="ui">Ouvrir avec</span>), pas avec un autre programme. Vérifiez que vous l’ouvrez depuis le dossier extrait et non depuis l’intérieur du .zip (<a href="#bref">partie 1</a>), et que les dossiers <code>app</code>, <code>configuration</code> et <code>documentation</code> sont toujours à côté du fichier.</p></div>
+    <div class="a"><p>Sur la tablette : vérifiez que vous utilisez Chrome à jour, puis rechargez la page (tirez l’écran vers le bas, ou menu <span class="ui">⋮</span> → ⟳). Sur un ordinateur : ouvrez <code>Questionnaire JDR.html</code> avec Microsoft Edge, Google Chrome ou Firefox (clic droit → <span class="ui">Ouvrir avec</span>), pas avec un autre programme. Vérifiez que vous l’ouvrez depuis le dossier extrait et non depuis l’intérieur du .zip (<a href="#sans-internet">partie 10</a>), et que les dossiers <code>app</code>, <code>configuration</code> et <code>documentation</code> sont toujours à côté du fichier.</p></div>
   </details>
 
   <details class="faq">
@@ -832,6 +826,60 @@
     <summary>Les réponses sont-elles envoyées quelque part ?</summary>
     <div class="a"><p>Non. Le lien de l’application sert uniquement à télécharger l’application elle-même ; ensuite, tout se passe dans Chrome, sur la tablette (ou l’ordinateur). Le fichier des réponses est lu et traité sur l’appareil, il n’est envoyé à aucun serveur. Les réponses et la configuration restent dans la mémoire du navigateur, pour vous éviter de recharger. Pour les effacer de l’application, utilisez <span class="ui">Oublier les données</span> dans l’onglet Données. Seuls les fichiers que <b>vous</b> choisissez de partager (un rapport envoyé par WhatsApp, par exemple) quittent l’appareil.</p></div>
   </details>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<!-- ============================================================ 10 -->
+<section class="chap" id="installer">
+  <h2><span class="num">10</span>Installer ou réinstaller l’application</h2>
+
+  <p class="lead">Si l’application est déjà sur votre tablette, vous n’avez rien à faire ici. Cette partie sert quand il faut l’installer <b>sur un nouvel appareil</b>, la <b>réinstaller</b> (icône supprimée par erreur, données de Chrome effacées, tablette réinitialisée), ou l’utiliser <b>sur un ordinateur</b>, avec ou sans Internet.</p>
+  <div class="box warn"><b class="t">Avant de changer d’appareil : enregistrez votre configuration</b><p>Vos réglages (textes, seuils, poids…) sont gardés dans la mémoire de Chrome, sur l’appareil. Sur un nouvel appareil, ou après un effacement des données de Chrome, l’application repart de la configuration livrée. Si vous l’aviez modifiée, enregistrez-la d’abord dans un fichier <code>configuration.zip</code> (<a href="#enregistrer">7.8</a>), puis rouvrez ce fichier dans l’application réinstallée. Le fichier des réponses, lui, se recharge simplement depuis Google Sheets ou Google Forms (<a href="#forms">partie 2</a>).</p></div>
+
+  <h3 id="tablette">Sur une tablette ou un téléphone : avec le lien</h3>
+  <p>C’est la même marche à suivre pour une première installation, une réinstallation ou un nouvel appareil. Il vous faut le lien de l’application et une connexion Internet le temps de l’ouverture.</p>
+  <ol class="steps">
+    <li>Ouvrez le lien de l’application dans <b>Chrome</b> (touchez le lien reçu par e-mail ou message ; s’il s’ouvre dans une autre application, choisissez « Ouvrir dans Chrome »).</li>
+    <li>L’application s’affiche. Patientez quelques secondes : un message « L’application est maintenant disponible hors connexion sur cet appareil » confirme qu’elle est enregistrée sur la tablette.</li>
+    <li>Pour la retrouver d’un geste, installez-la sur l’écran d’accueil : touchez le menu <span class="ui">⋮</span> de Chrome (en haut à droite), puis <span class="ui">Ajouter à l’écran d’accueil</span> ou <span class="ui">Installer l’application</span> (le libellé dépend de la version de Chrome), puis confirmez. Chrome peut aussi vous le proposer de lui-même dans un bandeau.</li>
+    <li>Une icône « Questionnaire JDR » (un dé à vingt faces multicolore sur fond violet) apparaît sur l’écran d’accueil. Touchez-la : l’application s’ouvre en plein écran, comme une application normale, <b>même sans connexion</b>.</li>
+  </ol>
+  <div class="box tip"><b class="t">Réinstaller après avoir supprimé l’icône</b><p>Rouvrez simplement le lien dans Chrome (il est peut-être encore dans l’historique ou dans le message reçu), puis refaites <span class="ui">Ajouter à l’écran d’accueil</span>. Si vous n’avez plus le lien, demandez-le à la personne qui vous l’a transmis : il n’apparaît pas dans les moteurs de recherche.</p></div>
+  <figure><img src="images/40-tablette-accueil.png" alt="L’application sur une tablette en mode portrait : onglets en haut, cadre « Choisissez le fichier des réponses » avec les boutons Choisir un fichier… et Charger l’exemple, puis les étapes Google Sheets"><figcaption>L’application sur la tablette, à l’ouverture.</figcaption></figure>
+
+  <h3 id="maj">Mettre à jour l’application</h3>
+  <p>Quand une nouvelle version est publiée, vous n’avez rien à réinstaller. À l’ouverture suivante (avec une connexion), l’application la télécharge discrètement, puis affiche en bas de l’écran :</p>
+  <figure class="small"><img src="images/47-mise-a-jour.png" alt="Message « Nouvelle version disponible. » avec un bouton Recharger et une croix pour fermer"></figure>
+  <p>Touchez <span class="ui p">Recharger</span> : la page se recharge avec la nouvelle version. Vos réponses chargées et votre configuration sont conservées. Si vous fermez le message avec la croix, la nouvelle version sera utilisée la prochaine fois que vous rouvrirez l’application.</p>
+
+  <h3 id="ordinateur">Sur un ordinateur : avec le lien</h3>
+  <p>Sur un ordinateur, le plus simple est d’ouvrir <b>le même lien</b> dans Chrome ou Edge : tout fonctionne de la même façon, et Chrome/Edge proposent aussi <span class="ui">Installer l’application</span> (icône à droite de la barre d’adresse, ou menu <span class="ui">⋮</span> / <span class="ui">…</span>). Pour réinstaller, rouvrez le lien de la même manière.</p>
+
+  <h3 id="sans-internet">Sur un ordinateur, sans Internet : avec le fichier .zip</h3>
+  <p>On peut aussi utiliser l’application <b>sans Internet du tout</b>, à partir du fichier compressé <code>QuestionnaireJDR.zip</code>. Sur Windows :</p>
+  <ol class="steps">
+    <li>Enregistrez le fichier .zip quelque part sur votre ordinateur (par exemple dans <b>Documents</b>).</li>
+    <li>Faites un <b>clic droit</b> sur le fichier .zip, puis <span class="ui">Extraire tout…</span>, puis <span class="ui">Extraire</span>. Windows crée un dossier normal à côté du .zip.</li>
+    <li>Ouvrez ce nouveau dossier, puis le dossier <code>QuestionnaireJDR</code> qu’il contient.</li>
+    <li><b>Double-cliquez sur <code>Questionnaire JDR.html</code></b>. L’application s’ouvre dans votre navigateur (Microsoft Edge ou Google Chrome de préférence ; Firefox et Safari fonctionnent aussi, avec une petite différence pour l’enregistrement, voir <a href="#enregistrer">7.8</a>).</li>
+  </ol>
+  <div class="box warn"><b class="t">Important : ne lancez pas l’application depuis l’intérieur du .zip</b>
+    <p>Quand on double-clique sur un .zip, Windows en montre le contenu comme s’il s’agissait d’un dossier, mais ce n’en est pas un : l’application s’ouvrirait incomplète et ne pourrait rien enregistrer. Faites toujours <span class="ui">Extraire tout…</span> d’abord, puis travaillez dans le dossier extrait.</p></div>
+  <div class="box tip"><b class="t">Astuce</b><p>Pour retrouver l’application facilement, faites un clic droit sur <code>Questionnaire JDR.html</code> → <span class="ui">Envoyer vers</span> → <span class="ui">Bureau (créer un raccourci)</span>.</p></div>
+
+  <p>Sur un Mac : double-cliquez sur <code>QuestionnaireJDR.zip</code> (un dossier <code>QuestionnaireJDR</code> apparaît à côté), ouvrez ce dossier et double-cliquez sur <code>Questionnaire JDR.html</code>. Le fichier .zip ne fonctionne pas sur tablette : utilisez le lien.</p>
+  <p>Pour réinstaller l’application sur un autre ordinateur, ou en remplacer une copie abîmée, refaites ces étapes avec le fichier .zip (pensez à enregistrer votre configuration d’abord, voir plus haut).</p>
+
+  <h4>Ce que contient le dossier</h4>
+  <table class="t">
+    <tr><th style="width:38%">Élément</th><th>Rôle</th></tr>
+    <tr><td><code>Questionnaire JDR.html</code></td><td>L’application. C’est le seul fichier à ouvrir (<code>index.html</code> est la même page, utilisée par la version en ligne).</td></tr>
+    <tr><td><code>configuration/</code></td><td>Les fichiers de configuration (questions, points, textes des rapports). Voir <a href="#config">parties 7</a> et <a href="#fichiers">8</a>.</td></tr>
+    <tr><td><code>documentation/</code></td><td>Ce guide (<code>guide.html</code>) et ses images.</td></tr>
+    <tr><td><code>exemples/</code></td><td>Un fichier de réponses fictives pour essayer.</td></tr>
+    <tr><td><code>app/</code></td><td>Le moteur de l’application. Ne rien modifier ici (les autres petits fichiers, comme <code>sw.js</code> ou <code>manifest.webmanifest</code>, servent à la version en ligne).</td></tr>
+  </table>
+  <p>Gardez ces éléments ensemble : si vous déplacez l’application, déplacez tout le dossier <code>QuestionnaireJDR</code>.</p>
   <p class="back"><a href="#haut">↑ Sommaire</a></p>
 </section>
 
