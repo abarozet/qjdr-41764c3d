@@ -1,0 +1,66 @@
+# ==============================================================
+#  ATTENTE LUDIQUE : Compétition
+# ==============================================================
+#  Ce fichier décrit une attente ludique et les textes affichés dans
+#  les rapports des joueurs.
+#
+#    - « id » : identifiant technique, ne pas le modifier (il doit
+#      correspondre à la liste « attentes » de questionnaire.yaml).
+#    - « nom » : libellé court affiché sur le graphique radar.
+#    - « couleur » : couleur de l'attente (code hexadécimal, ex. "#D55E00").
+#    - « titre » : titre de la section dans le rapport individuel.
+#    - « description » : une ou deux phrases expliquant ce que mesure
+#      cette attente.
+#    - « niveaux » : les paliers, du plus faible au plus fort.
+#        « a_partir_de » = score minimum, en % (de 0 à 100), pour
+#        atteindre ce niveau. Le premier niveau doit commencer à 0.
+#        Vous pouvez ajouter ou supprimer des niveaux, et modifier
+#        librement les titres et les textes.
+# ==============================================================
+
+id: competition
+nom: "Compétition"
+couleur: "#D55E00"
+titre: "Quel compétiteur êtes-vous ?"
+description: >-
+  Cette attente mesure votre envie de gagner et de vous mesurer aux autres :
+  goût du tournoi, suivi de la méta, optimisation des listes et plaisir de
+  parader après une victoire bien méritée.
+
+niveaux:
+  - a_partir_de: 0
+    titre: "Le pacifiste de la table"
+    texte: >-
+      Gagner ? Pourquoi pas, mais franchement ce n'est pas ce qui vous fait
+      sortir vos figurines du placard. Le classement du tournoi régional
+      vous laisse aussi froid qu'un jet de moral raté, et votre liste
+      d'armée n'a jamais vu la couleur d'un forum d'optimisation. Vous jouez
+      pour autre chose, et c'est très bien ainsi.
+
+  - a_partir_de: 20
+    titre: "Le challenger occasionnel"
+    texte: >-
+      Vous n'allez pas chercher la victoire à tout prix, mais quand elle
+      passe à portée de charge, vous ne la laissez pas filer. Un petit
+      tournoi « à la cool » de temps en temps vous tente, surtout s'il y a
+      des potes et une bière à la clé. Vous savourez vos victoires sans en
+      faire un drame quand elles vous échappent.
+
+  - a_partir_de: 40
+    titre: "Le général ambitieux"
+    texte: >-
+      Vous aimez gagner, et vous ne vous en cachez pas. Vous suivez la méta
+      d'un œil attentif, vous peaufinez vos listes et une défaite sur un jet
+      de dé chanceux de l'adversaire vous reste un peu en travers de la
+      gorge. Les tournois vous attirent, mais vous gardez le sens de la
+      mesure : la revanche attendra la semaine prochaine.
+
+  - a_partir_de: 60
+    titre: "Le tueur de méta"
+    texte: >-
+      Pour vous, un wargame sans victoire, c'est comme un codex sans
+      règles : ça n'a aucun sens. Vous connaissez les listes du dernier
+      tournoi par cœur, vous avez probablement déjà troqué vos motos adorées
+      contre le tank qui marche, et un adversaire qui vous provoque signe
+      son arrêt de mort sur table. Le podium est votre terrain de jeu
+      naturel, et vos adversaires le savent.

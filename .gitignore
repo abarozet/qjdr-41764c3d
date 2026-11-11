@@ -1,0 +1,5 @@
+dev/node_modules/
+dev/test-results/
+dev/playwright-report/
+.DS_Store
+dist/

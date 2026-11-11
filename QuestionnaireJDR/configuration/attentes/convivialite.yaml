@@ -1,0 +1,67 @@
+# ==============================================================
+#  ATTENTE LUDIQUE : Convivialité
+# ==============================================================
+#  Ce fichier décrit une attente ludique et les textes affichés dans
+#  les rapports des joueurs.
+#
+#    - « id » : identifiant technique, ne pas le modifier (il doit
+#      correspondre à la liste « attentes » de questionnaire.yaml).
+#    - « nom » : libellé court affiché sur le graphique radar.
+#    - « couleur » : couleur de l'attente (code hexadécimal, ex. "#E69F00").
+#    - « titre » : titre de la section dans le rapport individuel.
+#    - « description » : une ou deux phrases expliquant ce que mesure
+#      cette attente.
+#    - « niveaux » : les paliers, du plus faible au plus fort.
+#        « a_partir_de » = score minimum, en % (de 0 à 100), pour
+#        atteindre ce niveau. Le premier niveau doit commencer à 0.
+#        Vous pouvez ajouter ou supprimer des niveaux, et modifier
+#        librement les titres et les textes.
+# ==============================================================
+
+id: convivialite
+nom: "Convivialité"
+couleur: "#E69F00"
+titre: "Quel joueur social êtes-vous ?"
+description: >-
+  Cette attente mesure l'importance que vous accordez au moment partagé :
+  jouer entre potes, dans une bonne ambiance, sans se prendre trop au
+  sérieux, et régler les petits désaccords d'un haussement d'épaules.
+
+niveaux:
+  - a_partir_de: 0
+    titre: "Le solitaire concentré"
+    texte: >-
+      Vous venez pour jouer, pas pour discuter de la pluie et du beau temps.
+      Un adversaire qui raconte sa semaine pendant votre phase de tir vous
+      fait doucement bouillir, et si vos potes changent de jeu, eh bien vous
+      en trouverez d'autres. Ce n'est pas de la froideur : vous prenez
+      simplement la partie au sérieux.
+
+  - a_partir_de: 20
+    titre: "Le camarade de table"
+    texte: >-
+      Vous appréciez la compagnie, mais la partie passe avant la causerie.
+      Une bonne ambiance est un plus appréciable, une mauvaise ambiance ne
+      vous arrêtera pas forcément, et vous êtes capable de vous concentrer
+      même quand le reste du club rigole autour de vous. Sociable, oui, mais
+      avec un plan de bataille en tête.
+
+  - a_partir_de: 40
+    titre: "L'animateur de soirées"
+    texte: >-
+      Pour vous, le wargame est d'abord un bon moment entre potes. Vous
+      répondez aux provocations en rigolant, vous acceptez l'interprétation
+      de l'adversaire plutôt que de vous fâcher pour une règle, et si tout
+      le monde passe à un nouveau jeu, vous suivez : l'important, c'est de
+      jouer ensemble. Le joueur muet qui ne sourit jamais est votre seul
+      vrai ennemi.
+
+  - a_partir_de: 60
+    titre: "L'âme du club"
+    texte: >-
+      Un wargame sans amis ? Voilà bien l'idée la plus absurde que vous ayez
+      jamais entendue. Vous êtes le premier à remarquer qu'un pote s'énerve
+      pour autre chose que ses dés, le premier à proposer une pause, et le
+      dernier à partir. Votre liste d'armée est parfois faite de ce que vous
+      aviez sous la main, mais votre table est toujours la plus joyeuse de
+      la salle.

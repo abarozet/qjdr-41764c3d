@@ -1,0 +1,67 @@
+# ==============================================================
+#  ATTENTE LUDIQUE : Stratégie
+# ==============================================================
+#  Ce fichier décrit une attente ludique et les textes affichés dans
+#  les rapports des joueurs.
+#
+#    - « id » : identifiant technique, ne pas le modifier (il doit
+#      correspondre à la liste « attentes » de questionnaire.yaml).
+#    - « nom » : libellé court affiché sur le graphique radar.
+#    - « couleur » : couleur de l'attente (code hexadécimal, ex. "#0072B2").
+#    - « titre » : titre de la section dans le rapport individuel.
+#    - « description » : une ou deux phrases expliquant ce que mesure
+#      cette attente.
+#    - « niveaux » : les paliers, du plus faible au plus fort.
+#        « a_partir_de » = score minimum, en % (de 0 à 100), pour
+#        atteindre ce niveau. Le premier niveau doit commencer à 0.
+#        Vous pouvez ajouter ou supprimer des niveaux, et modifier
+#        librement les titres et les textes.
+# ==============================================================
+
+id: strategie
+nom: "Stratégie"
+couleur: "#0072B2"
+titre: "Quel stratège êtes-vous ?"
+description: >-
+  Cette attente mesure votre goût pour la réflexion et la profondeur
+  tactique : planifier, anticiper, relever un défi équilibré et voir un plan
+  mûrement réfléchi récompensé plutôt que la chance.
+
+niveaux:
+  - a_partir_de: 0
+    titre: "Le général à l'instinct"
+    texte: >-
+      Planifier trois tours à l'avance ? Vous préférez voir ce que la partie
+      vous réserve et improviser. Les ordres cachés et les mécaniques
+      cérébrales vous semblent un peu superflus : une charge franche et un
+      bon lancer de dés valent bien tous les diagrammes du monde. Votre
+      armée avance, et on verra bien.
+
+  - a_partir_de: 20
+    titre: "Le tacticien du dimanche"
+    texte: >-
+      Vous appréciez un bon coup bien exécuté, mais vous ne passez pas vos
+      nuits sur des tableaux de probabilités. Un scénario équilibré vous
+      fait plaisir, un plan qui marche vous fait sourire, et quand il
+      échoue, vous haussez les épaules. Pour vous, la réflexion est une
+      épice, pas le plat principal.
+
+  - a_partir_de: 40
+    titre: "Le planificateur méthodique"
+    texte: >-
+      Vous aimez qu'une partie se gagne à la tête plutôt qu'au poignet. Les
+      règles qui ouvrent des possibilités tactiques vous enchantent, les
+      capacités qui échouent sur un 1 vous agacent, et un adversaire qui
+      bavarde pendant votre phase de réflexion met vos nerfs à l'épreuve.
+      Votre plus belle victoire est celle que vous aviez vue venir dès le
+      déploiement.
+
+  - a_partir_de: 60
+    titre: "Le grand maître d'échecs"
+    texte: >-
+      Pour vous, la table de jeu est un échiquier géant où chaque centimètre
+      et chaque activation comptent. Vous rêvez d'un wargame où le meilleur
+      joueur gagne toujours, où les dés ne viendraient jamais ruiner un plan
+      parfait, et vous êtes probablement en train de calculer les stats du
+      système de bluff façon poker menteur qu'on vous a proposé. Vos
+      adversaires ont intérêt à avoir bien dormi.

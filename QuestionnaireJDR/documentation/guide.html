@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guide d’utilisation – Questionnaire JDR</title>
+<style>
+  :root {
+    --paper: #f4eee3; --paper-2: #ece3d3; --card: #fffdf8;
+    --ink: #2a2320; --ink-2: #5c5048; --muted: #84776b;
+    --line: #e2d6c2; --line-2: #d3c3a8;
+    --leather: #2f2622; --accent: #8e3b1f; --accent-soft: #f6e4da; --brass: #b0842f;
+    --ok: #2f6b3a; --ok-soft: #e4f0e2; --warn: #9a5a00; --warn-soft: #fbefd6; --err: #a1261b; --err-soft: #fbe3df;
+    --info: #2d5b86; --info-soft: #e3edf7;
+    --radius: 12px;
+    --serif: 'Palatino Linotype', 'Book Antiqua', Palatino, 'Iowan Old Style', Georgia, serif;
+    --sans: 'Segoe UI', system-ui, -apple-system, Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 var(--sans); }
+  h1, h2, h3, h4 { font-family: var(--serif); line-height: 1.2; color: var(--ink); }
+  a { color: var(--accent); }
+  p { margin: 0 0 12px; }
+  ul, ol { margin: 0 0 12px; padding-left: 24px; }
+  li { margin-bottom: 4px; }
+  code { font-family: Consolas, 'Courier New', monospace; font-size: 0.92em; background: var(--paper-2); padding: 1px 5px; border-radius: 4px; }
+  pre { background: #2f2622; color: #f6efe3; padding: 14px 16px; border-radius: 10px; overflow: auto; font-size: 13.5px; line-height: 1.5; }
+  pre code { background: none; padding: 0; color: inherit; font-size: inherit; }
+  pre .c { color: #b9a78c; } pre .k { color: #f3c27a; } pre .s { color: #cfe8c9; }
+
+  /* ----- header ----- */
+  .top { background: var(--leather); color: #f6efe3; border-bottom: 3px solid var(--brass); }
+  .top .inner { max-width: 960px; margin: 0 auto; padding: 26px 24px 22px; display: flex; gap: 18px; align-items: center; }
+  .top svg { width: 52px; height: 52px; flex: none; }
+  .top h1 { margin: 0; font-size: 30px; color: #fff; }
+  .top p { margin: 4px 0 0; color: #cdbfa9; font-size: 15px; }
+
+  /* ----- layout ----- */
+  .page { max-width: 960px; margin: 0 auto; padding: 22px 24px 60px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 24px; margin: 0 0 22px; box-shadow: 0 1px 2px rgba(60,40,20,.05), 0 6px 20px rgba(60,40,20,.06); }
+  section.chap { margin-top: 36px; }
+  section.chap > h2 { font-size: 28px; margin: 0 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--line-2); }
+  section.chap > h2 .num { color: var(--accent); margin-right: 10px; }
+  h3 { font-size: 20px; margin: 26px 0 10px; }
+  h4 { font-size: 16.5px; margin: 20px 0 6px; font-family: var(--sans); font-weight: 600; }
+  .lead { font-size: 17px; color: var(--ink-2); }
+  .back { font-size: 13px; margin: 18px 0 0; text-align: right; }
+
+  /* ----- table of contents ----- */
+  .toc h2 { margin: 0 0 10px; font-size: 22px; }
+  .toc ol { margin: 0; padding-left: 0; list-style: none; counter-reset: toc; columns: 2; column-gap: 32px; }
+  .toc li { counter-increment: toc; margin: 0 0 6px; break-inside: avoid; padding-left: 30px; position: relative; }
+  .toc li::before { content: counter(toc); position: absolute; left: 0; top: 2px; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 12.5px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .toc a { text-decoration: none; color: var(--ink); font-weight: 600; }
+  .toc a:hover { color: var(--accent); text-decoration: underline; }
+  .toc .sub { display: block; font-size: 13px; color: var(--muted); font-weight: 400; }
+
+  /* ----- steps ----- */
+  ol.steps { list-style: none; padding: 0; counter-reset: step; margin: 10px 0 16px; }
+  ol.steps > li { counter-increment: step; position: relative; padding: 8px 12px 8px 46px; margin: 0 0 6px; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+  ol.steps > li::before { content: counter(step); position: absolute; left: 12px; top: 9px; width: 24px; height: 24px; border-radius: 50%; background: var(--leather); color: #fff; font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+
+  /* ----- callouts ----- */
+  .box { border-radius: 10px; padding: 12px 16px 12px 48px; margin: 14px 0 18px; position: relative; border: 1px solid; }
+  .box::before { position: absolute; left: 14px; top: 11px; width: 24px; height: 24px; border-radius: 50%; color: #fff; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+  .box p:last-child, .box ul:last-child { margin-bottom: 0; }
+  .box b.t { display: block; margin-bottom: 2px; }
+  .tip { background: var(--ok-soft); border-color: #c7dcc3; } .tip::before { content: '✓'; background: var(--ok); }
+  .warn { background: var(--warn-soft); border-color: #ead9b3; } .warn::before { content: '!'; background: var(--warn); }
+  .info { background: var(--info-soft); border-color: #c4d6e8; } .info::before { content: 'i'; background: var(--info); font-family: var(--serif); font-style: italic; }
+  .danger { background: var(--err-soft); border-color: #ecc5bf; } .danger::before { content: '✕'; background: var(--err); }
+
+  /* ----- UI names ----- */
+  .ui { display: inline-block; border: 1px solid var(--line-2); background: #fff; border-radius: 7px; padding: 0 8px; font-size: 0.9em; font-weight: 600; line-height: 1.6; white-space: nowrap; vertical-align: baseline; color: var(--ink); }
+  .ui.p { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tab { display: inline-block; font-weight: 700; color: var(--accent); white-space: nowrap; }
+  .banner-ex { display: inline-block; border-left: 5px solid; padding: 2px 10px; background: var(--card); border-radius: 0 6px 6px 0; font-size: 14px; margin: 2px 0; }
+
+  /* ----- figures ----- */
+  figure { margin: 14px 0 22px; }
+  figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; box-shadow: 0 2px 10px rgba(60,40,20,.08); }
+  figure.small img { max-width: 560px; }
+  figure.center { text-align: center; } figure.center img { margin: 0 auto; }
+  figcaption { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  @media (max-width: 760px) { .two { grid-template-columns: 1fr; } .toc ol { columns: 1; } }
+
+  /* ----- tables ----- */
+  table.t { border-collapse: collapse; width: 100%; margin: 10px 0 16px; font-size: 14.5px; background: var(--card); }
+  table.t th, table.t td { border: 1px solid var(--line-2); padding: 7px 10px; text-align: left; vertical-align: top; }
+  table.t th { background: var(--paper-2); font-weight: 600; }
+  table.t td.n, table.t th.n { text-align: center; }
+  table.t tr.total td { font-weight: 700; background: var(--accent-soft); }
+  .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+
+  /* ----- FAQ ----- */
+  details.faq { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 0 16px; margin-bottom: 8px; }
+  details.faq summary { cursor: pointer; font-weight: 600; padding: 11px 0; list-style: none; position: relative; padding-left: 22px; }
+  details.faq summary::before { content: '▸'; position: absolute; left: 2px; color: var(--accent); }
+  details.faq[open] summary::before { content: '▾'; }
+  details.faq .a { padding: 0 0 12px 22px; color: var(--ink-2); }
+
+  footer.end { margin-top: 40px; color: var(--muted); font-size: 13.5px; text-align: center; border-top: 1px solid var(--line); padding-top: 14px; }
+
+  /* ----- print ----- */
+  @media print {
+    body { background: #fff; font-size: 12pt; }
+    .top { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { max-width: none; padding: 0 6mm; }
+    .card, ol.steps > li, .box, figure img { box-shadow: none; }
+    .back, .noprint { display: none; }
+    section.chap { page-break-before: always; }
+    section.chap:first-of-type { page-break-before: auto; }
+    figure, .box, ol.steps > li, table.t, pre { page-break-inside: avoid; }
+    details.faq { page-break-inside: avoid; }
+    details.faq summary::before { content: ''; }
+    details.faq > .a { display: block !important; }
+    a { text-decoration: none; color: inherit; }
+    .toc ol { columns: 2; }
+    pre { background: #f2ece0; color: #2a2320; border: 1px solid var(--line-2); }
+    pre .c { color: #7a6a5c; } pre .k { color: #8e3b1f; } pre .s { color: #2f6b3a; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top" id="haut">
+  <div class="inner">
+    <svg viewBox="0 0 40 40" aria-hidden="true">
+      <rect x="3" y="3" width="34" height="34" rx="8" fill="#8e3b1f" stroke="#b0842f" stroke-width="2"/>
+      <circle cx="12.5" cy="12.5" r="3.2" fill="#f6efe3"/><circle cx="27.5" cy="12.5" r="3.2" fill="#f6efe3"/>
+      <circle cx="20" cy="20" r="3.2" fill="#f6efe3"/>
+      <circle cx="12.5" cy="27.5" r="3.2" fill="#f6efe3"/><circle cx="27.5" cy="27.5" r="3.2" fill="#f6efe3"/>
+    </svg>
+    <div>
+      <h1>Guide d’utilisation</h1>
+      <p>Questionnaire JDR – profils de joueurs · pour la personne qui gère le questionnaire</p>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+
+<nav class="card toc" aria-label="Sommaire">
+  <h2>Sommaire</h2>
+  <ol>
+    <li><a href="#bref">En bref</a><span class="sub">À quoi sert l’application, installer le dossier, l’ouvrir</span></li>
+    <li><a href="#forms">Récupérer les réponses depuis Google Forms</a><span class="sub">Le fichier .csv (ou .zip) des réponses</span></li>
+    <li><a href="#charger">Charger les réponses</a><span class="sub">Lire la vérification du fichier et les avertissements</span></li>
+    <li><a href="#individuels">Les rapports individuels</a><span class="sub">Consulter, exporter, imprimer, envoyer à un joueur</span></li>
+    <li><a href="#global">Le rapport global</a><span class="sub">Ce que veulent dire les graphiques et les chiffres</span></li>
+    <li><a href="#scores">Comment les scores sont calculés</a><span class="sub">Points, pourcentage, niveaux : un exemple complet</span></li>
+    <li><a href="#config">Modifier la configuration</a><span class="sub">Textes, seuils, poids, attentes, questions, enregistrement</span></li>
+    <li><a href="#fichiers">Modifier les fichiers à la main</a><span class="sub">Pour les curieux : les fichiers YAML</span></li>
+    <li><a href="#faq">Questions fréquentes et problèmes</a><span class="sub">Accents, pseudos, autorisations…</span></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ 1 -->
+<section class="chap" id="bref">
+  <h2><span class="num">1.</span>En bref</h2>
+
+  <p class="lead">Cette application lit les réponses de votre questionnaire Google Forms et en tire, pour chaque joueur, un <b>profil de joueur de wargame</b> : un score par « attente ludique » (compétition, stratégie, narration, immersion, convivialité, hasard), un niveau, et un texte qui le décrit. Elle produit aussi un <b>rapport global</b> qui résume l’ensemble des réponses. Les textes, les questions et les points de chaque réponse se modifient sans programmer, dans l’onglet <span class="tab">Configuration</span>.</p>
+
+  <h3>Ce qu’il vous faut</h3>
+  <ul>
+    <li>Un ordinateur avec un navigateur récent : <b>Microsoft Edge</b> ou <b>Google Chrome</b> de préférence (Firefox et Safari fonctionnent aussi, avec une petite différence pour l’enregistrement, voir <a href="#enregistrer">7.8</a>).</li>
+    <li>Rien à installer. Pas de compte, pas de connexion Internet : tout se passe sur votre ordinateur, <b>rien n’est envoyé en ligne</b>.</li>
+    <li>Le fichier des réponses téléchargé depuis Google Forms (voir <a href="#forms">partie 2</a>).</li>
+  </ul>
+
+  <h3>Installer le dossier (Windows)</h3>
+  <p>L’application vous est transmise sous la forme d’un fichier compressé, par exemple <code>QuestionnaireJDR.zip</code>.</p>
+  <ol class="steps">
+    <li>Enregistrez le fichier .zip quelque part sur votre ordinateur (par exemple dans <b>Documents</b>).</li>
+    <li>Faites un <b>clic droit</b> sur le fichier .zip, puis <span class="ui">Extraire tout…</span>, puis <span class="ui">Extraire</span>. Windows crée un dossier normal à côté du .zip.</li>
+    <li>Ouvrez ce nouveau dossier, puis le dossier <code>QuestionnaireJDR</code> qu’il contient.</li>
+    <li><b>Double-cliquez sur <code>Questionnaire JDR.html</code></b>. L’application s’ouvre dans votre navigateur.</li>
+  </ol>
+  <div class="box warn"><b class="t">Important : ne lancez pas l’application depuis l’intérieur du .zip</b>
+    <p>Quand on double-clique sur un .zip, Windows en montre le contenu comme s’il s’agissait d’un dossier, mais ce n’en est pas un : l’application s’ouvrirait incomplète et ne pourrait rien enregistrer. Faites toujours <span class="ui">Extraire tout…</span> d’abord, puis travaillez dans le dossier extrait.</p></div>
+  <div class="box tip"><b class="t">Astuce</b><p>Pour retrouver l’application facilement, faites un clic droit sur <code>Questionnaire JDR.html</code> → <span class="ui">Envoyer vers</span> → <span class="ui">Bureau (créer un raccourci)</span>.</p></div>
+
+  <h4>Ce que contient le dossier</h4>
+  <table class="t">
+    <tr><th style="width:38%">Élément</th><th>Rôle</th></tr>
+    <tr><td><code>Questionnaire JDR.html</code></td><td>L’application. C’est le seul fichier à ouvrir.</td></tr>
+    <tr><td><code>configuration/</code></td><td>Les fichiers de configuration (questions, points, textes des rapports). Voir <a href="#config">parties 7</a> et <a href="#fichiers">8</a>.</td></tr>
+    <tr><td><code>documentation/</code></td><td>Ce guide (<code>guide.html</code>) et ses images.</td></tr>
+    <tr><td><code>exemples/</code></td><td>Un fichier de réponses fictives pour essayer.</td></tr>
+    <tr><td><code>app/</code></td><td>Le moteur de l’application. Ne rien modifier ici.</td></tr>
+  </table>
+  <p>Gardez ces éléments ensemble : si vous déplacez l’application, déplacez tout le dossier <code>QuestionnaireJDR</code>.</p>
+
+  <h3>Premier coup d’œil</h3>
+  <figure><img src="images/01-accueil.png" alt="L’application à l’ouverture : onglet Données, zone de dépôt du fichier et rappel des étapes Google Forms"><figcaption>L’application à l’ouverture. En haut, les cinq onglets ; en dessous, le bandeau qui indique quelle configuration est utilisée.</figcaption></figure>
+  <ul>
+    <li><span class="tab">Données</span> : c’est ici que vous chargez le fichier des réponses.</li>
+    <li><span class="tab">Rapports individuels</span> : le rapport de chaque joueur, à consulter, exporter ou imprimer.</li>
+    <li><span class="tab">Rapport global</span> : la synthèse de toutes les réponses, avec graphiques.</li>
+    <li><span class="tab">Configuration</span> : pour modifier les textes, les niveaux, les points des réponses, les questions.</li>
+    <li><span class="tab">Aide</span> : ce guide.</li>
+  </ul>
+  <div class="box tip"><b class="t">Pour essayer sans attendre</b><p>Cliquez sur <span class="ui">Charger l’exemple</span> dans l’onglet <span class="tab">Données</span> : 30 réponses fictives sont chargées. Vous pouvez alors visiter tous les onglets. Quand vous aurez vos vraies réponses, cliquez sur <span class="ui">Changer de fichier…</span>.</p></div>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<!-- ============================================================ 2 -->
+<section class="chap" id="forms">
+  <h2><span class="num">2.</span>Récupérer les réponses depuis Google Forms</h2>
+  <p>Google Forms permet de télécharger toutes les réponses reçues dans un seul fichier. C’est ce fichier que l’application lit.</p>
+  <ol class="steps">
+    <li>Ouvrez votre formulaire dans Google Forms (en mode édition, pas le lien envoyé aux joueurs).</li>
+    <li>Cliquez sur l’onglet <span class="ui">Réponses</span>, en haut du formulaire.</li>
+    <li>Cliquez sur les trois points verticaux <span class="ui">⋮</span> (en haut à droite de la zone des réponses, à côté de l’icône verte de Google Sheets).</li>
+    <li>Choisissez <span class="ui">Télécharger les réponses (.csv)</span>.</li>
+    <li>Votre navigateur enregistre un fichier dans votre dossier <b>Téléchargements</b>. Selon les cas, c’est un fichier <code>.csv</code> ou une archive <code>.zip</code> qui contient le .csv : <b>les deux conviennent tels quels</b>, inutile de décompresser.</li>
+  </ol>
+  <div class="box info"><b class="t">Formats acceptés</b>
+    <p>L’application lit les fichiers <code>.csv</code> (et <code>.txt</code>, <code>.tsv</code>), les archives <code>.zip</code> de Google Forms, et les classeurs Excel <code>.xlsx</code> (par exemple si vous avez d’abord ouvert les réponses dans Google Sheets puis fait <span class="ui">Fichier</span> → <span class="ui">Télécharger</span> → <span class="ui">Microsoft Excel (.xlsx)</span>). Les anciens formats <code>.xls</code> et <code>.ods</code> ne sont pas acceptés : un message vous le dira.</p></div>
+  <div class="box tip"><b class="t">Conseil</b><p>Gardez le fichier tel que Google l’a produit. Si vous l’ouvrez dans Excel et que vous l’enregistrez à nouveau, Excel change parfois le séparateur et les accents. L’application s’en sort en général (voir <a href="#faq">partie 9</a>), mais le fichier d’origine est le plus sûr.</p></div>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<!-- ============================================================ 3 -->
+<section class="chap" id="charger">
+  <h2><span class="num">3.</span>Charger les réponses</h2>
+  <ol class="steps">
+    <li>Ouvrez l’onglet <span class="tab">Données</span>.</li>
+    <li>Glissez le fichier téléchargé (le .csv ou le .zip) dans le grand cadre pointillé, ou cliquez sur <span class="ui p">Choisir un fichier…</span> et sélectionnez-le.</li>
+    <li>Un résumé s’affiche : vous pouvez passer aux rapports.</li>
+  </ol>
+  <figure><img src="images/03-donnees-chargees.png" alt="Résumé du fichier chargé : 30 répondants, période des réponses, 32 questions reconnues sur 32, encodage UTF-8 et séparateur virgule"><figcaption>Le résumé après chargement. Vérifiez surtout « questions reconnues » : ici 32 / 32, tout est reconnu.</figcaption></figure>
+  <ul>
+    <li><b>répondants</b> : le nombre de personnes qui ont répondu (une ligne du fichier = un répondant).</li>
+    <li><b>période des réponses</b> : date de la première et de la dernière réponse.</li>
+    <li><b>questions reconnues</b> : combien de questions de la configuration ont été retrouvées dans le fichier. Si ce n’est pas « n / n », lisez les avertissements juste en dessous.</li>
+    <li><b>encodage · séparateur</b> : détails techniques sur le fichier. « UTF-8 · virgule » est le cas normal d’un fichier Google Forms.</li>
+  </ul>
+  <p>Les boutons <span class="ui">Changer de fichier…</span> et <span class="ui">Oublier les données</span> permettent de charger un autre fichier ou de retirer les réponses de l’application (le fichier sur votre ordinateur n’est pas touché).</p>
+
+  <div class="box info"><b class="t">L’application se souvient</b><p>Le fichier chargé et la configuration en cours sont mémorisés par le navigateur, sur cet ordinateur. Si vous fermez l’application et la rouvrez, vous retrouvez tout. Un fichier très volumineux peut ne pas être mémorisé : un message vous prévient alors qu’il faudra le recharger la prochaine fois.</p></div>
+
+  <h3>Lire la « Vérification du fichier »</h3>
+  <p>Sous le résumé, l’application compare le fichier à la configuration (les questions et réponses qu’elle connaît). Quand tout correspond, un message vert « Tout est en ordre » s’affiche. Avec le fichier d’exemple, il n’y a qu’une simple information, parce qu’un répondant a laissé une question vide :</p>
+  <figure><img src="images/04-donnees-verification-ok.png" alt="Encadré Vérification du fichier avec une seule information : 1 répondant(s) ont au moins une question sans réponse (comptée 0 point)"></figure>
+  <p>Quand quelque chose ne correspond pas, des avertissements orange apparaissent. Voici ce qu’ils veulent dire et ce qu’il faut faire.</p>
+  <figure><img src="images/05-donnees-avertissements.png" alt="Trois avertissements : colonne « Pseudo » reconnue comme un nom de joueur (avec le bouton Utiliser comme colonne identifiant), colonne non reconnue « Quel est votre jeu préféré ? », réponse non reconnue à la question 1 ; et une information sur les répondants ayant une question sans réponse"><figcaption>Exemple d’avertissements avec un fichier qui contient une colonne « Pseudo », une colonne inconnue et une réponse inconnue.</figcaption></figure>
+
+  <table class="t">
+    <tr><th style="width:36%">Message</th><th>Signification et quoi faire</th></tr>
+    <tr><td><b>Colonne non reconnue (ignorée) : « … »</b></td>
+      <td>Le fichier contient une colonne qui ne correspond à aucune question de la configuration. Elle est simplement ignorée.<br>
+        • Si le message ajoute « Cette colonne ressemble à un nom de joueur » (colonne « Pseudo », « Nom », « Prénom », « Adresse e-mail »… ou colonne dont toutes les valeurs sont différentes) : ce n’est pas une question. Cliquez sur <span class="ui">Utiliser comme colonne identifiant</span> pour qu’elle serve de nom dans les rapports (ou choisissez-la dans <span class="tab">Configuration</span> → <span class="ui">Général</span> ; voir <a href="#faq-pseudo">la question « Répondant 3 »</a>). L’application ne propose pas de l’ajouter comme question.<br>
+        • Si c’est une vraie question que vous avez ajoutée ou reformulée dans Google Forms : voir <a href="#form-change">7.6</a>. Le bouton <span class="ui">Ajouter à la configuration…</span> vous y mène directement.</td></tr>
+    <tr><td><b>Question N absente du fichier : « … »</b></td>
+      <td>La configuration connaît une question que le fichier ne contient pas (vous l’avez supprimée du formulaire, ou le fichier est ancien). Tout le monde a 0 point à cette question. Si la question n’existe plus, supprimez-la aussi de la configuration (<a href="#form-change">7.6</a>).</td></tr>
+    <tr><td><b>Réponse non reconnue à la question N (k fois) : « … »</b></td>
+      <td>Un joueur a donné une réponse dont le texte ne correspond à aucune réponse connue pour cette question (souvent : réponse reformulée dans Google Forms, ou choix « Autre » en texte libre). Elle compte comme « sans réponse » (0 point). Corrigez le texte de la réponse dans la configuration, ou ajoutez-la avec <span class="ui">Ajouter à la configuration…</span> puis donnez-lui des points.</td></tr>
+    <tr><td><b>Colonne de date « Horodateur » introuvable</b></td>
+      <td>Les dates ne seront pas affichées, rien de grave. Le nom de cette colonne se règle dans <span class="ui">Général</span>.</td></tr>
+    <tr><td><b>Colonne d’identifiant « … » introuvable</b></td>
+      <td>Vous avez indiqué un nom de colonne pour le pseudo (dans <span class="ui">Général</span>) mais le fichier ne la contient pas. Les joueurs s’appelleront « Répondant 1 », « Répondant 2 »… Vérifiez l’orthographe exacte du titre de la colonne.</td></tr>
+    <tr><td><b>Question présente plusieurs fois dans le fichier</b></td>
+      <td>Deux colonnes du fichier ont le même intitulé. Seule la première est utilisée.</td></tr>
+    <tr><td><b>N répondant(s) ont au moins une question sans réponse</b> (information)</td>
+      <td>Simple information : une question laissée vide, ou non reconnue, vaut 0 point. Le rapport de ces joueurs le mentionne.</td></tr>
+  </table>
+  <div class="box tip"><b class="t">Bon à savoir</b><p>La comparaison des textes est tolérante : majuscules, espaces, accents, apostrophes droites ou courbes, points de suspension et ponctuation finale ne comptent pas. Seul un vrai changement de mots empêche la reconnaissance.</p></div>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<!-- ============================================================ 4 -->
+<section class="chap" id="individuels">
+  <h2><span class="num">4.</span>Les rapports individuels</h2>
+  <p>L’onglet <span class="tab">Rapports individuels</span> montre le rapport de chaque joueur, tel qu’il le recevra.</p>
+  <figure><img src="images/06-individuels.png" alt="Onglet Rapports individuels : liste des répondants à gauche, rapport du répondant 3 à droite avec radar et encart « Votre attente principale »"><figcaption>À gauche la liste des répondants, à droite le rapport du joueur sélectionné.</figcaption></figure>
+
+  <h3>Consulter</h3>
+  <ul>
+    <li>Cliquez sur un nom dans la liste de gauche. Le point de couleur rappelle l’attente principale du joueur ; la date est celle de sa réponse.</li>
+    <li>Le champ <span class="ui">Rechercher un joueur…</span> filtre la liste.</li>
+    <li>Les boutons <span class="ui">‹</span> et <span class="ui">›</span> passent au joueur précédent ou suivant.</li>
+  </ul>
+  <figure><img src="images/07-individuels-barre.png" alt="Barre d’outils : nom du répondant, boutons précédent et suivant, Exporter ce rapport (.html), Imprimer / PDF"></figure>
+
+  <h3>Ce que contient un rapport</h3>
+  <figure><img src="images/08b-individuel-haut.png" alt="Haut d’un rapport : graphique radar à six axes et encart « Votre attente principale : Convivialité, L’animateur de soirées – 55 % »"><figcaption>Le radar et l’encart de l’attente principale.</figcaption></figure>
+  <ol>
+    <li><b>Le titre et l’introduction</b> (modifiables dans <span class="tab">Configuration</span> → <span class="ui">Textes des rapports</span>).</li>
+    <li><b>Le graphique radar</b> : un axe par attente ludique, avec le score du joueur en %. Plus la forme s’étire vers un axe, plus cette attente est forte chez lui.</li>
+    <li><b>L’encart « Votre attente principale »</b> : l’attente qui a le score le plus élevé, avec le titre du niveau atteint et la description de l’attente. Si plusieurs attentes sont à égalité, l’encart indique <b>Profil mixte</b> et les cite toutes.</li>
+    <li><b>Une section par attente</b>, de la plus forte à la plus faible : une barre de score (les petits traits sont les seuils des niveaux), le pourcentage, le niveau atteint (« Niveau 3/4 »), puis le titre et le texte de ce niveau.</li>
+    <li><b>La conclusion et le pied de page.</b></li>
+  </ol>
+  <figure><img src="images/08-individuel-attente.png" alt="Section d’une attente : « Quel joueur social êtes-vous ? », barre de score à 55 %, badge Niveau 3/4, titre « L’animateur de soirées » et texte du niveau"><figcaption>Une section d’attente. Les traits sur la barre marquent les seuils des niveaux (ici 20, 40 et 60 %).</figcaption></figure>
+
+  <h3>Exporter et envoyer un rapport à un joueur</h3>
+  <ol class="steps">
+    <li>Sélectionnez le joueur, puis cliquez sur <span class="ui">Exporter ce rapport (.html)</span>.</li>
+    <li>Le navigateur enregistre un fichier nommé <code>Rapport - <i>Nom du joueur</i>.html</code> dans votre dossier <b>Téléchargements</b> (ou vous demande où l’enregistrer).</li>
+    <li>Envoyez ce fichier au joueur en pièce jointe d’un e-mail (ou par messagerie). Il l’ouvre d’un double-clic, dans n’importe quel navigateur, sans connexion Internet : le fichier contient tout, graphique compris.</li>
+  </ol>
+  <div class="box tip"><b class="t">Plutôt un PDF ?</b><p>Cliquez sur <span class="ui p">Imprimer / PDF</span>. Dans la fenêtre d’impression, choisissez comme imprimante <b>« Enregistrer au format PDF »</b> (ou « Microsoft Print to PDF ») puis <span class="ui">Enregistrer</span>. Vous obtenez un PDF prêt à envoyer. La même méthode sert pour imprimer sur papier.</p></div>
+
+  <h3>Tout exporter d’un coup</h3>
+  <p>Le bouton <span class="ui">Tout exporter (ZIP)</span>, sous la liste, crée l’archive <code>Rapports individuels.zip</code> qui contient un fichier .html par joueur. Décompressez-la (clic droit → <span class="ui">Extraire tout…</span>) pour obtenir tous les rapports dans un dossier.</p>
+  <div class="box info"><b class="t">Les noms des fichiers</b><p>Les fichiers portent le nom du joueur tel qu’il apparaît dans la liste. Pour avoir des pseudos plutôt que « Répondant 1 », « Répondant 2 »…, voir <a href="#faq-pseudo">la question dédiée</a> dans la partie 9.</p></div>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<!-- ============================================================ 5 -->
+<section class="chap" id="global">
+  <h2><span class="num">5.</span>Le rapport global</h2>
+  <p>L’onglet <span class="tab">Rapport global</span> rassemble toutes les réponses en une synthèse destinée à vous, le créateur du questionnaire. Trois boutons en haut : <span class="ui">Exporter le rapport (.html)</span> (un fichier complet, qui inclut aussi tous les rapports individuels à la fin), <span class="ui">Exporter les scores (.csv pour Excel)</span> (un tableau des scores, voir plus bas) et <span class="ui p">Imprimer / PDF</span>.</p>
+  <figure><img src="images/09-global.png" alt="Onglet Rapport global : titre Synthèse des réponses, quatre chiffres clés (30 répondants, période, 32 questions, 6 attentes), puis les boutons de navigation vers chaque section"><figcaption>Le haut du rapport global. Les petits boutons permettent de sauter directement à une section.</figcaption></figure>
+
+  <h3>Profil moyen</h3>
+  <div class="two">
+    <figure><img src="images/10-global-profil-moyen.png" alt="Radar du profil moyen : la moyenne du groupe en couleur, un fin trait gris par répondant"></figure>
+    <div>
+      <p>Le même radar que dans les rapports individuels, mais pour le groupe entier : la forme en couleur relie la <b>moyenne</b> des scores de chaque attente ; chaque fin trait gris est un répondant.</p>
+      <p>Lecture : les axes où la forme colorée s’étire sont les attentes fortes dans votre communauté ; les traits gris montrent si les joueurs se ressemblent (traits groupés) ou non (traits très dispersés).</p>
+    </div>
+  </div>
+
+  <h3>Attentes principales</h3>
+  <div class="two">
+    <figure><img src="images/11-global-principales.png" alt="Barres horizontales : nombre de répondants dont chaque attente est l’attente principale, par exemple Narration 13 (43 %)"></figure>
+    <div>
+      <p>Pour chaque attente, le nombre de joueurs chez qui elle arrive <b>seule en tête</b>. « Profil mixte (égalité) » compte les joueurs qui ont deux attentes (ou plus) à égalité au premier rang ; le détail de ces égalités est listé dessous.</p>
+      <p>C’est la façon la plus simple de répondre à « quel type de joueurs ai-je dans mon club ? ».</p>
+    </div>
+  </div>
+
+  <h3>Détail par attente</h3>
+  <div class="two">
+    <figure><img src="images/12-global-detail-attente.png" alt="Bloc Compétition : moyenne 30 %, médiane 21 %, écart-type 25,4, min–max 4–94 % ; histogramme par tranches de 10 points ; répartition par niveau"></figure>
+    <div>
+      <p>Un bloc par attente, avec quelques chiffres et deux graphiques. Les chiffres, en mots simples :</p>
+      <ul>
+        <li><b>Moyenne</b> : on additionne les scores de tous les joueurs et on divise par leur nombre. Exemple : des scores de 10, 20, 30, 40 et 100 donnent une moyenne de 40.</li>
+        <li><b>Médiane</b> : on classe les scores du plus petit au plus grand et on prend celui du milieu : la moitié des joueurs est au-dessus, l’autre moitié en dessous. Dans le même exemple, la médiane est 30. Quand la moyenne est nettement plus haute que la médiane (comme ici 40 contre 30, ou 30 % contre 21 % sur l’image), c’est que quelques scores très élevés « tirent » la moyenne vers le haut.</li>
+        <li><b>Écart-type</b> : mesure à quel point les scores sont dispersés autour de la moyenne. Petit, les joueurs se ressemblent ; grand, ils sont très différents. Exemple : les scores 38, 40 et 42 ont un écart-type de 2 ; les scores 5, 40 et 75 ont la même moyenne (40) mais un écart-type de 35. Repère : environ deux tiers des joueurs ont un score compris entre « moyenne − écart-type » et « moyenne + écart-type ».</li>
+        <li><b>Min – max</b> : le plus petit et le plus grand score observés.</li>
+      </ul>
+    </div>
+  </div>
+  <p><b>Répartition des scores (histogramme)</b> : les scores sont regroupés par tranches de 10 points (0 à 10, 10 à 20, …, 90 à 100) ; la hauteur de chaque barre est le nombre de joueurs dans la tranche. On voit d’un coup d’œil si les scores sont groupés (une grosse bosse) ou étalés (plusieurs bosses, ou un plateau).</p>
+  <p><b>Répartition par niveau</b> : le nombre (et le pourcentage) de joueurs dans chaque niveau de l’attente, avec la plage de scores de chaque niveau entre parenthèses.</p>
+
+  <h3>Corrélations entre attentes</h3>
+  <div class="two">
+    <figure><img src="images/13-global-correlations.png" alt="Grille des corrélations entre les six attentes, de −1 (bleu) à +1 (rouge), par exemple Compétition / Convivialité −0,52 et Convivialité / Hasard 0,34"></figure>
+    <div>
+      <p>Une <b>corrélation</b> dit si deux attentes « vont ensemble » chez vos joueurs. Chaque case contient un nombre entre −1 et +1 :</p>
+      <ul>
+        <li><b>Proche de +1</b> (case rouge) : les joueurs forts sur l’une sont en général forts sur l’autre. Sur l’image, Convivialité et Hasard (+0,34) : ceux qui aiment l’ambiance détendue acceptent aussi plus volontiers le hasard.</li>
+        <li><b>Proche de −1</b> (case bleue) : quand l’une est forte, l’autre est faible. Ici Compétition et Convivialité (−0,52) : les compétiteurs sont rarement les plus « conviviaux », et inversement.</li>
+        <li><b>Proche de 0</b> (case claire) : pas de lien particulier.</li>
+      </ul>
+      <p>La diagonale vaut toujours 1 (une attente comparée à elle-même).</p>
+    </div>
+  </div>
+  <div class="box warn"><b class="t">Prudence avec peu de réponses</b><p>Avec une dizaine de répondants, une corrélation peut être le fruit du hasard. Considérez ces chiffres comme des pistes, pas comme des certitudes, tant que vous n’avez pas quelques dizaines de réponses. Et une corrélation ne dit pas qu’une attente « cause » l’autre.</p></div>
+
+  <h3>Réponses par question</h3>
+  <figure><img src="images/14-global-questions.png" alt="Question 1 : pour chaque réponse, nombre et pourcentage de répondants qui l’ont choisie, et les attentes qu’elle alimente avec les points entre parenthèses"></figure>
+  <p>Pour chaque question : combien de joueurs ont choisi chaque réponse, et les attentes (avec les points) que cette réponse alimente. Une réponse que personne ne choisit, ou que tout le monde choisit, n’apporte pas d’information : c’est une bonne piste pour améliorer le questionnaire.</p>
+
+  <h3>Tous les répondants</h3>
+  <p>Un tableau avec, pour chaque joueur, la date, le score de chaque attente et l’attente principale. Cliquez sur un titre de colonne pour trier (par exemple pour trouver les plus « compétiteurs »), et sur un nom pour sauter à son rapport individuel, inclus à la fin du rapport global.</p>
+  <figure><img src="images/15-global-repondants.png" alt="Début du tableau Tous les répondants : une ligne par joueur avec la date et le score de chaque attente en %"><figcaption>Le début du tableau (il se fait défiler horizontalement quand il est plus large que la fenêtre).</figcaption></figure>
+
+  <h3>Exporter les scores pour Excel</h3>
+  <p>Le bouton <span class="ui">Exporter les scores (.csv pour Excel)</span> crée <code>Scores des répondants.csv</code>. Un double-clic l’ouvre dans Excel, avec une ligne par joueur et les colonnes : Répondant, Date, le score (%) de chaque attente, le niveau atteint pour chaque attente, Attente(s) principale(s), Questions sans réponse. Pratique pour faire vos propres tris ou graphiques.</p>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<!-- ============================================================ 6 -->
+<section class="chap" id="scores">
+  <h2><span class="num">6.</span>Comment les scores sont calculés</h2>
+  <p class="lead">Le principe tient en trois lignes : chaque réponse donne des <b>points</b> à une ou plusieurs attentes ; on additionne les points obtenus par le joueur pour chaque attente ; on les compare au <b>maximum possible</b> pour obtenir un pourcentage.</p>
+
+  <h3>1. Les points (ou « poids ») de chaque réponse</h3>
+  <p>Dans la configuration, chaque réponse possible à chaque question indique combien de points elle donne à chaque attente. Dans la configuration livrée : <b>2</b> = la réponse soutient fortement l’attente, <b>1</b> = un peu, <b>0</b> (ou rien) = aucun lien. Une réponse peut alimenter plusieurs attentes à la fois.</p>
+  <p>Exemple, pour l’attente <span class="dot" style="background:#D55E00"></span><b>Compétition</b>, avec les trois premières questions de la configuration livrée :</p>
+  <table class="t">
+    <tr><th>Question</th><th>Réponses possibles</th><th class="n">Points Compétition</th></tr>
+    <tr><td rowspan="4">Q1 – Concernant les décors de votre champ de bataille, vous préférez…</td><td>… un layout proposé par le jeu afin qu’il soit bien équilibré</td><td class="n">1</td></tr>
+    <tr><td>… qu’ils soient installés pour faire une belle table</td><td class="n">0</td></tr>
+    <tr><td>… une mise en place qui raconte une histoire</td><td class="n">0</td></tr>
+    <tr><td>… ne pas vous prendre la tête avec ça</td><td class="n">0</td></tr>
+    <tr><td rowspan="4">Q2 – Votre adversaire semble plus intéressé par discuter avec vous…</td><td>… pas de souci, c’est un bon pote</td><td class="n">0</td></tr>
+    <tr><td>… vous voudriez faire une partie sérieuse</td><td class="n">0</td></tr>
+    <tr><td>… vous en profitez pour lui mettre une pâtée !</td><td class="n">2</td></tr>
+    <tr><td>… vous redirigez la conversation sur la table</td><td class="n">0</td></tr>
+    <tr><td rowspan="4">Q3 – Vous avez un désaccord sur une règle…</td><td>… vous acceptez l’interprétation de l’adversaire</td><td class="n">0</td></tr>
+    <tr><td>… vous allez directement voir dans les règles</td><td class="n">2</td></tr>
+    <tr><td>… vous jouez ça aux dés</td><td class="n">0</td></tr>
+    <tr><td>… une vraie armée n’agirait jamais comme ça</td><td class="n">0</td></tr>
+  </table>
+
+  <h3>2. Le maximum possible</h3>
+  <p>Pour chaque question, on retient la <b>meilleure</b> réponse possible pour l’attente (celle qui donne le plus de points). Le maximum de l’attente est la somme de ces meilleures réponses sur toutes les questions. Avec nos trois questions : Q1 → 1 point au mieux, Q2 → 2, Q3 → 2, soit un maximum de <b>5 points</b> pour Compétition.</p>
+  <p>Dans l’application, la ligne « maximum de la question » apparaît sous chaque tableau de points, et le tableau <b>Points maximum possibles</b> en haut de <span class="ui">Questions et poids</span> donne le total pour chaque attente :</p>
+  <figure><img src="images/19-config-max.png" alt="Tableau Points maximum possibles : Compétition 51, Stratégie 45, Narration 41, Immersion 40, Convivialité 38, Hasard 39"><figcaption>Avec les 32 questions de la configuration livrée, le maximum pour Compétition est de 51 points.</figcaption></figure>
+
+  <h3>3. Le score d’un joueur</h3>
+  <p>Imaginons un joueur qui répond : Q1 « un layout proposé par le jeu » (1 point), Q2 « c’est un bon pote » (0 point), Q3 « vous allez voir dans les règles » (2 points).</p>
+  <table class="t" style="max-width:520px">
+    <tr><th></th><th class="n">Points obtenus</th><th class="n">Maximum possible</th></tr>
+    <tr><td>Q1</td><td class="n">1</td><td class="n">1</td></tr>
+    <tr><td>Q2</td><td class="n">0</td><td class="n">2</td></tr>
+    <tr><td>Q3</td><td class="n">2</td><td class="n">2</td></tr>
+    <tr class="total"><td>Total</td><td class="n">3</td><td class="n">5</td></tr>
+  </table>
+  <p><b>Score Compétition = 3 ÷ 5 = 60 %.</b> Le score est toujours compris entre 0 et 100 %, quel que soit le nombre de questions. On fait le même calcul pour chaque attente.</p>
+  <div class="box info"><b class="t">Question sans réponse</b><p>Une question laissée vide, ou dont la réponse n’est pas reconnue, donne 0 point mais le maximum ne change pas : le score baisse donc un peu. Le rapport du joueur le signale (« 1 question sans réponse… »).</p></div>
+
+  <h3>4. Les niveaux et leurs seuils</h3>
+  <p>Chaque attente a plusieurs niveaux, du plus faible au plus fort. Chaque niveau commence « à partir de » un score en % ; le joueur est dans le dernier niveau dont le seuil est atteint ou dépassé. Pour Compétition, la configuration livrée a quatre niveaux :</p>
+  <table class="t" style="max-width:620px">
+    <tr><th>Niveau</th><th>À partir de</th><th>Donc pour un score…</th></tr>
+    <tr><td>1. Le pacifiste de la table</td><td class="n">0 %</td><td>de 0 à 19,9 %</td></tr>
+    <tr><td>2. Le challenger occasionnel</td><td class="n">20 %</td><td>de 20 à 39,9 %</td></tr>
+    <tr><td>3. Le général ambitieux</td><td class="n">40 %</td><td>de 40 à 59,9 %</td></tr>
+    <tr><td>4. Le tueur de méta</td><td class="n">60 %</td><td>de 60 à 100 %</td></tr>
+  </table>
+  <p>Notre joueur à 60 % atteint tout juste le niveau 4 : son rapport affichera « Niveau 4/4 », le titre « Le tueur de méta » et le texte correspondant. À 55 %, il aurait été « Le général ambitieux ».</p>
+
+  <h3>5. L’attente principale</h3>
+  <p>C’est l’attente qui a le <b>score le plus élevé</b>. En cas d’égalité parfaite, le rapport parle de <b>profil mixte</b> et cite toutes les attentes à égalité. Si tous les scores sont à 0 (joueur qui n’a répondu à rien), l’encart indique qu’il n’y a pas assez de réponses.</p>
+  <div class="box tip"><b class="t">Ce que vous pouvez régler</b><p>Les points de chaque réponse, les seuils des niveaux, leur nombre et leurs textes : tout cela se modifie dans l’onglet <span class="tab">Configuration</span>, voir la partie suivante. Et comme les scores sont des pourcentages du maximum, vous pouvez ajouter ou retirer des questions sans « casser » les niveaux.</p></div>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<!-- ============================================================ 7 -->
+<section class="chap" id="config">
+  <h2><span class="num">7.</span>Modifier la configuration</h2>
+  <p class="lead">L’onglet <span class="tab">Configuration</span> permet de modifier tout ce qui fait le questionnaire et les rapports, sans toucher à un fichier. Chaque changement est appliqué <b>immédiatement</b> aux rapports : vous pouvez aller voir le résultat dans les autres onglets, puis revenir.</p>
+  <figure><img src="images/16-config-attentes.png" alt="Onglet Configuration, section Attentes ludiques : menu à gauche (Général, Attentes ludiques, Textes des rapports, Questions et poids, Ouvrir / Enregistrer), attente Compétition dépliée avec nom, couleur, titre, description et tableau des niveaux"><figcaption>L’onglet Configuration. Le menu de gauche donne accès aux cinq parties ; l’encadré vert « Configuration valide » devient rouge s’il y a des erreurs à corriger.</figcaption></figure>
+  <ul>
+    <li><span class="ui">Général</span> : titre du questionnaire, nom de la colonne du pseudo et de la colonne de date.</li>
+    <li><span class="ui">Attentes ludiques</span> : les attentes, leurs couleurs, leurs descriptions, leurs niveaux et les textes de chaque niveau.</li>
+    <li><span class="ui">Textes des rapports</span> : titre, introduction, conclusion, pied de page…</li>
+    <li><span class="ui">Questions et poids</span> : les questions, leurs réponses et les points de chaque réponse.</li>
+    <li><span class="ui">Ouvrir / Enregistrer</span> : pour conserver vos modifications dans le dossier <code>configuration</code>, en charger une autre, ou revenir à la configuration livrée.</li>
+  </ul>
+  <div class="box warn"><b class="t">Modifié n’est pas enregistré</b><p>Dès que vous changez quelque chose, le bandeau du haut passe à <b>« Modifiée – non enregistrée »</b>. L’application garde vos modifications en mémoire sur cet ordinateur, mais pour les conserver durablement (ou les transmettre), il faut les <b>enregistrer dans le dossier</b> : voir <a href="#enregistrer">7.8</a>. Le bouton <span class="ui">Aperçu d’un rapport</span> (dans Attentes ludiques et Textes des rapports) montre à tout moment un rapport avec les réglages en cours.</p></div>
+
+  <h3 id="niveau-texte">7.1 Changer le texte d’un niveau</h3>
+  <ol class="steps">
+    <li>Ouvrez <span class="tab">Configuration</span> → <span class="ui">Attentes ludiques</span>.</li>
+    <li>Cliquez sur le nom de l’attente (par exemple <b>Compétition</b>) pour la déplier.</li>
+    <li>Descendez jusqu’au tableau <b>Niveaux</b>. Chaque ligne a un titre (petit champ) et un texte (grand champ). Modifiez-les directement : le texte peut contenir plusieurs paragraphes, séparés par une ligne vide.</li>
+    <li>Cliquez sur <span class="ui">Aperçu d’un rapport</span> pour vérifier, puis enregistrez (<a href="#enregistrer">7.8</a>).</li>
+  </ol>
+  <figure><img src="images/17-config-niveaux.png" alt="Tableau des niveaux de l’attente Compétition : pour chaque niveau, le seuil « à partir de » en %, le titre et le texte ; bouton « + Ajouter un niveau » en dessous"><figcaption>Le tableau des niveaux : seuil à gauche, titre et texte à droite, croix rouge pour supprimer un niveau.</figcaption></figure>
+
+  <h3 id="seuil">7.2 Changer un seuil</h3>
+  <p>Dans le même tableau, la case <b>À partir de</b> de chaque niveau indique le score minimal (en %) pour l’atteindre. Tapez simplement une autre valeur. Trois règles, vérifiées en direct :</p>
+  <ul>
+    <li>le premier niveau commence toujours à 0 ;</li>
+    <li>les seuils doivent être croissants (20, puis 40, puis 60…) ;</li>
+    <li>ils restent entre 0 et 100.</li>
+  </ul>
+  <p>Si une règle n’est pas respectée, un message rouge l’explique et l’encadré de gauche compte les erreurs. Les rapports (badges « Niveau 2/4 », textes affichés, répartition par niveau du rapport global) changent aussitôt.</p>
+
+  <h3 id="poids">7.3 Changer le poids d’une réponse</h3>
+  <ol class="steps">
+    <li>Ouvrez <span class="ui">Questions et poids</span>. Pour retrouver une question, tapez un mot dans <span class="ui">Filtrer les questions…</span>.</li>
+    <li>Cliquez sur la question pour la déplier. Un tableau apparaît : une ligne par réponse, une colonne par attente.</li>
+    <li>Dans la case voulue, tapez le nombre de points (0 = aucun ; les demi-points comme 0,5 sont acceptés). Les cases non nulles se colorent en orange.</li>
+    <li>La ligne « maximum de la question » et le tableau « Points maximum possibles » se mettent à jour tout seuls.</li>
+  </ol>
+  <figure><img src="images/18-config-poids.png" alt="Question 1 dépliée : texte de la question, puis tableau des points de chaque réponse pour chaque attente, ligne « maximum de la question », boutons Ajouter une réponse, Monter, Descendre, Supprimer la question"><figcaption>Le tableau des points d’une question. Les flèches réordonnent les réponses, la croix supprime une réponse.</figcaption></figure>
+  <div class="box warn"><b class="t">Effet sur tout le monde</b><p>Changer un poids change les scores et parfois les niveaux de tous les joueurs. Si vous avez déjà envoyé des rapports, les nouveaux ne seront plus identiques.</p></div>
+  <p>Une réponse qui ne donne de points à aucune attente déclenche une remarque (pas une erreur) : c’est permis, mais souvent un oubli.</p>
+
+  <h3 id="ajout-niveau">7.4 Ajouter (ou supprimer) un niveau</h3>
+  <ol class="steps">
+    <li>Dans l’attente dépliée, cliquez sur <span class="ui">+ Ajouter un niveau</span> sous le tableau des niveaux. Un niveau « Nouveau niveau » est ajouté en bas, avec un seuil 10 points au-dessus du dernier (ou à mi-chemin entre le dernier seuil et 100 s’il est trop près de 100). Si le dernier seuil est déjà à 99 % ou plus, le bouton est grisé : baissez d’abord ce seuil.</li>
+    <li>Réglez son seuil, puis donnez-lui un titre et un texte.</li>
+    <li>Pour insérer un niveau au milieu, ajoutez-le en bas puis ajustez les seuils de chaque ligne : ce sont les seuils qui définissent l’ordre.</li>
+  </ol>
+  <p>Pour supprimer un niveau, cliquez sur la croix rouge <span class="ui">✕</span> à droite de sa ligne (il doit toujours rester au moins un niveau). Après une suppression, pensez à vérifier que le premier niveau est bien à 0.</p>
+
+  <h3 id="ajout-attente">7.5 Ajouter une attente ludique</h3>
+  <ol class="steps">
+    <li>Dans <span class="ui">Attentes ludiques</span>, cliquez sur <span class="ui p">+ Ajouter une attente</span>. Une attente « Nouvelle attente » apparaît en bas, dépliée, avec trois niveaux (0, 34 et 67 %) à compléter.</li>
+    <li>Renseignez le <b>Nom</b> (court : c’est ce qui s’écrit sur le radar), la <b>Couleur</b>, le <b>Titre de la section du rapport</b> (sous forme de question, par exemple « Quel collectionneur êtes-vous ? ») et la <b>Description</b>.</li>
+    <li>Complétez les niveaux (titres, textes, seuils). Ajoutez-en si besoin.</li>
+    <li>Allez dans <span class="ui">Questions et poids</span> : une nouvelle colonne est apparue dans chaque question. Donnez des points aux réponses qui soutiennent cette attente.</li>
+  </ol>
+  <figure><img src="images/17b-config-attente-haut.png" alt="Haut d’une attente dépliée : champs Nom, Couleur (pastille et code #D55E00) et Titre de la section du rapport"></figure>
+  <div class="box danger"><b class="t">Tant qu’aucune réponse ne lui donne de points…</b><p>… la nouvelle attente est en erreur (« aucune réponse ne lui donne de points, son score ne peut pas être calculé ») et apparaît « — » dans les rapports. C’est normal : l’erreur disparaît dès que vous avez saisi des points.</p></div>
+  <p>Deux détails utiles, dans <b>Paramètres avancés</b> au bas de l’attente :</p>
+  <ul>
+    <li>L’<b>identifiant technique</b> (lettres minuscules sans accent) sert de nom au fichier de l’attente dans le dossier <code>configuration/attentes</code>. Il est proposé automatiquement ; vous pouvez le changer, les points des questions suivent.</li>
+    <li>Les boutons <span class="ui">↑ Monter</span> / <span class="ui">↓ Descendre</span> changent l’ordre des attentes sur le radar et dans les rapports. <span class="ui">Supprimer cette attente</span> la retire, avec ses niveaux et tous les points qui lui étaient donnés (une confirmation est demandée).</li>
+  </ul>
+
+  <h3 id="form-change">7.6 Le formulaire Google a changé : ajouter ou modifier une question</h3>
+  <p>Trois situations, selon ce que vous avez fait dans Google Forms.</p>
+
+  <h4>a) Vous avez reformulé une question ou une réponse</h4>
+  <p>Dans <span class="ui">Questions et poids</span>, dépliez la question et corrigez son texte (ou celui de la réponse) pour qu’il soit identique à celui du formulaire. Les points sont conservés. Rappel : majuscules, espaces, accents et apostrophes ne comptent pas, seuls les mots importent.</p>
+
+  <h4>b) Vous avez ajouté une question ou une réponse : laissez l’application la trouver</h4>
+  <figure><img src="images/18b-config-questions-haut.png" alt="Haut de la section Questions et poids : boutons « Créer les questions à partir d’un fichier de réponses… » et « + Ajouter une question », puis le tableau des points maximum possibles"><figcaption>Les deux boutons en haut de « Questions et poids ».</figcaption></figure>
+  <ol class="steps">
+    <li>Chargez le nouveau fichier de réponses dans <span class="tab">Données</span>. Les avertissements « Colonne non reconnue » ou « Réponse non reconnue » apparaissent.</li>
+    <li>Cliquez sur <span class="ui">Ajouter à la configuration…</span> à côté d’un avertissement — ou bien, dans <span class="ui">Questions et poids</span>, sur <span class="ui">Créer les questions à partir d’un fichier de réponses…</span> puis <span class="ui p">Utiliser le fichier chargé</span>.</li>
+    <li>Une fenêtre liste ce qui est dans le fichier mais pas dans la configuration : les nouvelles questions (avec les réponses rencontrées et leur nombre) et les nouvelles réponses. Décochez ce qu’il ne faut pas ajouter — par exemple une colonne « Pseudo », qui n’est pas une question.</li>
+    <li>Cliquez sur <span class="ui p">Ajouter la sélection</span>. Les éléments sont créés avec <b>0 point partout</b>.</li>
+    <li>Renseignez les points des nouvelles réponses (<a href="#poids">7.3</a>). Tant que ce n’est pas fait, ces réponses ne comptent pour rien.</li>
+  </ol>
+  <div class="two">
+    <figure><img src="images/26-propositions-choix.png" alt="Fenêtre : utiliser le fichier déjà chargé ou en choisir un autre ?"><figcaption>Première fenêtre : on peut aussi choisir un autre fichier.</figcaption></figure>
+    <figure><img src="images/25-propositions.png" alt="Fenêtre « Éléments trouvés dans le fichier » : une nouvelle question « Quel est votre jeu préféré ? » avec ses réponses, et une nouvelle réponse à la question 1, chacune avec une case à cocher"><figcaption>Seconde fenêtre : cochez ce qu’il faut ajouter.</figcaption></figure>
+  </div>
+  <div class="box tip"><b class="t">Vous préparez un nouveau formulaire ?</b><p>Le même bouton <span class="ui">Créer les questions à partir d’un fichier de réponses…</span> accepte n’importe quel fichier de réponses, même avec une seule ligne : répondez vous-même une fois à votre nouveau formulaire, téléchargez les réponses, et toutes les questions sont créées d’un coup. Il ne restera que les points à saisir.</p></div>
+
+  <h4>c) Ajouter ou supprimer une question à la main</h4>
+  <p>Dans <span class="ui">Questions et poids</span> : <span class="ui p">+ Ajouter une question</span> crée une question « Nouvelle question » avec deux réponses ; modifiez les textes, ajoutez des réponses avec <span class="ui">+ Ajouter une réponse</span>, saisissez les points. Le texte doit être <b>exactement</b> celui du formulaire Google, sinon la colonne ne sera pas reconnue. <span class="ui">Supprimer la question</span> la retire (avec confirmation) ; <span class="ui">↑ Monter</span> / <span class="ui">↓ Descendre</span> changent l’ordre d’affichage dans le rapport global.</p>
+
+  <h3 id="textes">7.7 Les textes des rapports et les mots spéciaux</h3>
+  <figure><img src="images/21-config-rapport.png" alt="Section Textes des rapports : titre du rapport individuel, introduction, titre de l’encart « attente principale », texte du profil mixte, conclusion…"><figcaption>Les textes généraux des rapports. Une ligne vide dans un champ = un nouveau paragraphe.</figcaption></figure>
+  <p>La section <span class="ui">Textes des rapports</span> regroupe le titre et l’introduction du rapport individuel, le titre de l’encart « attente principale », le texte affiché en cas de profil mixte, la conclusion, le pied de page, ainsi que le titre et l’introduction du rapport global.</p>
+  <p>Trois <b>mots spéciaux</b>, écrits entre accolades, sont remplacés automatiquement :</p>
+  <table class="t" style="max-width:640px">
+    <tr><th>Mot spécial</th><th>Remplacé par</th></tr>
+    <tr><td><code>{joueur}</code></td><td>le nom (ou pseudo) du joueur – vide dans le rapport global</td></tr>
+    <tr><td><code>{nombre_attentes}</code></td><td>le nombre d’attentes ludiques (6 dans la configuration livrée)</td></tr>
+    <tr><td><code>{questionnaire}</code></td><td>le titre du questionnaire (section <span class="ui">Général</span>)</td></tr>
+  </table>
+  <p>Exemple : « Bonjour {joueur}, voici votre profil pour le {questionnaire}. » devient « Bonjour Grimgor, voici votre profil pour le Questionnaire sur les profils-types de joueurs. » Ces mots fonctionnent dans tous les textes de cette section et dans les <b>textes des niveaux</b> ; ils ne sont pas remplacés dans les noms, titres et descriptions des attentes, ni dans les titres des niveaux.</p>
+
+  <h3 id="enregistrer">7.8 Enregistrer la configuration (et la rouvrir)</h3>
+  <p>La configuration est un dossier nommé <code>configuration</code>, placé à côté de l’application, qui contient quelques fichiers texte (voir <a href="#fichiers">partie 8</a>). Enregistrer, c’est écrire vos réglages dans ces fichiers.</p>
+
+  <h4>Le bandeau du haut : où en est la configuration ?</h4>
+  <figure><img src="images/02-bandeau-defaut.png" alt="Bandeau : Configuration active : Par défaut · configuration livrée avec l’application · configuration valide · bouton Gérer"></figure>
+  <figure><img src="images/23-bandeau-modifiee.png" alt="Bandeau : Configuration active : Modifiée – non enregistrée · à partir de : configuration livrée avec l’application · bouton Enregistrer…"></figure>
+  <figure><img src="images/24-bandeau-dossier.png" alt="Bandeau : Configuration active : Dossier · dossier « configuration » · configuration valide"></figure>
+  <table class="t">
+    <tr><th style="width:32%">Le bandeau affiche</th><th>Ce que cela veut dire</th></tr>
+    <tr><td><span class="banner-ex" style="border-color:#84776b">Par défaut</span></td><td>Vous utilisez la configuration <b>intégrée à l’application</b>, telle qu’elle a été livrée. Rien n’a été modifié.</td></tr>
+    <tr><td><span class="banner-ex" style="border-color:#2f6b3a">Dossier</span></td><td>La configuration a été lue depuis (ou enregistrée dans) le dossier <code>configuration</code>, et n’a pas été modifiée depuis. Vous êtes à jour.</td></tr>
+    <tr><td><span class="banner-ex" style="border-color:#2f6b3a">Fichiers</span></td><td>Même chose, mais la configuration vient de fichiers ouverts un par un ou d’un fichier .zip (cas des navigateurs sans accès direct au dossier).</td></tr>
+    <tr><td><span class="banner-ex" style="border-color:#9a5a00">Modifiée – non enregistrée</span></td><td>Vous avez changé quelque chose depuis le dernier chargement ou enregistrement. Les changements sont gardés en mémoire sur cet ordinateur, mais pas encore écrits dans le dossier. Le bouton <span class="ui p">Enregistrer…</span> apparaît dans le bandeau.</td></tr>
+  </table>
+  <p>À droite, « configuration valide », « N remarques » ou « N erreurs » résume la vérification ; <span class="ui">Gérer</span> ouvre directement la section <span class="ui">Ouvrir / Enregistrer</span>.</p>
+
+  <h4>Avec Microsoft Edge ou Google Chrome : enregistrer directement dans le dossier</h4>
+  <figure><img src="images/22-config-fichiers.png" alt="Section Ouvrir / Enregistrer : état de la configuration, bloc « Dossier de configuration (Edge, Chrome) » avec les boutons Choisir le dossier « configuration »… et Enregistrer dans un dossier…, bloc « Autres possibilités » et bloc « Configuration par défaut »"><figcaption>La section Ouvrir / Enregistrer, avant que le dossier ait été choisi.</figcaption></figure>
+  <ol class="steps">
+    <li>Ouvrez <span class="tab">Configuration</span> → <span class="ui">Ouvrir / Enregistrer</span> (ou cliquez sur <span class="ui p">Enregistrer…</span> dans le bandeau).</li>
+    <li>La première fois, cliquez sur <span class="ui p">Choisir le dossier « configuration »…</span>. Une fenêtre de sélection de dossier s’ouvre : choisissez le dossier <code>configuration</code> qui se trouve dans <code>QuestionnaireJDR</code> (choisir <code>QuestionnaireJDR</code> lui-même fonctionne aussi), puis <span class="ui">Sélectionner un dossier</span>.</li>
+    <li>Le navigateur demande l’autorisation de <b>lire</b> le dossier (« Autoriser le site à afficher les fichiers ? » ou formulation proche) : cliquez sur <span class="ui">Afficher les fichiers</span> / <span class="ui">Autoriser</span>. La configuration du dossier est alors chargée.</li>
+    <li>Deux nouveaux boutons apparaissent : <span class="ui p">Enregistrer dans le dossier « configuration »</span> et <span class="ui">Recharger depuis « configuration »</span>. Cliquez sur le premier.</li>
+    <li>Le navigateur demande cette fois l’autorisation d’<b>écrire</b> (« Enregistrer les modifications dans … ? ») : cliquez sur <span class="ui">Enregistrer les modifications</span> / <span class="ui">Autoriser</span>. Un message confirme : « 8 fichiers enregistrés dans le dossier « configuration » » et le bandeau passe à <b>Dossier</b>.</li>
+  </ol>
+  <p>Le dossier est mémorisé : les fois suivantes, un clic sur <span class="ui p">Enregistrer…</span> (bandeau) ou <span class="ui p">Enregistrer dans le dossier « configuration »</span> suffit. Le navigateur peut redemander l’autorisation après une fermeture : c’est une sécurité normale, cliquez à nouveau sur Autoriser. Rien ne quitte votre ordinateur.</p>
+  <div class="box info"><b class="t">Et le bouton « Enregistrer dans un dossier… » ?</b><p>Il permet d’enregistrer dans un <b>autre</b> dossier que celui mémorisé : pratique pour faire une copie de sauvegarde (créez un dossier vide, par exemple <code>configuration – sauvegarde 2026-11</code>, et enregistrez dedans) ou pour préparer une configuration à envoyer à quelqu’un.</p></div>
+
+  <h4>Avec Firefox ou Safari : télécharger un .zip</h4>
+  <p>Ces navigateurs ne savent pas écrire directement dans un dossier. La section <span class="ui">Ouvrir / Enregistrer</span> est alors un peu différente :</p>
+  <figure><img src="images/30-config-fichiers-firefox.png" alt="Bloc « Fichiers de configuration » : explication que ce navigateur ne peut pas écrire dans un dossier, boutons Ouvrir le dossier « configuration »…, Ouvrir des fichiers (.yaml ou .zip)…, Télécharger la configuration (.zip), et zone de dépôt"></figure>
+  <ol class="steps">
+    <li>Cliquez sur <span class="ui p">Télécharger la configuration (.zip)</span>. Le fichier <code>configuration.zip</code> arrive dans <b>Téléchargements</b>.</li>
+    <li>Faites un clic droit dessus → <span class="ui">Extraire tout…</span>. Vous obtenez un dossier <code>configuration</code>.</li>
+    <li>Dans <code>QuestionnaireJDR</code>, renommez l’ancien dossier <code>configuration</code> (par exemple en <code>configuration – ancien</code>) ou supprimez-le, puis déposez le nouveau à sa place.</li>
+  </ol>
+  <p>Pour rouvrir une configuration dans ces navigateurs : <span class="ui">Ouvrir le dossier « configuration »…</span> (sélectionnez le dossier), <span class="ui">Ouvrir des fichiers (.yaml ou .zip)…</span> (sélectionnez les fichiers ou le .zip), ou déposez le dossier ou le .zip dans la zone pointillée. Dans Edge et Chrome, le dossier se choisit avec <span class="ui">Choisir le dossier « configuration »…</span> (plus haut) : le bouton « Ouvrir le dossier… » n’y est pas affiché, mais les fichiers et le dépôt dans la zone pointillée fonctionnent aussi.</p>
+
+  <h4>Ce que l’application fait, et ne fait pas, au démarrage</h4>
+  <div class="box warn"><b class="t">À retenir</b>
+    <ul>
+      <li>L’application contient une <b>copie intégrée</b> de la configuration livrée (« Par défaut »). Elle <b>ne lit pas automatiquement</b> le dossier <code>configuration</code> à l’ouverture : un navigateur n’a pas le droit de lire vos fichiers sans que vous le demandiez.</li>
+      <li>Elle retient en revanche la dernière configuration utilisée (chargée ou modifiée) dans la mémoire du navigateur, <b>sur cet ordinateur et dans ce navigateur</b>. Si vous changez d’ordinateur ou de navigateur, il faut recharger le dossier.</li>
+      <li>Si quelqu’un vous envoie une nouvelle configuration, ou si vous avez modifié les fichiers à la main (<a href="#fichiers">partie 8</a>), chargez-la avec <span class="ui">Recharger depuis « configuration »</span>, <span class="ui">Choisir le dossier « configuration »…</span> (Edge, Chrome) ou <span class="ui">Ouvrir le dossier « configuration »…</span> (autres navigateurs).</li>
+      <li>Quand une configuration est modifiée mais pas enregistrée, l’application demande confirmation avant d’en charger une autre (« Remplacer la configuration ? »).</li>
+    </ul></div>
+
+  <h4>Revenir à la configuration livrée</h4>
+  <p>Le bouton <span class="ui">Réinitialiser à la configuration par défaut</span> (en bas de <span class="ui">Ouvrir / Enregistrer</span>) remet la configuration intégrée, après confirmation. Vos modifications non enregistrées sont perdues ; les fichiers du dossier <code>configuration</code>, eux, ne sont pas touchés tant que vous n’enregistrez pas par-dessus.</p>
+  <figure class="small"><img src="images/31-confirmation.png" alt="Fenêtre de confirmation : Réinitialiser la configuration ? Les modifications non enregistrées seront perdues. Boutons Annuler et Réinitialiser"></figure>
+  <div class="box tip"><b class="t">Enregistrer malgré des erreurs</b><p>Si la configuration contient des erreurs (seuils incohérents, attente sans points…), l’application vous le dit au moment d’enregistrer, mais vous laisse le faire : vous pourrez corriger plus tard.</p></div>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<!-- ============================================================ 8 -->
+<section class="chap" id="fichiers">
+  <h2><span class="num">8.</span>Modifier les fichiers à la main (facultatif)</h2>
+  <p class="lead">Tout ce que fait l’onglet Configuration peut aussi se faire en éditant directement les fichiers du dossier <code>configuration</code>. C’est utile pour relire tous les textes d’un coup, ou pour un gros chantier de réécriture. Si vous préférez les écrans de l’application, vous pouvez sauter cette partie.</p>
+
+  <h3>Les fichiers</h3>
+  <table class="t">
+    <tr><th style="width:38%">Fichier</th><th>Contenu</th></tr>
+    <tr><td><code>configuration/questionnaire.yaml</code></td><td>Le titre, les noms des colonnes « pseudo » et « date », la liste des attentes (dans l’ordre du radar), puis toutes les questions avec leurs réponses et leurs points.</td></tr>
+    <tr><td><code>configuration/rapport.yaml</code></td><td>Les textes généraux des rapports (titre, introduction, conclusion…).</td></tr>
+    <tr><td><code>configuration/attentes/competition.yaml</code>, <code>strategie.yaml</code>, …</td><td>Un fichier par attente : nom, couleur, titre, description et niveaux (seuil, titre, texte).</td></tr>
+  </table>
+  <p>Ce sont des fichiers texte au format <b>YAML</b>. Chacun commence par un commentaire (lignes débutant par <code>#</code>) qui explique son contenu. Pour les ouvrir : clic droit sur le fichier → <span class="ui">Ouvrir avec</span> → <span class="ui">Bloc-notes</span>. (Un éditeur gratuit comme Notepad++ ou Visual Studio Code est plus confortable, avec la coloration et les numéros de ligne, mais le Bloc-notes suffit.)</p>
+
+  <h3>Le YAML en cinq règles</h3>
+  <ol>
+    <li><b>Une information par ligne</b>, sous la forme <code>nom: valeur</code> — avec un espace après les deux-points.</li>
+    <li><b>Le décalage compte.</b> Ce qui dépend d’un élément est décalé vers la droite avec des <b>espaces</b> (deux par niveau), jamais avec la touche Tab. Les éléments de même rang ont le même décalage.</li>
+    <li><b>Les listes</b> : chaque élément commence par un tiret et un espace, <code>- </code>.</li>
+    <li><b>Les textes sont entre guillemets droits</b> <code>"…"</code>. Pour un texte long sur plusieurs lignes, écrivez <code>texte: >-</code> puis le texte sur les lignes suivantes, décalé ; les lignes sont recollées en un paragraphe, et une ligne vide fait un nouveau paragraphe.</li>
+    <li><b>Les lignes qui commencent par <code>#</code> sont des commentaires</b>, ignorés par l’application.</li>
+  </ol>
+  <p>Exemple : un niveau dans le fichier d’une attente, et une question dans <code>questionnaire.yaml</code>.</p>
+<pre><code><span class="c"># Dans configuration/attentes/competition.yaml</span>
+<span class="k">niveaux:</span>
+  - <span class="k">a_partir_de:</span> 0
+    <span class="k">titre:</span> <span class="s">"Le pacifiste de la table"</span>
+    <span class="k">texte:</span> >-
+      Gagner ? Pourquoi pas, mais franchement ce n'est pas ce qui vous
+      fait sortir vos figurines du placard.
+
+  - <span class="k">a_partir_de:</span> 20
+    <span class="k">titre:</span> <span class="s">"Le challenger occasionnel"</span>
+    <span class="k">texte:</span> >-
+      Vous n'allez pas chercher la victoire à tout prix…
+
+<span class="c"># Dans configuration/questionnaire.yaml</span>
+<span class="k">questions:</span>
+  - <span class="k">id:</span> q03
+    <span class="k">texte:</span> <span class="s">"Vous avez un désaccord sur une règle pendant une partie..."</span>
+    <span class="k">reponses:</span>
+      - <span class="k">texte:</span> <span class="s">"...Vous allez directement voir dans les règles."</span>
+        <span class="k">poids:</span> { competition: 2, strategie: 1 }
+      - <span class="k">texte:</span> <span class="s">"...Vous jouez ça aux dés."</span>
+        <span class="k">poids:</span> { hasard: 2 }</code></pre>
+  <p>Les identifiants entre accolades dans <code>poids</code> sont les identifiants techniques des attentes (le nom du fichier dans <code>attentes/</code>, sans <code>.yaml</code>). Une attente absente des accolades vaut 0 point.</p>
+  <div class="box warn"><b class="t">Trois pièges classiques</b>
+    <ul>
+      <li>Un guillemet droit <code>"</code> à l’intérieur d’un texte entre guillemets casse la lecture : utilisez plutôt les guillemets français « » ou une apostrophe.</li>
+      <li>Une tabulation à la place des espaces, ou un décalage différent entre deux lignes sœurs : l’application refuse le fichier et indique la ligne.</li>
+      <li>Enregistrez bien en <b>UTF-8</b> (dans le Bloc-notes : <span class="ui">Fichier</span> → <span class="ui">Enregistrer sous</span>, « Encodage : UTF-8 » en bas de la fenêtre), sinon les accents seront abîmés.</li>
+    </ul></div>
+
+  <h3>Recharger les fichiers modifiés dans l’application</h3>
+  <p>Comme expliqué en <a href="#enregistrer">7.8</a>, l’application ne relit pas les fichiers toute seule. Après avoir modifié et enregistré un fichier :</p>
+  <ol class="steps">
+    <li>Ouvrez <span class="tab">Configuration</span> → <span class="ui">Ouvrir / Enregistrer</span>.</li>
+    <li>Cliquez sur <span class="ui">Recharger depuis « configuration »</span> si le dossier a déjà été choisi, sinon sur <span class="ui">Choisir le dossier « configuration »…</span> (Edge, Chrome) ou <span class="ui">Ouvrir le dossier « configuration »…</span> (Firefox, Safari). Vous pouvez aussi glisser le dossier, ou seulement les fichiers modifiés, dans la zone pointillée.</li>
+    <li>Si un fichier est mal formé, une fenêtre « Configuration non chargée » indique le fichier et la ligne : corrigez, enregistrez, recommencez. Les remarques moins graves (par exemple un fichier d’attente non listé dans <code>questionnaire.yaml</code>, donc ignoré) sont affichées mais la configuration se charge.</li>
+    <li>Le bandeau passe à <b>Dossier</b> (ou <b>Fichiers</b>) : vos modifications sont actives.</li>
+  </ol>
+  <div class="box info"><b class="t">Si vous mélangez les deux méthodes</b><p>Quand l’application enregistre, elle réécrit entièrement les fichiers avec sa propre présentation et ses commentaires d’en-tête standard : les commentaires ou la mise en page que vous auriez ajoutés à la main sont remplacés. Le contenu (textes, seuils, points) est, lui, conservé à l’identique.</p></div>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<!-- ============================================================ 9 -->
+<section class="chap" id="faq">
+  <h2><span class="num">9.</span>Questions fréquentes et problèmes</h2>
+
+  <details class="faq" id="faq-pseudo" open>
+    <summary>Les joueurs s’appellent « Répondant 1 », « Répondant 3 »… Comment avoir leurs noms ?</summary>
+    <div class="a">
+      <p>Google Forms n’enregistre pas de nom par défaut. Deux étapes :</p>
+      <ol class="steps">
+        <li>Dans Google Forms, ajoutez au formulaire une question de type <b>Réponse courte</b> intitulée par exemple <b>Pseudo</b> (ou utilisez la collecte des adresses e-mail dans les paramètres du formulaire : la colonne s’appelle alors « Adresse e-mail »).</li>
+        <li>Dans l’application : <span class="tab">Configuration</span> → <span class="ui">Général</span> → <b>Colonne contenant le nom ou le pseudo du joueur</b> : tapez le titre exact de la colonne (« Pseudo »). Quand un fichier est chargé, la liste déroulante propose ses colonnes.</li>
+      </ol>
+      <figure><img src="images/20-config-general.png" alt="Section Général avec le champ « Colonne contenant le nom ou le pseudo du joueur » rempli avec Pseudo"></figure>
+      <div class="two">
+        <figure><img src="images/27-individuels-pseudos.png" alt="Liste des répondants affichant des pseudos : Grimgor, Nagash, Aelys…"><figcaption>Résultat : les pseudos remplacent « Répondant n » partout, y compris dans les noms des fichiers exportés.</figcaption></figure>
+        <div>
+          <p>Tant que ce réglage n’est pas fait, la colonne « Pseudo » est signalée dans l’onglet Données comme « ressemble à un nom de joueur » : le bouton <span class="ui">Utiliser comme colonne identifiant</span> fait ce réglage en un clic. <b>Ne l’ajoutez pas comme question</b>.</p>
+          <p>Les joueurs qui ont répondu avant l’ajout de la question, ou qui ont laissé la case vide, restent « Répondant n ».</p>
+          <p>Pensez à enregistrer la configuration pour conserver ce réglage (<a href="#enregistrer">7.8</a>).</p>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="faq">
+    <summary>Les accents s’affichent bizarrement (Ã©, Ã¨, â€™…)</summary>
+    <div class="a"><p>L’application reconnaît automatiquement les deux encodages courants (UTF-8 de Google, « windows-1252 » d’Excel) ; le résumé de l’onglet Données indique celui qu’elle a détecté. Si des caractères restent abîmés, le fichier a probablement été ouvert puis réenregistré dans un logiciel qui a mélangé les deux. Le plus simple : retéléchargez le fichier depuis Google Forms (<a href="#forms">partie 2</a>) et chargez-le tel quel.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>J’ai ouvert le fichier dans Excel et je l’ai enregistré. Est-ce grave ?</summary>
+    <div class="a"><p>En général non : Excel en français enregistre avec des points-virgules et en windows-1252, et l’application lit les deux (le résumé affiche alors « windows-1252 · point-virgule »). Vous pouvez aussi enregistrer en <code>.xlsx</code>, qui est accepté. Évitez seulement les formats <code>.xls</code> (ancien Excel) et <code>.ods</code>, refusés. En cas de doute, retéléchargez l’original.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Le navigateur me demande une autorisation pour le dossier. Est-ce normal ?</summary>
+    <div class="a"><p>Oui. Avec Edge ou Chrome, l’accès à un dossier de votre ordinateur demande toujours votre accord : une première fois pour lire (« Afficher les fichiers »), une autre pour écrire (« Enregistrer les modifications »), et parfois à nouveau après une fermeture du navigateur. Cliquez sur Autoriser : l’application n’accède qu’à ce dossier, et rien n’est envoyé sur Internet. Si vous refusez, un message « Accès au dossier refusé » ou « Autorisation d’écriture refusée » s’affiche : recommencez et acceptez, ou utilisez le téléchargement du .zip (<a href="#enregistrer">7.8</a>).</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>« Recharger depuis « configuration » » ne fonctionne plus</summary>
+    <div class="a"><p>Le dossier a sans doute été déplacé, renommé ou supprimé depuis que l’application l’a mémorisé. Cliquez sur <span class="ui">Choisir un autre dossier…</span> et sélectionnez-le à son nouvel emplacement.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Mes modifications ont disparu</summary>
+    <div class="a"><p>Vérifications, dans l’ordre : (1) le bandeau indique-t-il « Par défaut » ? Quelqu’un a peut-être cliqué sur « Réinitialiser » ; rechargez le dossier avec <span class="ui">Recharger depuis « configuration »</span>, si vous aviez enregistré. (2) Vous utilisez un autre navigateur ou un autre ordinateur : la mémoire de l’application est propre à chacun ; rechargez le dossier. (3) Les données de navigation ont été effacées (nettoyage des cookies et du site) : même remède. Moralité : enregistrez régulièrement dans le dossier, et gardez-en une copie de sauvegarde.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Un score affiche « — » ou « Score non calculable »</summary>
+    <div class="a"><p>Aucune réponse de la configuration ne donne de points à cette attente (le tableau « Points maximum possibles » affiche 0 en rouge). Cela arrive après l’ajout d’une attente, ou si on a mis tous ses poids à 0. Donnez-lui des points dans <span class="ui">Questions et poids</span> (<a href="#poids">7.3</a>).</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Le fichier ne se charge pas : « Le fichier est vide », « ne contient aucun fichier CSV »…</summary>
+    <div class="a"><p>Vérifiez que vous avez bien pris le fichier téléchargé depuis l’onglet Réponses de Google Forms, et non le formulaire lui-même ou un lien. Si c’est un .zip, il doit contenir un .csv (ou .xlsx). Le message « n’est pas pris en charge » concerne les formats .xls, .ods ou .numbers : réenregistrez en CSV ou en .xlsx.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>La page est blanche, ou tout est en vrac</summary>
+    <div class="a"><p>Ouvrez <code>Questionnaire JDR.html</code> avec Microsoft Edge, Google Chrome ou Firefox (clic droit → <span class="ui">Ouvrir avec</span>), pas avec un autre programme. Vérifiez que vous l’ouvrez depuis le dossier extrait et non depuis l’intérieur du .zip (<a href="#bref">partie 1</a>), et que les dossiers <code>app</code>, <code>configuration</code> et <code>documentation</code> sont toujours à côté du fichier.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>L’onglet Aide dit que le guide n’est pas disponible</summary>
+    <div class="a"><p>Le fichier <code>documentation/guide.html</code> manque ou a été déplacé. Remettez le dossier <code>documentation</code> (avec son sous-dossier <code>images</code>) à côté de <code>Questionnaire JDR.html</code>. Vous pouvez aussi ouvrir ce guide directement par un double-clic sur <code>guide.html</code>.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Où vont les fichiers exportés ?</summary>
+    <div class="a"><p>Dans le dossier <b>Téléchargements</b> de votre navigateur (sauf si vous lui avez demandé de choisir l’emplacement à chaque fois). Noms des fichiers : <code>Rapport - Nom.html</code>, <code>Rapports individuels.zip</code>, <code>Rapport global.html</code>, <code>Scores des répondants.csv</code>, <code>configuration.zip</code>.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Que voit le joueur dans son rapport ? Y a-t-il des données sur les autres ?</summary>
+    <div class="a"><p>Le rapport individuel ne contient que les réponses et scores du joueur concerné. En revanche, le <b>rapport global</b> exporté contient les scores (et les pseudos) de tout le monde, ainsi que tous les rapports individuels à la fin : ne le diffusez qu’aux personnes à qui il est destiné.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Comment partager ma configuration avec quelqu’un d’autre ?</summary>
+    <div class="a"><p>Envoyez-lui le dossier <code>configuration</code> (compressé en .zip : clic droit → <span class="ui">Envoyer vers</span> → <span class="ui">Dossier compressé</span>), ou utilisez <span class="ui">Télécharger la configuration (.zip)</span>. Il la charge avec <span class="ui">Ouvrir des fichiers (.yaml ou .zip)…</span> ou en déposant le .zip dans la zone pointillée de <span class="ui">Ouvrir / Enregistrer</span>, puis l’enregistre dans son propre dossier.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Les réponses sont-elles envoyées quelque part ?</summary>
+    <div class="a"><p>Non. L’application fonctionne entièrement dans votre navigateur, sans connexion. Les réponses et la configuration restent sur votre ordinateur (et dans la mémoire du navigateur, pour vous éviter de recharger). Pour les effacer de l’application, utilisez <span class="ui">Oublier les données</span> dans l’onglet Données.</p></div>
+  </details>
+  <p class="back"><a href="#haut">↑ Sommaire</a></p>
+</section>
+
+<footer class="end">Questionnaire JDR – guide d’utilisation. Ce guide se trouve dans <code>documentation/guide.html</code> ; il s’imprime depuis le navigateur (Ctrl + P).</footer>
+</div>
+</body>
+</html>

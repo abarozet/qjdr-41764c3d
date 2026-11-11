@@ -1,0 +1,67 @@
+# ==============================================================
+#  ATTENTE LUDIQUE : Narration
+# ==============================================================
+#  Ce fichier décrit une attente ludique et les textes affichés dans
+#  les rapports des joueurs.
+#
+#    - « id » : identifiant technique, ne pas le modifier (il doit
+#      correspondre à la liste « attentes » de questionnaire.yaml).
+#    - « nom » : libellé court affiché sur le graphique radar.
+#    - « couleur » : couleur de l'attente (code hexadécimal, ex. "#CC79A7").
+#    - « titre » : titre de la section dans le rapport individuel.
+#    - « description » : une ou deux phrases expliquant ce que mesure
+#      cette attente.
+#    - « niveaux » : les paliers, du plus faible au plus fort.
+#        « a_partir_de » = score minimum, en % (de 0 à 100), pour
+#        atteindre ce niveau. Le premier niveau doit commencer à 0.
+#        Vous pouvez ajouter ou supprimer des niveaux, et modifier
+#        librement les titres et les textes.
+# ==============================================================
+
+id: narration
+nom: "Narration"
+couleur: "#CC79A7"
+titre: "Quel conteur êtes-vous ?"
+description: >-
+  Cette attente mesure votre plaisir à raconter des histoires autour de la
+  table : scénarios maison, campagnes, armées à thème, anecdotes mémorables
+  et petits héros improbables qui passent à la postérité.
+
+niveaux:
+  - a_partir_de: 0
+    titre: "Le pragmatique sans légende"
+    texte: >-
+      Pourquoi votre armée combat-elle sur ce champ de bataille ? Aucune
+      idée, et ça ne vous empêche pas de dormir. Vous n'inventez pas de
+      biographie à votre seigneur de guerre et un scénario, pour vous, c'est
+      avant tout une liste d'objectifs. Les belles histoires, vous les
+      laissez volontiers aux autres.
+
+  - a_partir_de: 20
+    titre: "Le chroniqueur à ses heures"
+    texte: >-
+      Vous ne jouez pas pour l'histoire, mais quand un soldat de base
+      terrasse un démon majeur, vous êtes le premier à le raconter au bar.
+      Une armée à thème vous tente de temps en temps et un scénario avec un
+      petit twist vous fait plaisir, tant que ça ne prend pas le pas sur la
+      partie elle-même.
+
+  - a_partir_de: 40
+    titre: "Le barde des champs de bataille"
+    texte: >-
+      Chaque partie est pour vous un chapitre de plus dans la grande saga de
+      votre armée. Vous commentez ce qui se passe sur table, vous imaginez
+      les raisons d'un échec critique, et vous avez forcément une anecdote
+      croustillante pour chaque figurine de votre vitrine. Une campagne
+      maison avec des rebondissements ? Vous êtes déjà en train d'écrire le
+      prologue.
+
+  - a_partir_de: 60
+    titre: "Le maître de campagne"
+    texte: >-
+      Pour vous, le wargame est une manière de se raconter des histoires, et
+      les dés ne sont que des outils au service de l'intrigue. Vos tanks ont
+      une raison tragique d'être là, votre seigneur de guerre a un nom, un
+      passé et probablement une cicatrice, et un duel épique au dernier tour
+      vaut mille points de victoire. Si le jeu de rôle n'existait pas, vous
+      l'auriez inventé.

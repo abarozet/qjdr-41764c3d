@@ -1,0 +1,15 @@
+{
+  "name": "questionnaire-jdr-dev",
+  "private": true,
+  "description": "Outils de développement (tests) — non distribués.",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test tests/",
+    "e2e": "playwright test",
+    "build-config": "node tools/build_default_config.mjs",
+    "exemple": "node tools/generate_example.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.49.1"
+  }
+}

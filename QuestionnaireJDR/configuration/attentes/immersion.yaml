@@ -1,0 +1,67 @@
+# ==============================================================
+#  ATTENTE LUDIQUE : Immersion
+# ==============================================================
+#  Ce fichier décrit une attente ludique et les textes affichés dans
+#  les rapports des joueurs.
+#
+#    - « id » : identifiant technique, ne pas le modifier (il doit
+#      correspondre à la liste « attentes » de questionnaire.yaml).
+#    - « nom » : libellé court affiché sur le graphique radar.
+#    - « couleur » : couleur de l'attente (code hexadécimal, ex. "#009E73").
+#    - « titre » : titre de la section dans le rapport individuel.
+#    - « description » : une ou deux phrases expliquant ce que mesure
+#      cette attente.
+#    - « niveaux » : les paliers, du plus faible au plus fort.
+#        « a_partir_de » = score minimum, en % (de 0 à 100), pour
+#        atteindre ce niveau. Le premier niveau doit commencer à 0.
+#        Vous pouvez ajouter ou supprimer des niveaux, et modifier
+#        librement les titres et les textes.
+# ==============================================================
+
+id: immersion
+nom: "Immersion"
+couleur: "#009E73"
+titre: "Quel bâtisseur d'univers êtes-vous ?"
+description: >-
+  Cette attente mesure votre besoin de réalisme et de cohérence : respect du
+  lore, règles qui simulent une vraie bataille, belles tables, vraies
+  figurines et le sentiment de commander une armée plutôt que de déplacer
+  des pions.
+
+niveaux:
+  - a_partir_de: 0
+    titre: "Le touriste de l'univers"
+    texte: >-
+      Le lore, c'est joli, mais vous n'avez jamais lu les trois pages de
+      background de votre codex et vous ne vous en portez pas plus mal. Des
+      décors en carton ? Un tank qui ne colle pas à l'esprit de l'armée ?
+      Tant que ça se joue bien, le reste est de la littérature. Vous
+      pourriez probablement passer au dématérialisé sans regret.
+
+  - a_partir_de: 20
+    titre: "L'amateur de belles tables"
+    texte: >-
+      Vous appréciez une table bien installée et une armée peinte avec soin,
+      même si vous ne refuseriez pas une partie sur un plateau tout nu. Le
+      lore vous intéresse quand il est bon, sans que vous en fassiez une
+      religion. Une règle un peu irréaliste vous fait tiquer, puis vous
+      passez à autre chose.
+
+  - a_partir_de: 40
+    titre: "Le gardien du lore"
+    texte: >-
+      Pour vous, une unité dont les règles trahissent son histoire est une
+      petite hérésie. Vous construisez vos listes en pensant d'abord à leur
+      cohérence, vous défendez qu'une vraie armée n'agirait jamais comme ça,
+      et un tournoi vous tente surtout pour y admirer de belles tables. Le
+      jeu doit ressembler à une bataille, pas à un tableau Excel.
+
+  - a_partir_de: 60
+    titre: "Le général en immersion totale"
+    texte: >-
+      Quand vous jouez, vous n'êtes plus dans un garage : vous commandez une
+      armée sur un vrai champ de bataille. Un wargame sans lore vous paraît
+      la chose la plus farfelue du monde, le réalisme prime sur
+      l'équilibrage, et jamais, jamais vous ne trahirez l'esprit de votre
+      armée pour une unité à la mode. Vos figurines ont une âme, et vos
+      tables aussi.

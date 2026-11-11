@@ -1,0 +1,61 @@
+# ==============================================================
+#  TEXTES DES RAPPORTS
+# ==============================================================
+#  Ce fichier contient les textes généraux affichés dans les rapports.
+#  Les textes propres à chaque attente ludique (titres, niveaux, etc.)
+#  se trouvent dans le dossier « attentes ».
+#
+#    - « titre_rapport_individuel » : titre du rapport de chaque joueur.
+#    - « introduction » : texte affiché en haut du rapport individuel.
+#    - « titre_profil_dominant » : titre de l'encart présentant l'attente
+#      la plus forte du joueur.
+#    - « texte_profil_mixte » : phrase affichée quand plusieurs attentes
+#      arrivent à égalité en tête.
+#    - « conclusion » : message de fin du rapport individuel.
+#    - « pied_de_page » : petite mention en bas de chaque page.
+#    - « titre_rapport_global » et « introduction_rapport_global » :
+#      titre et introduction de la synthèse de toutes les réponses,
+#      destinée à la personne qui a créé le questionnaire.
+#
+#  Tous ces textes peuvent être modifiés librement.
+#  Mots spéciaux utilisables dans les textes : {joueur} (nom du joueur),
+#  {nombre_attentes} (nombre d'attentes ludiques), {questionnaire}
+#  (titre du questionnaire).
+# ==============================================================
+
+titre_rapport_individuel: "Votre profil de joueur"
+
+introduction: >-
+  Vous avez répondu au questionnaire sur les profils-types de joueurs de
+  wargame : voici ce que vos réponses racontent de vous. Le graphique en
+  radar montre votre score pour chacune des {nombre_attentes} attentes
+  ludiques ; chaque score correspond au pourcentage de points obtenus par
+  rapport au maximum possible pour cette attente (de 0 à 100). Il n'y a ni
+  bon ni mauvais profil : il s'agit simplement de mettre des mots sur ce que
+  vous venez chercher autour d'une table.
+
+titre_profil_dominant: "Votre attente principale"
+
+texte_profil_mixte: >-
+  Plusieurs attentes arrivent à égalité en tête de votre profil : vous êtes
+  un joueur aux multiples facettes, qui apprécie une partie pour plusieurs
+  raisons à la fois.
+
+conclusion: >-
+  Ce profil n'est qu'une photographie de vos réponses à un instant donné, et
+  il évoluera sans doute au fil de vos parties. Servez-vous-en pour trouver
+  les joueurs, les scénarios et les formats qui vous feront le plus plaisir,
+  et surtout, bon jeu !
+
+pied_de_page: >-
+  Rapport généré à partir du questionnaire « Questionnaire sur les
+  profils-types de joueurs ».
+
+titre_rapport_global: "Synthèse des réponses"
+
+introduction_rapport_global: >-
+  Ce rapport rassemble l'ensemble des réponses reçues au questionnaire et
+  présente, pour chaque attente ludique, la répartition des scores et des
+  niveaux atteints par les répondants. Il permet de repérer d'un coup d'œil
+  les tendances de votre communauté de joueurs et de comparer les profils
+  individuels à la moyenne du groupe.

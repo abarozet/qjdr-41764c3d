@@ -1,0 +1,427 @@
+# =====================================================================
+#  CONFIGURATION DU QUESTIONNAIRE
+# =====================================================================
+#  Ce fichier décrit :
+#    - les attentes ludiques mesurées (et l'ordre d'affichage) ;
+#    - les questions du formulaire et leurs réponses ;
+#    - les points que chaque réponse donne à chaque attente ludique.
+#
+#  Règles simples :
+#    - Le texte des questions et des réponses doit correspondre à celui du
+#      formulaire Google (majuscules, espaces et apostrophes ne comptent pas).
+#    - « poids » : combien de points la réponse donne à une attente.
+#      2 = soutient fortement, 1 = soutient un peu. Une attente absente = 0.
+#      Une réponse peut donner des points à plusieurs attentes.
+#    - Le score d'une attente = points obtenus / points maximum possibles,
+#      exprimé en pourcentage (0 à 100).
+#    - Les textes des rapports et les seuils des niveaux se trouvent dans
+#      le dossier « attentes » (un fichier par attente ludique).
+#
+#  Le plus simple pour modifier ce fichier : l'onglet « Configuration »
+#  de l'application.
+# =====================================================================
+
+titre: "Questionnaire sur les profils-types de joueurs"
+
+# Nom de la colonne du fichier CSV qui contient le nom ou le pseudo du
+# joueur. Laisser vide ("") s'il n'y en a pas : les joueurs seront alors
+# appelés « Répondant 1 », « Répondant 2 », etc.
+colonne_identifiant: ""
+
+# Nom de la colonne contenant la date de réponse (ajoutée par Google Forms).
+colonne_horodatage: "Horodateur"
+
+# Liste des attentes ludiques, dans l'ordre d'affichage.
+# Chaque identifiant correspond à un fichier « attentes/<identifiant>.yaml ».
+attentes:
+  - competition
+  - strategie
+  - narration
+  - immersion
+  - convivialite
+  - hasard
+
+questions:
+  - id: q01
+    texte: "Concernant, les décors de votre champ de bataille, vous préférez..."
+    reponses:
+      - texte: "... Jouer sur un layout proposé par le jeu afin qu’il soit bien équilibré."
+        poids: { strategie: 2, competition: 1 }
+      - texte: "... Qu'ils soient installés pour faire une belle table."
+        poids: { immersion: 2 }
+      - texte: "... Installer une mise en place qui raconte une histoire."
+        poids: { narration: 2, immersion: 1 }
+      - texte: "... Ne pas vous prendre la tête avec ça. Tant que ça n’a pas l’air trop déséquilibré ça vous va."
+        poids: { convivialite: 2 }
+
+  - id: q02
+    texte: "Dès le début de la partie, votre adversaire semble plus intéressé par discuter avec vous..."
+    reponses:
+      - texte: "...Pas de soucis, c’est un bon pote et vous avez le temps."
+        poids: { convivialite: 2 }
+      - texte: "...Vous lui expliquez que vous voudriez faire une partie sérieuse."
+        poids: { strategie: 2 }
+      - texte: "...Vous en profitez pour lui mettre une pâtée !"
+        poids: { competition: 2 }
+      - texte: "...Vous tentez de rediriger la conversation en commentant ce qui se passe sur table."
+        poids: { narration: 2 }
+
+  - id: q03
+    texte: "Vous avez un désaccord sur une règle pendant une partie..."
+    reponses:
+      - texte: "...Vous acceptez l’interprétation de votre adversaire. Ce serait bête de se fâcher pour ça."
+        poids: { convivialite: 2 }
+      - texte: "...Vous allez directement voir dans les règles."
+        poids: { competition: 2, strategie: 1 }
+      - texte: "...Vous jouez ça aux dés."
+        poids: { hasard: 2 }
+      - texte: "...Vous défendez l’idée que, dans une vraie bataille, une armée n’agirait jamais comme ça."
+        poids: { immersion: 2 }
+
+  - id: q04
+    texte: "Le scénario de votre partie de jeu idéale..."
+    reponses:
+      - texte: "...est un scénario maison avec des tonnes de rebondissements."
+        poids: { narration: 2, hasard: 1 }
+      - texte: "...est un scénario qui reprend une bataille historique du lore."
+        poids: { immersion: 2, narration: 1 }
+      - texte: "...est un scénario bien équilibré qui offre un défi intéressant pour votre armée."
+        poids: { strategie: 2 }
+      - texte: "...le scénario le plus utilisé en tournoi actuellement."
+        poids: { competition: 2 }
+
+  - id: q05
+    texte: "Quand vous créez une nouvelle liste d’armée, vous pensez en priorité à..."
+    reponses:
+      - texte: "...sa cohérence avec le lore."
+        poids: { immersion: 2 }
+      - texte: "...ce qu’elle soit la mieux adaptée à la méta."
+        poids: { competition: 2 }
+      - texte: "...a une thématique particulière ou à une unité que vous avez envie de jouer."
+        poids: { narration: 2 }
+      - texte: "...rien. Vous prenez une liste sur le net ou vous prenez les unités que vous avez sous la main."
+        poids: { convivialite: 2 }
+
+  - id: q06
+    texte: "Vous avez clairement mieux joué que votre adversaire mais il a eu une chance insolente aux dés."
+    reponses:
+      - texte: "Ça fera une super anecdote à raconter !"
+        poids: { narration: 2 }
+      - texte: "On n’y peut rien même si ça ne devrait pas arriver."
+        poids: { strategie: 2 }
+      - texte: "Pas grave, vous aussi vous misez souvent sur votre chance !"
+        poids: { hasard: 2 }
+      - texte: "Vous avez le seum."
+        poids: { competition: 2 }
+
+  - id: q07
+    texte: "Les capacités qui ont 1 chance sur 6 d’échouer, vous en pensez quoi ?"
+    reponses:
+      - texte: "Elles devraient s’activer automatiquement."
+        poids: { strategie: 2 }
+      - texte: "Vous aimez bien imaginer les raisons de ces échecs."
+        poids: { narration: 2 }
+      - texte: "C’est normal, dans la vraie vie même un plan parfaitement exécuté peut échouer."
+        poids: { immersion: 2 }
+      - texte: "Ça ajoute du sel et de la tension !"
+        poids: { hasard: 2 }
+
+  - id: q08
+    texte: "Le wargame, pour vous, c’est..."
+    reponses:
+      - texte: "Une manière de vous mesurer à d’autres."
+        poids: { competition: 2 }
+      - texte: "Avant tout un jeu de dé."
+        poids: { hasard: 2 }
+      - texte: "Un bon moment entre potes."
+        poids: { convivialite: 2 }
+      - texte: "Une manière de se raconter des histoires."
+        poids: { narration: 2 }
+
+  - id: q09
+    texte: "Un nouveau joueur n’arrête pas de vous provoquer en affirmant qu’il est meilleur que vous."
+    reponses:
+      - texte: "Vous allez lui rendre la monnaie de sa pièce sur table."
+        poids: { competition: 2 }
+      - texte: "Vous répondez à ses provocations en rigolant."
+        poids: { convivialite: 2 }
+      - texte: "Vous vous moquez de ses provocations (par contre, il a intérêt à être bon sur table)."
+        poids: { strategie: 1, competition: 1 }
+      - texte: "Vous ne jouez plus avec lui. Jouer pour la gagne, c’est pas pour vous."
+        poids: { convivialite: 1, narration: 1 }
+
+  - id: q10
+    texte: "Pour vous le but du jeu, c’est..."
+    reponses:
+      - texte: "De gagner."
+        poids: { competition: 2 }
+      - texte: "De se marrer."
+        poids: { convivialite: 2, hasard: 1 }
+      - texte: "D’avoir l’impression de vivre une vraie bataille."
+        poids: { immersion: 2 }
+      - texte: "Etablir une stratégie et réussir de super coups."
+        poids: { strategie: 2 }
+
+  - id: q11
+    texte: "Pour vous les dés, c’est surtout..."
+    reponses:
+      - texte: "Une source de frustration."
+        poids: { strategie: 1, competition: 1 }
+      - texte: "Une manière de créer des situations uniques."
+        poids: { narration: 2 }
+      - texte: "Du chaos qu’il faut apprendre à maîtriser."
+        poids: { strategie: 2 }
+      - texte: "Quelque chose qui amène du fun dans les parties."
+        poids: { hasard: 2 }
+
+  - id: q12
+    texte: "Avec quel type de joueurs vous ne supportez pas de jouer ?"
+    reponses:
+      - texte: "Celui qui interrompt la partie toutes les cinq minutes pour parler de sa vie."
+        poids: { strategie: 2 }
+      - texte: "Le joueur muet qui ne décroche pas un sourire de toute la partie."
+        poids: { convivialite: 2 }
+      - texte: "Le joueur qui va se servir de tous les tricks de jeux possibles pour gagner."
+        poids: { immersion: 1, convivialite: 1 }
+      - texte: "Le joueur dont “l’armée de coeur” est toujours au top de la méta."
+        poids: { narration: 2 }
+
+  - id: q13
+    texte: "Parmi ces exemples, la meilleure partie serait :"
+    reponses:
+      - texte: "Une partie très tactique mais qui ne respecte pas du tout le lore."
+        poids: { strategie: 2 }
+      - texte: "Une partie pleines de surprises mais où tout c’est joué sur les dés."
+        poids: { hasard: 2 }
+      - texte: "Une partie très scénarisée mais sans aucun challenge stratégique."
+        poids: { narration: 2 }
+      - texte: "Une partie simulant parfaitement le siège d’un château mais où l’attaquant n’avait pratiquement aucune chance de gagner."
+        poids: { immersion: 2 }
+
+  - id: q14
+    texte: "Vous jouez une partie très serrée qui se résout au dernier tour sur un unique jet de dé."
+    reponses:
+      - texte: "Frustrant. Le jeu aurait dû récompenser le meilleur joueur."
+        poids: { strategie: 2 }
+      - texte: "Ce sera une bonne partie si la chance est avec vous !"
+        poids: { competition: 2 }
+      - texte: "Vous adorez les émotions créées par ces moments-là !"
+        poids: { hasard: 2 }
+      - texte: "Si la partie se finit sur un duel de seigneur, super ! Si c'est juste un test de moral d’une unité à moitié crevée, bof."
+        poids: { narration: 2 }
+
+  - id: q15
+    texte: "Vous jouez une armée de motos mais la meilleure unité de votre codex est un tank qui se traîne..."
+    reponses:
+      - texte: "Vous abandonnez vos motos pour jouer ce qui marche."
+        poids: { competition: 2 }
+      - texte: "Jamais de la vie vous ne trahirez l’esprit de votre armée !"
+        poids: { immersion: 2 }
+      - texte: "Vous inventez une histoire tragique pour expliquer la présence de ces tanks dans votre armée."
+        poids: { narration: 2 }
+      - texte: "Vous comptez sur votre chance pour compenser la relative faiblesse de vos motos."
+        poids: { hasard: 2 }
+
+  - id: q16
+    texte: "Tous vos potes se mettent à un nouveau wargame que vous n’aimez pas plus que ça."
+    reponses:
+      - texte: "Pas grave. L’important c’est que vous aimiez jouer avec eux."
+        poids: { convivialite: 2 }
+      - texte: "Il paraît qu’il y a une asso dans la ville d’à côté..."
+        poids: { strategie: 1, competition: 1 }
+      - texte: "Vous créez une campagne en modifiant les règles à votre convenance."
+        poids: { narration: 2 }
+      - texte: "Vous vous vengez en allant chercher la liste la plus puissante sur internet."
+        poids: { competition: 2 }
+
+  - id: q17
+    texte: "On vous propose un tournoi..."
+    reponses:
+      - texte: "Un week-end normal quoi."
+        poids: { competition: 2 }
+      - texte: "C'est non. Vous préférez jouer entre potes."
+        poids: { convivialite: 2 }
+      - texte: "Si on vous promet une rencontre “à la cool”, pourquoi pas."
+        poids: { convivialite: 1, hasard: 1 }
+      - texte: "Si c’est l’occasion de voir de belles tables et de belles armées..."
+        poids: { immersion: 2 }
+
+  - id: q18
+    texte: "Vous seriez prêt à commencer un nouveau wargame si..."
+    reponses:
+      - texte: "Tous vos potes joueurs s’y mettaient aussi."
+        poids: { convivialite: 2 }
+      - texte: "Son lore est incroyable."
+        poids: { immersion: 2 }
+      - texte: "Ses mécaniques de jeu sont intéressantes et innovantes."
+        poids: { strategie: 2 }
+      - texte: "Sa scène compétitive est accueillante et bien installée."
+        poids: { competition: 2 }
+
+  - id: q19
+    texte: "Une nouvelle unité est sortie pour votre armée mais ses règles ne correspondent pas à son lore."
+    reponses:
+      - texte: "Vous ne la jouerez pas avant la sortie d’un nouveau codex."
+        poids: { immersion: 2 }
+      - texte: "Si elle est forte, ça ne vous dérange pas."
+        poids: { competition: 2 }
+      - texte: "Si elle est fun à jouer, il est où le problème ?"
+        poids: { hasard: 2 }
+      - texte: "Vous la prendrez si elle remplit une fonction stratégique qui manquait dans l’armée."
+        poids: { strategie: 2 }
+
+  - id: q20
+    texte: "Si vous ne pouviez plus jouer qu'en dématérialisé, qu'est-ce qui vous manquerait le plus ?"
+    reponses:
+      - texte: "Les interactions sociales."
+        poids: { convivialite: 2 }
+      - texte: "Lancer les dés et commenter les résultats."
+        poids: { hasard: 2 }
+      - texte: "Les figurines réelles."
+        poids: { immersion: 2 }
+      - texte: "Pouvoir parader après sa victoire."
+        poids: { competition: 2 }
+
+  - id: q21
+    texte: "Pour vous l’équilibrage c’est..."
+    reponses:
+      - texte: "L’élément primordial sur lequel l’éditeur d’un jeu doit travailler."
+        poids: { competition: 1, strategie: 1 }
+      - texte: "Pas si important. Au pire, on le corrige entre nous."
+        poids: { convivialite: 2 }
+      - texte: "Moins important que le fait que les fiches d’unité collent au lore."
+        poids: { immersion: 2 }
+      - texte: "Un problème de joueurs de tournoi."
+        poids: { narration: 1, convivialite: 1 }
+
+  - id: q22
+    texte: "Une bonne règle de base, c’est d’abord..."
+    reponses:
+      - texte: "Une règle qui crée des rebondissements inattendus."
+        poids: { hasard: 2, narration: 1 }
+      - texte: "Une règle qui ouvre des possibilités stratégiques."
+        poids: { strategie: 2 }
+      - texte: "Une règle qui représente au mieux ce qui se passe sur un champ de bataille."
+        poids: { immersion: 2 }
+      - texte: "Une règle simple pour éviter les discussions interminables."
+        poids: { convivialite: 2 }
+
+  - id: q23
+    texte: "Pour vous, un bon wargame doit-il laisser la possibilité à un soldat de base de tuer un démon majeur ?"
+    reponses:
+      - texte: "Oui, ça permet de construire une histoire autour de ce fait d’arme."
+        poids: { narration: 2 }
+      - texte: "Oui, ce genre de rebondissement fait le sel d’une partie."
+        poids: { hasard: 2 }
+      - texte: "Non, le jeu ne devrait pas laisser un jet de dé détruire une stratégie."
+        poids: { strategie: 2 }
+      - texte: "Non, ça manque de réalisme."
+        poids: { immersion: 2 }
+
+  - id: q24
+    texte: "Quelle est l’émotion que vous aimez le plus ressentir quand vous jouez ?"
+    reponses:
+      - texte: "Le frisson du hasard."
+        poids: { hasard: 2 }
+      - texte: "L’immersion dans un univers de fiction."
+        poids: { immersion: 2, narration: 1 }
+      - texte: "Voir un plan mûrement réfléchi réussir."
+        poids: { strategie: 2 }
+      - texte: "Le sentiment d’avoir été plus fort que votre adversaire."
+        poids: { competition: 2 }
+
+  - id: q25
+    texte: "Quel est le pire adversaire sur lequel vous pourriez tomber ?"
+    reponses:
+      - texte: "Le chanceux qui ne fait que des six pendant toute la partie."
+        poids: { strategie: 1, competition: 1 }
+      - texte: "Le mauvais joueur qui se plaint de tout et de rien."
+        poids: { convivialite: 2 }
+      - texte: "L’optimisateur qui joue une liste top méta et connaît tous les tricks de jeux."
+        poids: { narration: 1, immersion: 1 }
+      - texte: "Le débutant qui ne connaît pas la moitié des règles."
+        poids: { competition: 2 }
+
+  - id: q26
+    texte: "Quel autre type de jeu vous attire le plus ? (Ou pratiquez-vous déjà)."
+    reponses:
+      - texte: "Les jeux d’ambiance."
+        poids: { convivialite: 2 }
+      - texte: "Les jeux de rôle."
+        poids: { narration: 2 }
+      - texte: "Les jeux de gestion."
+        poids: { strategie: 2 }
+      - texte: "Les jeux multijoueurs en ligne."
+        poids: { competition: 2 }
+
+  - id: q27
+    texte: "L’extension idéale pour votre wargame ?"
+    reponses:
+      - texte: "Un décor de campagne."
+        poids: { immersion: 2 }
+      - texte: "Une grosse mise à jour avec rééquilibrage de toutes les factions."
+        poids: { competition: 2 }
+      - texte: "Des règles pour customiser ses armées."
+        poids: { narration: 2 }
+      - texte: "Un nouveau mode de jeu qui approfondirait l’aspect stratégique des parties."
+        poids: { strategie: 2 }
+
+  - id: q28
+    texte: "Un de vos amis, d’habitude calme, s’énerve de son manque de chance durant sa partie."
+    reponses:
+      - texte: "Vous interrompez la partie pour vérifier qu’il n’est pas en colère pour autre chose."
+        poids: { convivialite: 2 }
+      - texte: "Vous essayez de lui expliquer que la (mal)chance fait aussi partie du jeu."
+        poids: { hasard: 2 }
+      - texte: "Vous le comprenez tout à fait, surtout qu’il jouait bien."
+        poids: { strategie: 2 }
+      - texte: "Vous en profitez. La semaine dernière c’était vous qui n’aviez pas de chance."
+        poids: { competition: 2 }
+
+  - id: q29
+    texte: "Laquelle de ces mécaniques vous aimeriez bien tester dans un wargame ?"
+    reponses:
+      - texte: "Avoir un seigneur de guerre entièrement personnalisable."
+        poids: { narration: 2 }
+      - texte: "Programmer des ordres cachés à vos unités au début de chaque tour."
+        poids: { strategie: 2 }
+      - texte: "L’ordre d’activation des unités est tiré au hasard."
+        poids: { hasard: 2 }
+      - texte: "Le perdant doit payer une bière, un soda, un café au gagnant."
+        poids: { competition: 2 }
+
+  - id: q30
+    texte: "Laquelle de ses propositions vous paraît la plus farfelue."
+    reponses:
+      - texte: "Un wargame sans hasard."
+        poids: { hasard: 2 }
+      - texte: "Un wargame sans lore."
+        poids: { immersion: 2 }
+      - texte: "Un wargame sans victoire."
+        poids: { competition: 2 }
+      - texte: "Un wargame sans amis."
+        poids: { convivialite: 2 }
+
+  - id: q31
+    texte: "A quoi bon commencer la partie si..."
+    reponses:
+      - texte: "L’ambiance n’est pas bonne."
+        poids: { convivialite: 2 }
+      - texte: "On en connaît déjà l’issue."
+        poids: { hasard: 2 }
+      - texte: "On ne nous a pas expliqué pourquoi notre armée combat sur ce champ de bataille."
+        poids: { narration: 2 }
+      - texte: "On sait déjà que l’adversaire ne sera pas à la hauteur."
+        poids: { competition: 2 }
+
+  - id: q32
+    texte: "On vous propose un wargame ambiance Western dans lequel les dés sont remplacés par un système de bluff façon poker menteur."
+    reponses:
+      - texte: "Trop bien, il faut mentir pour gagner !"
+        poids: { competition: 2 }
+      - texte: "Ça colle bien au thème."
+        poids: { immersion: 2 }
+      - texte: "C’est dommage d’enlever l’aléa."
+        poids: { hasard: 2 }
+      - texte: "Les stats doivent être dures à faire..."
+        poids: { strategie: 2 }

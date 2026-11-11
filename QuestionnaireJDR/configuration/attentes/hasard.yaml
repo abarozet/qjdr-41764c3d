@@ -1,0 +1,67 @@
+# ==============================================================
+#  ATTENTE LUDIQUE : Hasard
+# ==============================================================
+#  Ce fichier décrit une attente ludique et les textes affichés dans
+#  les rapports des joueurs.
+#
+#    - « id » : identifiant technique, ne pas le modifier (il doit
+#      correspondre à la liste « attentes » de questionnaire.yaml).
+#    - « nom » : libellé court affiché sur le graphique radar.
+#    - « couleur » : couleur de l'attente (code hexadécimal, ex. "#56B4E9").
+#    - « titre » : titre de la section dans le rapport individuel.
+#    - « description » : une ou deux phrases expliquant ce que mesure
+#      cette attente.
+#    - « niveaux » : les paliers, du plus faible au plus fort.
+#        « a_partir_de » = score minimum, en % (de 0 à 100), pour
+#        atteindre ce niveau. Le premier niveau doit commencer à 0.
+#        Vous pouvez ajouter ou supprimer des niveaux, et modifier
+#        librement les titres et les textes.
+# ==============================================================
+
+id: hasard
+nom: "Hasard"
+couleur: "#56B4E9"
+titre: "Quel lanceur de dés êtes-vous ?"
+description: >-
+  Cette attente mesure votre goût pour l'imprévu : le frisson du jet de dé,
+  les retournements de situation, la tension d'un dernier tour indécis et le
+  joyeux chaos qui rend chaque partie unique.
+
+niveaux:
+  - a_partir_de: 0
+    titre: "L'ennemi juré du d6"
+    texte: >-
+      Les dés, pour vous, sont un mal nécessaire, voire une source de
+      frustration pure. Un wargame sans hasard ne vous paraît pas farfelu du
+      tout : ce serait même plutôt reposant. Quand la partie se joue sur un
+      unique jet au dernier tour, vous ne retenez pas votre souffle, vous
+      retenez surtout votre agacement.
+
+  - a_partir_de: 20
+    titre: "Le joueur prudent"
+    texte: >-
+      Vous acceptez le hasard comme on accepte la météo : il fait partie du
+      jeu, mais vous préférez ne pas trop compter dessus. Un rebondissement
+      inattendu vous amuse une fois de temps en temps, tant qu'il ne décide
+      pas de toute la partie. Vous lancez vos dés sans les bénir ni les
+      maudire.
+
+  - a_partir_de: 40
+    titre: "L'ami des dés"
+    texte: >-
+      Vous aimez ce petit moment de suspense avant que les dés ne
+      s'immobilisent. Un soldat de base qui terrasse un démon majeur ? Ça,
+      c'est le sel d'une partie ! Vous commentez vos jets avec enthousiasme,
+      vous consolez les malchanceux en leur rappelant que ça fait partie du
+      jeu, et vous misez volontiers sur votre bonne étoile pour compenser
+      une liste un peu légère.
+
+  - a_partir_de: 60
+    titre: "Le parieur du chaos"
+    texte: >-
+      À quoi bon commencer une partie dont on connaît déjà l'issue ? Pour
+      vous, le wargame est avant tout un jeu de dés, et c'est exactement ce
+      qui le rend génial. Vous tranchez les désaccords de règles au d6, vous
+      adorez les émotions d'un dernier tour qui se joue à pile ou face, et
+      une activation tirée au hasard vous fait briller les yeux. Que le
+      chaos soit avec vous.
