@@ -12,7 +12,14 @@
     store.flush();
     active = name;
     Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
-      t.setAttribute('aria-selected', t.getAttribute('data-tab') === name ? 'true' : 'false');
+      var sel = t.getAttribute('data-tab') === name;
+      t.setAttribute('aria-selected', sel ? 'true' : 'false');
+      // narrow screens: the tab row scrolls sideways, keep the active tab visible
+      if (sel && t.parentNode && t.parentNode.scrollWidth > t.parentNode.clientWidth) {
+        var row = t.parentNode;
+        var rb = row.getBoundingClientRect(), tb = t.getBoundingClientRect();
+        if (tb.left < rb.left || tb.right > rb.right - 24) row.scrollLeft += tb.left - rb.left - 12;
+      }
     });
     Array.prototype.forEach.call(document.querySelectorAll('.panel'), function (p) {
       p.classList.toggle('active', p.id === 'panel-' + name);

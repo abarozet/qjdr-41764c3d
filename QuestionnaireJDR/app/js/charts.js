@@ -222,7 +222,7 @@
   function histogram(bins, color, opts) {
     opts = opts || {};
     var W = opts.width || 340, H = opts.height || 170;
-    var ml = 28, mr = 8, mt = 10, mb = 26;
+    var ml = 28, mr = 8, mt = 16, mb = 26;
     var pw = W - ml - mr, ph = H - mt - mb;
     var maxC = Math.max.apply(null, bins.map(function (b) { return b.count; }).concat([1]));
     var step = maxC <= 5 ? 1 : Math.ceil(maxC / 5);
@@ -239,6 +239,8 @@
       var x = ml + i * bw + 1;
       if (b.count > 0) {
         out.push('<rect x="' + r1(x) + '" y="' + r1(mt + ph - h) + '" width="' + r1(bw - 2) + '" height="' + r1(h) + '" rx="2" fill="' + safeColor(color) + '"><title>' + esc('De ' + b.from + ' à ' + (b.to === 100 ? '100' : b.to) + ' % : ' + b.count + ' répondant' + (b.count > 1 ? 's' : '')) + '</title></rect>');
+        // visible count (no hover on touch screens)
+        out.push('<text x="' + r1(x + (bw - 2) / 2) + '" y="' + r1(mt + ph - h - 3) + '" text-anchor="middle" font-size="9.5" fill="' + INK2 + '">' + b.count + '</text>');
       }
     });
     for (var k = 0; k <= bins.length; k += 2) {

@@ -28,17 +28,25 @@
     var frame = h('iframe', { class: 'viewer', title: 'Rapport global', 'data-testid': 'frame-global' });
     panel.appendChild(h('div', { class: 'toolbar' },
       h('span', { class: 'title' }, 'Rapport global – ' + a.respondents.length + ' répondant' + (a.respondents.length > 1 ? 's' : '')),
-      h('button', { class: 'btn', type: 'button', 'data-testid': 'btn-export-global', onclick: function () {
-        store.flush();
-        util.downloadText(build(), 'Rapport global.html', 'text/html');
-      } }, 'Exporter le rapport (.html)'),
-      h('button', { class: 'btn', type: 'button', 'data-testid': 'btn-export-scores', onclick: function () {
-        store.flush();
-        util.downloadText(QJ.core.scoresToCSV(store.state.config, store.state.analysis), 'Scores des répondants.csv', 'text/csv');
-      } }, 'Exporter les scores (.csv pour Excel)'),
-      h('button', { class: 'btn primary', type: 'button', onclick: function () {
-        try { frame.contentWindow.focus(); frame.contentWindow.print(); } catch (e) { util.toast('Impression impossible ici : exportez le rapport puis imprimez-le.', true); }
-      } }, 'Imprimer / PDF')));
+      h('span', { class: 'actions' },
+        h('button', { class: 'btn', type: 'button', 'data-testid': 'btn-export-global', onclick: function () {
+          store.flush();
+          util.downloadText(build(), 'Rapport global.html', 'text/html');
+        } }, 'Exporter le rapport (.html)'),
+        util.canShareFiles('text/html') ? h('button', { class: 'btn', type: 'button', 'data-testid': 'btn-partager-global', onclick: function () {
+          store.flush();
+          util.shareText(build(), 'Rapport global.html', 'text/html', 'Rapport global').catch(function (e) {
+            util.toast('Partage impossible : ' + (e && e.message ? e.message : e) + ' Utilisez « Exporter ».', true);
+          });
+        } }, 'Partager…') : null,
+        h('button', { class: 'btn', type: 'button', 'data-testid': 'btn-export-scores', onclick: function () {
+          store.flush();
+          util.downloadText(QJ.core.scoresToCSV(store.state.config, store.state.analysis), 'Scores des répondants.csv', 'text/csv');
+        } }, 'Exporter les scores (.csv pour Excel)'),
+        h('button', { class: 'btn primary', type: 'button', 'data-testid': 'btn-imprimer-global', onclick: function () {
+          store.flush();
+          util.printReport(frame, build());
+        } }, 'Imprimer / PDF'))));
     panel.appendChild(frame);
     util.fillFrame(frame, html, 800);
   }

@@ -6,7 +6,7 @@
 //  Command (from the project root):
 //      node dev/tools/build_default_config.mjs
 // =============================================================================
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { APP, readConfigFolder, core } from './load_config.mjs';
 
@@ -27,7 +27,7 @@ const out = `/*
  * Regenerate after editing QuestionnaireJDR/configuration/*.yaml with:
  *     node dev/tools/build_default_config.mjs
  *
- * Generated on ${new Date().toISOString()}.
+ * Generated on @@STAMP@@.
  */
 (function (root) {
   'use strict';
@@ -36,5 +36,10 @@ const out = `/*
 })(typeof self !== 'undefined' ? self : this);
 `;
 const target = join(APP, 'app', 'js', 'config-par-defaut.js');
-writeFileSync(target, out, 'utf8');
-console.log(`OK : ${target} (${config.attentes.length} attentes, ${config.questions.length} questions)`);
+// Keep the previous timestamp when nothing else changed: the file (and thus the
+// web app's precache version, see build_pwa.mjs) stays byte-identical.
+const STAMP_RE = /Generated on [^\n]*\./;
+const previous = existsSync(target) ? readFileSync(target, 'utf8') : '';
+const same = previous && previous.replace(STAMP_RE, 'Generated on @@STAMP@@.') === out;
+if (!same) writeFileSync(target, out.replace('@@STAMP@@', new Date().toISOString()), 'utf8');
+console.log(`OK : ${target}${same ? ' (inchangé)' : ''} (${config.attentes.length} attentes, ${config.questions.length} questions)`);

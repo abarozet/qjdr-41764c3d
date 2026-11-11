@@ -98,6 +98,23 @@
 
   var fsSupported = typeof window.showDirectoryPicker === 'function';
 
+  /**
+   * `accept` lists for the file inputs. Deliberately permissive: Android
+   * pickers grey out files whose MIME type is not listed, and the type given
+   * to a CSV varies (text/csv, text/comma-separated-values, application/vnd.ms-excel,
+   * application/octet-stream…). The content is checked when the file is read.
+   */
+  var DATA_ACCEPT = ['.csv', '.tsv', '.txt', '.zip', '.xlsx',
+    'text/csv', 'text/comma-separated-values', 'text/tab-separated-values', 'text/plain', 'application/csv',
+    'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/zip', 'application/x-zip-compressed', 'application/octet-stream'].join(',');
+  var CONFIG_ACCEPT = ['.yaml', '.yml', '.zip', '.txt',
+    'application/zip', 'application/x-zip-compressed', 'application/yaml', 'application/x-yaml', 'text/yaml', 'text/x-yaml',
+    'text/plain', 'application/octet-stream'].join(',');
+
+  /** Folder selection through <input webkitdirectory>: desktop browsers only (absent on Android). */
+  var folderInputSupported = !util.env.mobile && ('webkitdirectory' in document.createElement('input'));
+
   function hasFile(dir, name) {
     return dir.getFileHandle(name).then(function () { return true; }, function () { return false; });
   }
@@ -240,6 +257,9 @@
     loadDataBuffer: loadDataBuffer,
     delimiterLabel: delimiterLabel,
     fsSupported: fsSupported,
+    folderInputSupported: folderInputSupported,
+    DATA_ACCEPT: DATA_ACCEPT,
+    CONFIG_ACCEPT: CONFIG_ACCEPT,
     pickDirectory: pickDirectory,
     verifyPermission: verifyPermission,
     readConfigDir: readConfigDir,

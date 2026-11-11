@@ -385,14 +385,20 @@
         q.reponses.forEach(function (r) { var w = Number((r.poids || {})[a.id]) || 0; if (w > m) m = w; });
         foot.appendChild(h('td', null, core.formatNumber(m, 1)));
       });
-      foot.appendChild(h('td'));
     }
     q.reponses.forEach(function (r, ri) {
       r.poids = r.poids || {};
       var tx = h('textarea', { rows: 2, 'aria-label': 'Texte de la réponse ' + (ri + 1) });
       tx.value = r.texte || '';
       tx.addEventListener('input', function () { r.texte = tx.value; changed(false); });
-      var tr = h('tr', null, h('td', { class: 'ans' }, tx));
+      var acts = h('div', { class: 'ans-acts' },
+        h('button', { class: 'btn small icon', type: 'button', title: 'Monter', 'aria-label': 'Monter la réponse', disabled: ri === 0, onclick: function () { moveItem(q.reponses, ri, -1); changed(true); } }, '↑'),
+        h('button', { class: 'btn small icon', type: 'button', title: 'Descendre', 'aria-label': 'Descendre la réponse', disabled: ri === q.reponses.length - 1, onclick: function () { moveItem(q.reponses, ri, 1); changed(true); } }, '↓'),
+        h('button', { class: 'btn small icon danger', type: 'button', title: 'Supprimer la réponse', 'aria-label': 'Supprimer la réponse', onclick: function () {
+          util.confirm('Supprimer cette réponse ?', '« ' + r.texte + ' »', 'Supprimer', function () { q.reponses.splice(ri, 1); changed(true); }, true);
+        } }, '✕'));
+      // answer text + its actions in the first (sticky) column: the grid stays narrow on tablets
+      var tr = h('tr', null, h('td', { class: 'ans' }, h('div', { class: 'ans-cell' }, tx, acts)));
       c.attentes.forEach(function (a) {
         var v = r.poids[a.id];
         var inp = h('input', {
@@ -410,22 +416,15 @@
           refreshFoot();
           changed(false);
         });
-        tr.appendChild(h('td', { class: 'w' }, inp));
+        tr.appendChild(h('td', { class: 'w', 'data-label': a.nom, style: { '--c': a.couleur } }, inp));
       });
-      tr.appendChild(h('td', { class: 'acts' },
-        h('button', { class: 'btn small icon', type: 'button', title: 'Monter', 'aria-label': 'Monter la réponse', disabled: ri === 0, onclick: function () { moveItem(q.reponses, ri, -1); changed(true); } }, '↑'),
-        h('button', { class: 'btn small icon', type: 'button', title: 'Descendre', 'aria-label': 'Descendre la réponse', disabled: ri === q.reponses.length - 1, onclick: function () { moveItem(q.reponses, ri, 1); changed(true); } }, '↓'),
-        h('button', { class: 'btn small icon danger', type: 'button', title: 'Supprimer la réponse', 'aria-label': 'Supprimer la réponse', onclick: function () {
-          util.confirm('Supprimer cette réponse ?', '« ' + r.texte + ' »', 'Supprimer', function () { q.reponses.splice(ri, 1); changed(true); }, true);
-        } }, '✕')));
       tbody.appendChild(tr);
     });
     refreshFoot();
     return h('div', { class: 'weights-wrap' }, h('table', { class: 'weights' },
       h('thead', null, h('tr', null,
         h('th', null, 'Réponse'),
-        c.attentes.map(function (a) { return h('th', { class: 'att', title: a.nom }, h('span', { class: 'swatch' , style: { background: a.couleur } }), a.nom); }),
-        h('th'))),
+        c.attentes.map(function (a) { return h('th', { class: 'att' }, h('span', { class: 'swatch' , style: { background: a.couleur } }), a.nom); }))),
       tbody,
       h('tfoot', null, foot)));
   }
@@ -450,6 +449,11 @@
     var body = [
       textField('Texte de la question (identique au formulaire Google)', q, 'texte', { multiline: true, rows: 2, onInput: function (v) { ttl.textContent = v; } }),
       h('p', { class: 'help', style: { margin: '0 0 8px' } }, 'Pour chaque réponse, indiquez combien de points elle donne à chaque attente (0 = aucun). Une réponse peut donner des points à plusieurs attentes.'),
+      h('p', { class: 'feeds small' }, 'Attentes alimentées : ', (function () {
+        var fed = c.attentes.filter(function (a) { return feeds[a.id]; });
+        if (!fed.length) return h('span', { class: 'muted' }, 'aucune');
+        return fed.map(function (a) { return h('span', { class: 'feed-chip' }, h('span', { class: 'swatch', style: { background: a.couleur } }), a.nom); });
+      })()),
       weightsTable(q),
       h('div', { class: 'row', style: { marginTop: '10px' } },
         h('button', { class: 'btn small', type: 'button', onclick: function () { q.reponses.push({ texte: 'Nouvelle réponse', poids: {} }); changed(true); } }, '+ Ajouter une réponse'),
@@ -566,7 +570,7 @@
   }
 
   function pickTableThen(fn) {
-    var input = h('input', { type: 'file', accept: '.csv,.txt,.zip,.xlsx', class: 'visually-hidden' });
+    var input = h('input', { type: 'file', accept: QJ.files.DATA_ACCEPT, class: 'visually-hidden' });
     input.addEventListener('change', function () {
       var f = input.files[0];
       input.remove();
@@ -670,11 +674,11 @@
     var cards = [];
     cards.push(h('div', { class: 'card' },
       h('h2', null, 'Ouvrir / Enregistrer la configuration'),
-      h('p', { class: 'lead' }, 'La configuration est un dossier « configuration » contenant questionnaire.yaml, rapport.yaml et un fichier par attente dans « attentes ». L’application garde automatiquement la dernière configuration utilisée sur cet ordinateur ; enregistrez-la dans le dossier pour la conserver, la sauvegarder ou la partager.'),
+      h('p', { class: 'lead' }, 'La configuration est un dossier « configuration » contenant questionnaire.yaml, rapport.yaml et un fichier par attente dans « attentes ». L’application garde automatiquement la dernière configuration utilisée sur cet appareil ; enregistrez-la (dossier ou fichier configuration.zip) pour la conserver, la sauvegarder ou la partager.'),
       util.msg(meta.dirty ? 'attention' : 'info', QJ.main.describeMeta(meta))));
 
     if (QJ.files.fsSupported) {
-      var actions = h('div', { class: 'row' });
+      var actions = h('div', { class: 'row', 'data-testid': 'config-fs-actions' });
       if (storedHandle) {
         actions.appendChild(h('button', { class: 'btn primary', type: 'button', onclick: function () { guardErrors(function () { saveToHandle(storedHandle); }); } }, 'Enregistrer dans le dossier « ' + storedHandle.name + ' »'));
         actions.appendChild(h('button', { class: 'btn', type: 'button', onclick: function () { guardDirty(function () { loadFromHandle(storedHandle); }); } }, 'Recharger depuis « ' + storedHandle.name + ' »'));
@@ -695,29 +699,45 @@
         actions));
     }
 
-    var dirInput = h('input', { type: 'file', class: 'visually-hidden', webkitdirectory: true, multiple: true });
-    dirInput.addEventListener('change', function () { var fl = dirInput.files; guardDirty(function () { loadFromFiles(fl, 'dossier sélectionné'); }); });
-    var filesInput = h('input', { type: 'file', class: 'visually-hidden', multiple: true, accept: '.yaml,.yml,.zip', 'data-testid': 'input-config-files' });
+    var fs = QJ.files.fsSupported;
+    var mobile = util.env.mobile;
+    var dirInput = QJ.files.folderInputSupported ? h('input', { type: 'file', class: 'visually-hidden', webkitdirectory: true, multiple: true }) : null;
+    if (dirInput) dirInput.addEventListener('change', function () { var fl = dirInput.files; guardDirty(function () { loadFromFiles(fl, 'dossier sélectionné'); }); });
+    var filesInput = h('input', { type: 'file', class: 'visually-hidden', multiple: true, accept: QJ.files.CONFIG_ACCEPT, 'data-testid': 'input-config-files' });
     filesInput.addEventListener('change', function () { var fl = filesInput.files; guardDirty(function () { loadFromFiles(fl, Array.prototype.map.call(fl, function (f) { return f.name; }).join(', ')); }); });
-    var drop = h('div', { class: 'dropzone', style: { padding: '20px' } }, h('p', { style: { margin: 0 } }, 'Ou déposez ici le dossier « configuration », ses fichiers .yaml ou un fichier configuration.zip.'));
-    ['dragenter', 'dragover'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
-    ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
-    drop.addEventListener('drop', function (e) {
-      var dt = e.dataTransfer;
-      QJ.files.readDroppedItems(dt).then(function (map) {
-        if (!Object.keys(map).length) { util.toast('Aucun fichier .yaml trouvé.', true); return; }
-        guardDirty(function () { if (applyLoaded(QJ.configIO.configFromPathMap(map), { source: 'fichiers', label: 'fichiers déposés' })) renderSection(); });
+    var drop = null;
+    if (util.env.canDropFiles) {
+      drop = h('div', { class: 'dropzone', style: { padding: '20px' }, 'data-testid': 'config-dropzone' }, h('p', { style: { margin: 0 } }, 'Ou déposez ici le dossier « configuration », ses fichiers .yaml ou un fichier configuration.zip.'));
+      ['dragenter', 'dragover'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.add('over'); }); });
+      ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function (e) { e.preventDefault(); drop.classList.remove('over'); }); });
+      drop.addEventListener('drop', function (e) {
+        var dt = e.dataTransfer;
+        QJ.files.readDroppedItems(dt).then(function (map) {
+          if (!Object.keys(map).length) { util.toast('Aucun fichier .yaml trouvé.', true); return; }
+          guardDirty(function () { if (applyLoaded(QJ.configIO.configFromPathMap(map), { source: 'fichiers', label: 'fichiers déposés' })) renderSection(); });
+        });
       });
-    });
+    }
+    var explain = null;
+    if (!fs && mobile) {
+      explain = h('div', { class: 'howto', 'data-testid': 'config-howto-mobile' },
+        h('p', null, h('b', null, 'Sur tablette ou téléphone'), ', l’application ne peut pas écrire directement dans un dossier :'),
+        h('ul', null,
+          h('li', null, h('b', null, 'Enregistrer'), ' : touchez « Télécharger la configuration (.zip) ». Le fichier configuration.zip arrive dans le dossier ', h('i', null, 'Téléchargements'), ' de l’appareil ; gardez-le ou envoyez-le-vous.'),
+          h('li', null, h('b', null, 'Recharger'), ' : touchez « Ouvrir des fichiers… » et choisissez ce configuration.zip (ou des fichiers .yaml).'),
+          h('li', null, 'Entre deux utilisations, le navigateur mémorise de lui-même vos modifications sur cet appareil : le .zip sert de sauvegarde et de copie à partager.')));
+    } else if (!fs) {
+      explain = h('p', { class: 'small muted' }, 'Ce navigateur ne permet pas d’écrire directement dans un dossier. Pour enregistrer, téléchargez l’archive puis remplacez le dossier « configuration » par son contenu. (Avec Microsoft Edge ou Google Chrome sur ordinateur, l’enregistrement direct est possible.)');
+    }
     cards.push(h('div', { class: 'card' },
-      h('h3', { style: { marginTop: 0 } }, QJ.files.fsSupported ? 'Autres possibilités' : 'Fichiers de configuration'),
-      QJ.files.fsSupported ? null : h('p', { class: 'small muted' }, 'Ce navigateur ne permet pas d’écrire directement dans un dossier. Pour enregistrer, téléchargez l’archive puis remplacez le dossier « configuration » par son contenu. (Avec Microsoft Edge ou Google Chrome, l’enregistrement direct est possible.)'),
+      h('h3', { style: { marginTop: 0 } }, fs ? 'Autres possibilités' : 'Fichiers de configuration'),
+      explain,
       h('div', { class: 'row' },
-        // With File System Access (Edge/Chrome) the folder is chosen above (read + write): no read-only duplicate.
-        QJ.files.fsSupported ? null : h('button', { class: 'btn', type: 'button', onclick: function () { dirInput.click(); } }, 'Ouvrir le dossier « configuration »…'),
-        h('button', { class: 'btn', type: 'button', onclick: function () { filesInput.click(); } }, 'Ouvrir des fichiers (.yaml ou .zip)…'),
-        h('button', { class: 'btn' + (QJ.files.fsSupported ? '' : ' primary'), type: 'button', 'data-testid': 'btn-config-zip', onclick: function () { guardErrors(downloadZip); } }, 'Télécharger la configuration (.zip)')),
-      h('div', { style: { marginTop: '12px' } }, drop),
+        h('button', { class: 'btn' + (fs ? '' : ' primary'), type: 'button', 'data-testid': 'btn-config-zip', onclick: function () { guardErrors(downloadZip); } }, 'Télécharger la configuration (.zip)'),
+        h('button', { class: 'btn', type: 'button', 'data-testid': 'btn-config-open-files', onclick: function () { filesInput.click(); } }, 'Ouvrir des fichiers (.zip ou .yaml)…'),
+        // With File System Access (Edge/Chrome desktop) the folder is chosen above (read + write): no read-only duplicate.
+        fs || !dirInput ? null : h('button', { class: 'btn', type: 'button', 'data-testid': 'btn-config-open-dir', onclick: function () { dirInput.click(); } }, 'Ouvrir le dossier « configuration »…')),
+      drop ? h('div', { style: { marginTop: '12px' } }, drop) : null,
       dirInput, filesInput));
 
     cards.push(h('div', { class: 'card' },

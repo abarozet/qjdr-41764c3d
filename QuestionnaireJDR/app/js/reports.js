@@ -118,6 +118,9 @@
     '.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin:6px 0 0}',
     '.legend span{display:inline-flex;gap:6px;align-items:center}',
     '@media (max-width:700px){.page{padding:16px}.rapport{padding:20px 18px}.r-top{grid-template-columns:1fr}.r-who{text-align:left}.ans{grid-template-columns:1fr 90px 60px}.g-grid{grid-template-columns:1fr}}',
+    // phones: more room for the text, readable titles, tap-friendly links
+    '@media (max-width:480px){body{font-size:15.5px}.page{padding:8px 6px 24px}.rapport{padding:18px 14px;border-radius:10px}.g-section{padding:18px 14px;border-radius:10px}.r-head h1{font-size:25px}.r-dom-name{font-size:24px}.r-attente{padding:14px 14px 8px}.r-conclusion{padding:14px}.g-section > h2{font-size:21px}.ans{grid-template-columns:minmax(0,1fr) 64px 52px;gap:2px 8px}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.g-att{padding:12px}}',
+    '@media (pointer:coarse){.g-nav a{padding:9px 14px;font-size:14px}details.indiv > summary{padding:14px 18px}table.sortable th{padding:12px 8px}}',
     '@page{size:A4;margin:12mm}',
     '@media print{body{background:#fff;font-size:12.5px}.page{max-width:none;padding:0}.rapport{border:0;box-shadow:none;padding:0}.g-nav,.no-print{display:none!important}.g-section{border:0;padding:0 0 12px;break-inside:auto}details.indiv{border:0;break-before:page}details.indiv > summary{display:none}.r-attente{padding:12px 16px 4px;margin-bottom:10px}.r-top{margin-bottom:14px}a{color:inherit;text-decoration:none}}'
   ].join('\n');

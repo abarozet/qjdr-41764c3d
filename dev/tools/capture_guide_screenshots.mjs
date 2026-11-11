@@ -3,7 +3,9 @@
 //  (QuestionnaireJDR/documentation/guide.html) into
 //  QuestionnaireJDR/documentation/images/.
 //
-//  Drives the system Google Chrome (headless, like the e2e tests) over file://.
+//  Drives the system Google Chrome (headless, like the e2e tests): the desktop
+//  screenshots over file://, the tablet / phone ones (4x-*.png) with Android
+//  emulation over http (dev/tools/serve.mjs is started on port 4174 for that).
 //  Re-run it whenever the user interface changes:
 //
 //      cd dev && node tools/capture_guide_screenshots.mjs
@@ -13,6 +15,7 @@
 import { chromium } from '@playwright/test';
 import { createRequire } from 'node:module';
 import { mkdirSync, readFileSync, existsSync } from 'node:fs';
+import { spawn } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -44,6 +47,103 @@ function demoCsv() {
   });
   const cell = (v) => '"' + String(v).replace(/"/g, '""') + '"';
   return '﻿' + [headers, ...rows].map((r) => r.map(cell).join(',')).join('\r\n') + '\r\n';
+}
+
+// ---------------------------------------------------------------------------
+// Tablet / phone screenshots (Android emulation, app served over http).
+// No fullPage screenshots here: in Playwright 1.49 they drop touch emulation.
+// ---------------------------------------------------------------------------
+const TABLET_UA = 'Mozilla/5.0 (Linux; Android 14; SM-X710) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+const PHONE_UA = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36';
+const PORT = 4174;
+
+async function startServer() {
+  const proc = spawn(process.execPath, [join(ROOT, 'dev', 'tools', 'serve.mjs'), '--port', String(PORT), '--base', '/qjdr/'], { stdio: 'ignore' });
+  for (let i = 0; i < 50; i++) {
+    try { const r = await fetch(`http://localhost:${PORT}/qjdr/`); if (r.ok) return proc; } catch { /* not yet */ }
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  proc.kill();
+  throw new Error('serveur de test injoignable');
+}
+
+async function captureMobile(browser) {
+  const server = await startServer();
+  const errors = [];
+  const device = (viewport, ua) => ({ viewport, screen: viewport, userAgent: ua, deviceScaleFactor: 1, isMobile: true, hasTouch: true, locale: 'fr-FR' });
+  const open = async (viewport, ua) => {
+    const ctx = await browser.newContext(device(viewport, ua));
+    await ctx.addInitScript(() => { try { delete Window.prototype.showDirectoryPicker; delete window.showDirectoryPicker; } catch (e) { /* */ } }); // as on Android
+    const p = await ctx.newPage();
+    p.on('pageerror', (e) => errors.push(e.message));
+    await p.goto(`http://localhost:${PORT}/qjdr/`);
+    await p.waitForSelector('[data-testid=config-banner]');
+    await p.evaluate(() => navigator.serviceWorker && navigator.serviceWorker.ready);
+    await p.waitForTimeout(400);
+    return { ctx, p };
+  };
+  const clean = (p) => p.evaluate(() => { document.querySelectorAll('#toasts > *').forEach((t) => t.remove()); window.scrollTo(0, 0); });
+  const save = async (p, name, target) => { await clean(p); await (target || p).screenshot({ path: join(OUT, name) }); console.log('  ' + name); };
+
+  // tablet, portrait
+  {
+    const { ctx, p } = await open({ width: 800, height: 1280 }, TABLET_UA);
+    await save(p, '40-tablette-accueil.png');
+    await p.getByTestId('btn-exemple').click();
+    await p.locator('.tab[data-tab=individuels]').click();
+    await p.frameLocator('[data-testid=frame-individuel]').locator('.r-name').waitFor();
+    await p.getByTestId('btn-liste-repondants').click();
+    await p.waitForTimeout(300);
+    await clean(p);
+    await save(p, '42-tablette-liste.png', p.getByTestId('side-repondants'));
+    await p.getByTestId('btn-liste-repondants').click();
+    await p.waitForTimeout(300);
+    await save(p, '43-tablette-barre.png', p.locator('#panel-individuels .toolbar'));
+    await p.locator('.tab[data-tab=config]').click();
+    await p.getByTestId('cfg-nav-questions').click();
+    await p.getByTestId('cfg-question-q01').locator('summary').click();
+    await p.waitForTimeout(200);
+    await clean(p);
+    await p.getByTestId('cfg-question-q01').locator('.weights-wrap').scrollIntoViewIfNeeded();
+    await p.getByTestId('cfg-question-q01').locator('.weights-wrap').screenshot({ path: join(OUT, '44-tablette-poids.png') });
+    console.log('  44-tablette-poids.png');
+    await p.getByTestId('cfg-nav-fichiers').click();
+    await p.waitForTimeout(200);
+    await save(p, '45-tablette-config-fichiers.png', p.locator('#panel-config .config-layout > div > .card').nth(1));
+    // the update notice, as shown when a new version has been published
+    await p.evaluate(() => window.QJ.util.toast('Nouvelle version disponible.', false, { sticky: true, action: { label: 'Recharger', onClick: function () {} } }));
+    await p.waitForTimeout(400);
+    await p.locator('#toasts .toast').screenshot({ path: join(OUT, '47-mise-a-jour.png') });
+    console.log('  47-mise-a-jour.png');
+    await ctx.close();
+  }
+  // tablet, landscape
+  {
+    const { ctx, p } = await open({ width: 1280, height: 800 }, TABLET_UA);
+    await p.getByTestId('btn-exemple').click();
+    await p.locator('.tab[data-tab=individuels]').click();
+    await p.getByTestId('liste-repondants').locator('button').nth(2).click();
+    await p.frameLocator('[data-testid=frame-individuel]').locator('.r-name').waitFor();
+    await p.waitForTimeout(500);
+    await save(p, '41-tablette-individuel.png');
+    await ctx.close();
+  }
+  // phone: an exported report as a player sees it
+  {
+    const { ctx, p } = await open({ width: 412, height: 915 }, PHONE_UA);
+    await p.getByTestId('btn-exemple').click();
+    await p.locator('.tab[data-tab=individuels]').click();
+    await p.frameLocator('[data-testid=frame-individuel]').locator('.r-name').waitFor();
+    const html = await p.evaluate(() => window.QJ.reports.individualHTML(window.QJ.store.state.config, window.QJ.store.state.analysis.respondents[2]));
+    const solo = await ctx.newPage();
+    await solo.setContent(html);
+    await solo.waitForTimeout(300);
+    await solo.screenshot({ path: join(OUT, '46-telephone-rapport.png') });
+    console.log('  46-telephone-rapport.png');
+    await ctx.close();
+  }
+  server.kill();
+  if (errors.length) throw new Error('Erreurs JS (tablette) : ' + errors.join(' | '));
 }
 
 // ---------------------------------------------------------------------------
@@ -227,6 +327,9 @@ async function main() {
   } else {
     console.log('guide.html absent : pas de vérification du guide.');
   }
+
+  console.log('Écrans tablette et téléphone (émulation Android, http) :');
+  await captureMobile(browser);
 
   await browser.close();
   if (errors.length) { console.error('Erreurs JS dans l’application :\n' + errors.join('\n')); process.exit(1); }

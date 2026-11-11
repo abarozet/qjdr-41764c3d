@@ -20,6 +20,7 @@ Contents
 12. [How to add a feature](#12-how-to-add-a-feature)
 13. [Known limitations](#13-known-limitations)
 14. [Conventions](#14-conventions)
+15. [Web version: PWA, service worker, tablets, GitHub Pages](#15-web-version-pwa-service-worker-tablets-github-pages)
 
 ---
 
@@ -33,7 +34,8 @@ It is split in two layers:
   header: in the browser it registers itself on `QJ`, under Node it is
   `module.exports`. The unit tests `require()` these files directly from
   `QuestionnaireJDR/app/js/`.
-- **Browser modules**: `util.js` (DOM helpers), `store.js` (state +
+- **Browser modules**: `util.js` (DOM helpers, device detection, share,
+  print), `pwa.js` (service-worker registration, update toast), `store.js` (state +
   persistence + event bus), `files.js` (file reading, File System Access,
   IndexedDB, ZIP), the five `ui-*.js` tab modules and `main.js` (start-up).
 
@@ -97,8 +99,8 @@ flowchart LR
 
 ## 2. Script load order and the `QJ` namespace
 
-`Questionnaire JDR.html` loads, in this order (each script assumes the previous
-ones are present):
+`index.html` (and its generated copy `Questionnaire JDR.html`) loads, in this
+order (each script assumes the previous ones are present):
 
 ```html
 <script src="app/vendor/js-yaml.min.js"></script>   <!-- global jsyaml -->
@@ -111,6 +113,7 @@ ones are present):
 <script src="app/js/config-par-defaut.js"></script> <!-- QJ.DEFAULT_CONFIG (generated) -->
 <script src="app/js/exemple-donnees.js"></script>   <!-- QJ.EXAMPLE_CSV    (generated) -->
 <script src="app/js/util.js"></script>              <!-- QJ.util        (needs core for readFileText) -->
+<script src="app/js/pwa.js"></script>               <!-- QJ.pwa         (needs util; registers sw.js over http(s) only) -->
 <script src="app/js/store.js"></script>             <!-- QJ.store       (needs core, util, DEFAULT_CONFIG) -->
 <script src="app/js/files.js"></script>             <!-- QJ.files       (needs core, util, configIO, xlsx, JSZip) -->
 <script src="app/js/ui-donnees.js"></script>        <!-- QJ.uiDonnees -->
@@ -645,10 +648,10 @@ vendored `JSZip` from `QuestionnaireJDR/app/`, and provides:
 | `matching.test.js` | `normalize`, matcher fallbacks, `matchTable` warnings, identifier column, `proposeFromTable`, file names |
 | `scoring.test.js` | `maxPoints`, scores, inclusive thresholds, ties, `analyze`, `validateConfig`, `scoresToCSV`, identifier-like column detection, `nextLevelThreshold` |
 | `stats.test.js` | mean/median/std, Pearson, histogram, `globalStats` |
-| `sync.test.js` | embedded default config == YAML in `configuration/`; embedded example CSV == `exemples/reponses_exemple.csv`; hand-written YAML files byte-identical to the serializer output (header, wrapping) |
+| `sync.test.js` | embedded default config == YAML in `configuration/`; embedded example CSV == `exemples/reponses_exemple.csv`; hand-written YAML files byte-identical to the serializer output (header, wrapping); `Questionnaire JDR.html` == generated from `index.html`; `sw.js` precache list == files on disk and `VERSION` == their content hash; every URL of `index.html`/manifest relative and precached, manifest fields, robots meta |
 | `config-reports.test.js` | real config loads without error, YAML round-trip incl. comments, whole header compared with the hand-written files, and awkward texts, French load errors, self-contained reports on the real config + example CSV, placeholders/mixed profile, xlsx reader on a JSZip-built workbook |
 
-Result at the time of writing: 38 tests, 38 pass, ~0.1 s.
+Result at the time of writing: 41 tests, 41 pass, ~0.2 s.
 
 To add a unit test: create `dev/tests/<topic>.test.js`, `require('./helpers')`,
 prefer `miniConfig()` for logic and `readRealConfig()` only for "the shipped
@@ -658,8 +661,13 @@ from the module's return object so it is reachable from Node.
 ### End-to-end tests – `dev/e2e/*.spec.js` (`cd dev && npm run e2e`)
 
 Playwright (`@playwright/test` 1.49.1) with `channel: 'chrome'`: it drives the
-**installed Google Chrome**, headless, 1280×900, `fr-FR`, over a `file://` URL
-of `Questionnaire JDR.html`. No `npx playwright install` is needed (and no
+**installed Google Chrome**, headless, `fr-FR`. Four projects
+(`dev/playwright.config.js`): `desktop-file` (1280×900, `file://` URL of
+`Questionnaire JDR.html`: `app.spec.js`, `dossier.spec.js`) and
+`tablet-portrait` (800×1280), `tablet-landscape` (1280×800), `phone`
+(412×915) — Android Chrome user agents, `isMobile`, `hasTouch`, served over
+http by `webServer` = `node tools/serve.mjs --port 4173 --base /qjdr/
+--test-hooks` (sub-path like Pages): `mobile.spec.js`. No `npx playwright install` is needed (and no
 browser is downloaded). Recent Node versions (observed with v26) print a
 harmless `module.register()` deprecation warning coming from this Playwright
 version.
@@ -679,7 +687,24 @@ version.
   built inside `page.evaluate` (the real picker cannot be driven headless),
   and IndexedDB availability on `file://`.
 
-Result at the time of writing: 4 tests, 4 pass, ~5 s.
+- `mobile.spec.js` (each Android project; `showDirectoryPicker` deleted by an
+  init script, as on Android): (1) the service worker installs, the cache
+  `qjdr-<VERSION>` holds the precache list, then `context.setOffline(true)` +
+  reload is served `fromServiceWorker()` and the app, the reports, the guide
+  with its images and the desktop page all work offline; (2) update flow: the
+  cookie `qjdr_sw_version` makes the test server (`--test-hooks`) serve another
+  `VERSION` to this context only → toast « Nouvelle version disponible » →
+  « Recharger » reloads under the new version and the old cache is gone;
+  (3) touch UI: no drop zone/folder/FS-Access affordances, accept lists, ZIP
+  download and reload through « Ouvrir des fichiers », every visible control
+  ≥ 40 px and fields ≥ 16 px; (4) full journey with no horizontal overflow on
+  every tab (page and report iframes, compared with the device width), folded
+  player list in portrait, weight grid editing by tap; (5) « Partager… »
+  (stubbed `navigator.canShare/share`), « Imprimer / PDF » (new tab, stubbed
+  `print`), exported reports opened on their own fit the width. Screenshots:
+  `dev/screenshots/tablet/<project>-*.png`.
+
+Result at the time of writing: 20 tests (5 desktop + 3 × 5 mobile), all pass, ~15 s.
 
 The e2e tests find elements through `data-testid` attributes
 (`config-banner`, `btn-exemple`, `nb-repondants`, `frame-individuel`,
@@ -687,7 +712,12 @@ The e2e tests find elements through `data-testid` attributes
 `btn-export-global`, `btn-export-scores`, `cfg-nav-<section>`,
 `cfg-attente-<id>`, `cfg-question-<id>`, `poids-<qid>-<answerIndex>-<attenteId>`,
 `btn-propositions`, `btn-config-zip`, `btn-reset-config`, `input-csv`,
-`input-config-files`, `data-summary`, `data-warnings`, `aide-absente`).
+`input-config-files`, `data-summary`, `data-warnings`, `aide-absente`,
+`dropzone`, `steps-reponses`, `btn-choisir-fichier`, `side-repondants`,
+`btn-liste-repondants`, `btn-partager-un`, `btn-imprimer-un`,
+`btn-partager-global`, `btn-imprimer-global`, `config-fs-actions`,
+`config-howto-mobile`, `config-dropzone`, `btn-config-open-files`,
+`btn-config-open-dir`, `toast-maj`, `btn-recharger-maj`).
 Keep them when refactoring the UI, add new ones rather than relying on text.
 Downloads are captured with `page.waitForEvent('download')`.
 
@@ -766,9 +796,14 @@ extend `miniConfig()` in the tests.
 - **One response per row, first column wins** when a question appears twice;
   only the first `.csv`/`.xlsx` entry of a ZIP and only the first worksheet of
   an `.xlsx` are read. `.xls`, `.ods`, `.numbers` are refused.
-- **Direct folder read/write needs Chromium** (`showDirectoryPicker`). Firefox
-  and Safari get the pick/drop + `configuration.zip` fallback, and the user has
-  to replace the folder content by hand.
+- **Direct folder read/write needs desktop Chromium** (`showDirectoryPicker`).
+  Firefox, Safari and Android Chrome get the pick (+ drop on desktop) +
+  `configuration.zip` fallback; on desktop the user has to replace the folder
+  content by hand.
+- **Real Android behaviour is not covered by the automated tests** (they use
+  desktop Chrome with device emulation): file-picker MIME filtering, the share
+  sheet, printing from the new tab, "Ajouter à l’écran d’accueil", downloads
+  location. Check those on a device after significant changes.
 - **`file://` constraints**: no `fetch`, hence the generated embedded default
   configuration and example; the Aide tab detects `documentation/guide.html`
   with a stylesheet probe and a 2.5 s timeout (assumes present on timeout);
@@ -802,13 +837,16 @@ extend `miniConfig()` in the tests.
   report texts, YAML keys and header comments, file names of exports) in
   French, with French typography (`«  »`, spaces before `: ; ! ?`, decimal
   comma via `formatNumber`/`fmt`).
-- **No runtime network**: no CDN, no fonts, no analytics; libraries are
+- **No runtime network** beyond the browser fetching the app's own files (web
+  version): no CDN, no fonts, no analytics, no upload; libraries are
   vendored in `app/vendor/`. Exported reports must stay self-contained (a unit
   test enforces it).
-- **No build step**: edit the files under `QuestionnaireJDR/app/` and reload
-  the page. The only generated artefacts are `config-par-defaut.js`,
-  `exemple-donnees.js` and `exemples/reponses_exemple.csv`, produced by
-  `dev/tools/`; never edit them by hand.
+- **No bundler**: edit the files under `QuestionnaireJDR/app/` and reload
+  the page. The generated artefacts are `config-par-defaut.js`,
+  `exemple-donnees.js`, `exemples/reponses_exemple.csv`, `Questionnaire JDR.html`,
+  the GENERATED block of `sw.js` and `app/icons/*.png`, produced by
+  `dev/tools/`; never edit them by hand. Run `node dev/tools/build_pwa.mjs`
+  after any change in `QuestionnaireJDR/`.
 - **Classic scripts, ES5 syntax, one namespace** `QJ`; pure modules use the
   UMD header so they load under Node unchanged; keep DOM access out of
   `core.js`, `charts.js`, `reports.js`, `config-io.js`, `xlsx.js`.
@@ -823,3 +861,100 @@ extend `miniConfig()` in the tests.
   the header comments in `config-io.js`, the serializer, the loader, the
   validation messages, the GUI section and the tests together, then regenerate
   the default.
+
+---
+
+## 15. Web version: PWA, service worker, tablets, GitHub Pages
+
+### Entry points
+
+`QuestionnaireJDR/index.html` is the page's single source (GitHub Pages serves
+it for `…/<repo>/`). `Questionnaire JDR.html`, the desktop double-click entry
+point, is written from it by `dev/tools/build_pwa.mjs` (`pwa_lib.desktopHtmlFrom`:
+adds a "GENERATED" comment, drops the manifest link). Both reference everything
+with relative URLs, so any sub-path works.
+
+### Service worker and versioning
+
+- `pwa.js` registers `sw.js` (same folder as `index.html` → scope = the whole
+  app) on `load`, only when `location.protocol` is `http:`/`https:` and
+  `serviceWorker` exists. `localhost` counts as a secure context, so the dev
+  server works without TLS.
+- `sw.js` holds a GENERATED block (`VERSION`, `PRECACHE`) rewritten by
+  `build_pwa.mjs`: the list is `pwa_lib.precacheFiles()` (same selection as the
+  release zip, minus `sw.js`), URL-encoded per segment; `VERSION` is a SHA-256
+  over `path\0bytes\0` of those files (the desktop copy hashed as it will be
+  written), truncated to 12 hex chars. `--check` verifies without writing (CI).
+- Install: `cache.addAll` with `cache: 'reload'` into `qjdr-<VERSION>`; no
+  `skipWaiting()`. Activate: delete other `qjdr-*` caches, `clients.claim()`.
+- Fetch (GET, same origin, inside the scope): key = scope + path without query
+  (`…/` → `index.html`); cache hit → served; miss → network, stored if
+  `ok && basic`; offline navigation → cached `index.html`. Navigations also
+  call `registration.update()` in the background. Precached files are not
+  revalidated one by one: a version is an atomic snapshot, and updates arrive
+  as a new `sw.js`.
+- Update UX (`pwa.js`): `updatefound` → new worker `installed` while a
+  controller exists → sticky toast « Nouvelle version disponible. » with
+  « Recharger » (`postMessage({type:'SKIP_WAITING'})`). `controllerchange`
+  reloads the page only when a previous controller existed (an accepted
+  update, here or in another tab), never on the first install (which shows
+  « disponible hors connexion » instead). `reg.update()` also runs when the
+  page becomes visible and hourly (an installed PWA can stay open for days).
+
+### Tablets and phones
+
+- `QJ.util.env`: `mobile` (UA-CH `mobile`, or Android/iOS/iPadOS in the UA —
+  Android tablets have no "Mobile" token), `touchOnly` (`any-pointer: coarse`
+  without `any-pointer: fine`), `web` (http/https), `canDropFiles`
+  (`!mobile && !touchOnly`).
+- `QJ.files.fsSupported` (File System Access) gates the folder card;
+  `folderInputSupported` (desktop and `webkitdirectory`) gates « Ouvrir le
+  dossier » in the fallback; `canDropFiles` gates drop zones and the
+  "Déposez…" wording. On Android only « Télécharger la configuration (.zip) »
+  and « Ouvrir des fichiers (.zip ou .yaml)… » remain, with an explanation.
+- `DATA_ACCEPT` / `CONFIG_ACCEPT` are deliberately broad (extensions + the
+  MIME types Android pickers report, incl. `text/comma-separated-values`,
+  `application/vnd.ms-excel`, `application/octet-stream`): Android greys out
+  files whose type is not listed; content is validated when read.
+- Downloads: Blob + `a[download]`, object URL revoked after 60 s.
+  Share: `util.canShareFiles('text/html')` probes `navigator.canShare({files})`;
+  « Partager… » (individual and global report) calls `navigator.share`
+  (cancel = `AbortError`, silent).
+- Print: Android Chrome prints the top-level document, not an iframe, so on
+  `env.mobile` `util.printReport` writes the report into `window.open('')`
+  with a sticky no-print bar (« Imprimer / PDF », « Fermer ») and an automatic
+  `print()` after `load`; desktop keeps printing the preview iframe. If the tab
+  cannot be opened a toast explains the export route.
+- CSS (end of `app.css`): `@media (pointer: coarse)` → 40–52 px targets,
+  16 px fields, no sticky hover; `≤ 960px` → single column, folded player list
+  (`.side-toggle`), configuration sub-menu as pills; `≤ 760px` → swipeable tab
+  row, compact banner, bottom-sheet modals, wrapping buttons; `≤ 640px` → the
+  weight grid becomes one card per answer (`td.w::before` shows the attente
+  name from `data-label`, colour from `--c`); the grid's first column is
+  sticky when it scrolls sideways. The reports have their own `≤ 480px` and
+  `pointer: coarse` rules (`reports.js`).
+- Histograms print the count above each bar (no hover tooltip needed).
+
+### Local web server
+
+`node dev/tools/serve.mjs [--port 4173] [--base /qjdr/]` serves
+`QuestionnaireJDR/` under the base path with correct MIME types
+(`.webmanifest`, `.yaml`…), `Cache-Control: no-cache`, a `/qjdr` → `/qjdr/`
+redirect like Pages, and no directory listing. `--test-hooks` (Playwright
+only) enables the `qjdr_sw_version` cookie that fakes a new `VERSION`.
+To test on a real tablet on the same Wi-Fi, note that the service worker needs
+a secure context: use `chrome://inspect` port forwarding (`localhost`) or a
+real https host.
+
+### Deploying to GitHub Pages
+
+`.github/workflows/pages.yml` (push to `main` or manual): checkout → Node 22 →
+`node dev/tools/build_pwa.mjs --check` → `node --test dev/tests/*.test.js` →
+`actions/configure-pages` → `actions/upload-pages-artifact` (`path:
+QuestionnaireJDR`) → `actions/deploy-pages`. Repository setting: Pages source =
+"GitHub Actions". The job deploys the committed files unchanged, so the
+version users get is the one the sync test validated. Unlisted site:
+`noindex, nofollow` metas on `index.html` and `guide.html`, `robots.txt`
+disallowing everything (only effective at a domain root; the meta is what
+counts for a project site).
+

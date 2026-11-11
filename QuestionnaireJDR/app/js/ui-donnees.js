@@ -33,7 +33,7 @@
   }
 
   function filePicker() {
-    var input = h('input', { type: 'file', accept: '.csv,.txt,.tsv,.zip,.xlsx,text/csv', class: 'visually-hidden', 'data-testid': 'input-csv' });
+    var input = h('input', { type: 'file', accept: QJ.files.DATA_ACCEPT, class: 'visually-hidden', 'data-testid': 'input-csv' });
     input.addEventListener('change', function () { handleFile(input.files[0]); input.value = ''; });
     return input;
   }
@@ -58,23 +58,34 @@
     panel.appendChild(input);
 
     if (!st.data) {
-      var dz = h('div', { class: 'dropzone card', 'data-testid': 'dropzone' },
+      var drop = util.env.canDropFiles;
+      var dz = h('div', { class: 'dropzone card' + (drop ? '' : ' no-drop'), 'data-testid': 'dropzone' },
         uploadIcon(),
-        h('h2', null, 'Déposez ici le fichier des réponses'),
-        h('p', null, 'Le fichier CSV téléchargé depuis Google Forms (ou l’archive .zip telle quelle).'),
+        h('h2', null, drop ? 'Déposez ici le fichier des réponses' : 'Choisissez le fichier des réponses'),
+        h('p', null, drop ? 'Le fichier CSV téléchargé depuis Google Forms (ou l’archive .zip telle quelle), ou un fichier Excel (.xlsx).'
+          : 'Le fichier .xlsx ou .csv enregistré depuis Google Sheets, ou le .zip téléchargé depuis Google Forms.'),
         h('div', { class: 'row' },
-          h('button', { class: 'btn primary', type: 'button', onclick: function () { input.click(); } }, 'Choisir un fichier…'),
+          h('button', { class: 'btn primary', type: 'button', 'data-testid': 'btn-choisir-fichier', onclick: function () { input.click(); } }, 'Choisir un fichier…'),
           h('button', { class: 'btn', type: 'button', 'data-testid': 'btn-exemple', onclick: loadExample }, 'Charger l’exemple')));
-      setupDrop(dz);
+      if (drop) setupDrop(dz);
       panel.appendChild(dz);
+      var steps = util.env.mobile ? [
+        h('li', null, 'Dans l’application ', h('b', null, 'Google Sheets'), ', ouvrez la feuille des réponses liée au formulaire.'),
+        h('li', null, 'Touchez le menu ', h('b', null, '⋮'), ' (trois points) puis ', h('b', null, 'Partager et exporter'), ' → ', h('b', null, 'Enregistrer sous'), ' : choisissez ', h('b', null, 'Excel (.xlsx)'), ' ou ', h('b', null, 'CSV'), '.'),
+        h('li', null, 'Revenez ici, touchez ', h('b', null, 'Choisir un fichier…'), ' et sélectionnez ce fichier (souvent dans ', h('i', null, 'Téléchargements'), ').'),
+        h('li', null, 'Consultez les ', h('b', null, 'Rapports individuels'), ' et le ', h('b', null, 'Rapport global'), '.')
+      ] : [
+        h('li', null, 'Ouvrez votre formulaire dans Google Forms, onglet ', h('b', null, 'Réponses'), '.'),
+        h('li', null, 'Cliquez sur les trois points ', h('b', null, '⋮'), ' puis ', h('b', null, 'Télécharger les réponses (.csv)'), '.'),
+        h('li', null, drop ? 'Glissez le fichier téléchargé (même le .zip) dans le cadre ci-dessus.' : 'Choisissez le fichier téléchargé (même le .zip) avec le bouton ci-dessus.'),
+        h('li', null, 'Consultez les ', h('b', null, 'Rapports individuels'), ' et le ', h('b', null, 'Rapport global'), '.')
+      ];
       panel.appendChild(h('div', { class: 'card' },
         h('h2', null, 'Comment récupérer les réponses ?'),
-        h('ol', { class: 'steps' },
-          h('li', null, 'Ouvrez votre formulaire dans Google Forms, onglet ', h('b', null, 'Réponses'), '.'),
-          h('li', null, 'Cliquez sur les trois points ', h('b', null, '⋮'), ' puis ', h('b', null, 'Télécharger les réponses (.csv)'), '.'),
-          h('li', null, 'Glissez le fichier téléchargé (même le .zip) dans le cadre ci-dessus.'),
-          h('li', null, 'Consultez les ', h('b', null, 'Rapports individuels'), ' et le ', h('b', null, 'Rapport global'), '.')),
-        h('p', { class: 'small muted', style: { marginTop: '12px' } }, 'Les réponses restent sur cet ordinateur : rien n’est envoyé sur Internet.')));
+        h('ol', { class: 'steps', 'data-testid': 'steps-reponses' }, steps),
+        h('p', { class: 'small muted', style: { marginTop: '12px' } }, util.env.web
+          ? 'Les réponses restent sur cet appareil : le fichier est lu et traité ici même, rien n’est envoyé sur Internet.'
+          : 'Les réponses restent sur cet ordinateur : rien n’est envoyé sur Internet.')));
       return;
     }
 
@@ -92,7 +103,7 @@
         h('h2', { class: 'grow', style: { margin: 0 } }, 'Fichier chargé : ', h('span', { style: { fontFamily: 'var(--sans)', fontSize: '18px' } }, st.data.fileName)),
         h('button', { class: 'btn', type: 'button', onclick: function () { input.click(); } }, 'Changer de fichier…'),
         h('button', { class: 'btn danger', type: 'button', onclick: function () {
-          util.confirm('Oublier les données ?', 'Les réponses chargées seront retirées de l’application (le fichier sur votre ordinateur n’est pas touché).', 'Oublier', function () { store.setData(null); }, true);
+          util.confirm('Oublier les données ?', 'Les réponses chargées seront retirées de l’application (le fichier d’origine n’est pas touché).', 'Oublier', function () { store.setData(null); }, true);
         } }, 'Oublier les données')),
       h('div', { class: 'kpis', style: { marginTop: '14px' } },
         h('div', { class: 'kpi' }, h('b', { 'data-testid': 'nb-repondants' }, String(n)), h('span', null, 'répondant' + (n > 1 ? 's' : ''))),
@@ -102,7 +113,7 @@
       h('div', { class: 'row' },
         h('button', { class: 'btn primary', type: 'button', onclick: function () { QJ.main.showTab('individuels'); } }, 'Voir les rapports individuels'),
         h('button', { class: 'btn', type: 'button', onclick: function () { QJ.main.showTab('global'); } }, 'Voir le rapport global')));
-    setupDrop(head);
+    if (util.env.canDropFiles) setupDrop(head);
     panel.appendChild(head);
 
     var box = h('div', { class: 'card' }, h('h2', null, 'Vérification du fichier'));

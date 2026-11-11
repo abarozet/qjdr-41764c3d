@@ -7,7 +7,12 @@
     "test": "node --test tests/",
     "e2e": "playwright test",
     "build-config": "node tools/build_default_config.mjs",
-    "exemple": "node tools/generate_example.mjs"
+    "exemple": "node tools/generate_example.mjs",
+    "e2e:desktop": "playwright test --project desktop-file",
+    "e2e:mobile": "playwright test --project tablet-portrait --project tablet-landscape --project phone",
+    "serve": "node tools/serve.mjs",
+    "build-pwa": "node tools/build_pwa.mjs",
+    "icons": "node tools/make_icons.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.49.1"

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
 <title>Guide d’utilisation – Questionnaire JDR</title>
 <style>
   :root {
@@ -81,6 +82,7 @@
   figure { margin: 14px 0 22px; }
   figure img { display: block; max-width: 100%; height: auto; border: 1px solid var(--line-2); border-radius: 8px; background: #fff; box-shadow: 0 2px 10px rgba(60,40,20,.08); }
   figure.small img { max-width: 560px; }
+  figure.phone img { max-width: 320px; }
   figure.center { text-align: center; } figure.center img { margin: 0 auto; }
   figcaption { font-size: 13.5px; color: var(--muted); margin-top: 6px; }
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
@@ -145,10 +147,10 @@
 <nav class="card toc" aria-label="Sommaire">
   <h2>Sommaire</h2>
   <ol>
-    <li><a href="#bref">En bref</a><span class="sub">À quoi sert l’application, installer le dossier, l’ouvrir</span></li>
-    <li><a href="#forms">Récupérer les réponses depuis Google Forms</a><span class="sub">Le fichier .csv (ou .zip) des réponses</span></li>
+    <li><a href="#bref">En bref</a><span class="sub">Ouvrir l’application sur la tablette, l’installer, la mettre à jour (et sur un ordinateur)</span></li>
+    <li><a href="#forms">Récupérer les réponses</a><span class="sub">Sur la tablette avec Google Sheets, ou sur un ordinateur avec Google Forms</span></li>
     <li><a href="#charger">Charger les réponses</a><span class="sub">Lire la vérification du fichier et les avertissements</span></li>
-    <li><a href="#individuels">Les rapports individuels</a><span class="sub">Consulter, exporter, imprimer, envoyer à un joueur</span></li>
+    <li><a href="#individuels">Les rapports individuels</a><span class="sub">Consulter, partager, faire un PDF, envoyer à un joueur</span></li>
     <li><a href="#global">Le rapport global</a><span class="sub">Ce que veulent dire les graphiques et les chiffres</span></li>
     <li><a href="#scores">Comment les scores sont calculés</a><span class="sub">Points, pourcentage, niveaux : un exemple complet</span></li>
     <li><a href="#config">Modifier la configuration</a><span class="sub">Textes, seuils, poids, attentes, questions, enregistrement</span></li>
@@ -165,18 +167,47 @@
 
   <h3>Ce qu’il vous faut</h3>
   <ul>
-    <li>Un ordinateur avec un navigateur récent : <b>Microsoft Edge</b> ou <b>Google Chrome</b> de préférence (Firefox et Safari fonctionnent aussi, avec une petite différence pour l’enregistrement, voir <a href="#enregistrer">7.8</a>).</li>
-    <li>Rien à installer. Pas de compte, pas de connexion Internet : tout se passe sur votre ordinateur, <b>rien n’est envoyé en ligne</b>.</li>
-    <li>Le fichier des réponses téléchargé depuis Google Forms (voir <a href="#forms">partie 2</a>).</li>
+    <li>Une <b>tablette Android</b> avec <b>Google Chrome</b> (c’est l’usage prévu). Un téléphone convient aussi, l’écran est simplement plus petit. Un ordinateur reste possible : voir <a href="#ordinateur">plus bas</a>.</li>
+    <li>Le <b>lien de l’application</b> qu’on vous a transmis (une adresse qui commence par <code>https://</code>).</li>
+    <li>Une connexion Internet <b>la première fois seulement</b>. Ensuite, l’application fonctionne aussi hors connexion.</li>
+    <li>Pas de compte, rien à payer.</li>
   </ul>
 
-  <h3>Installer le dossier (Windows)</h3>
-  <p>L’application vous est transmise sous la forme d’un fichier compressé, par exemple <code>QuestionnaireJDR.zip</code>.</p>
+  <h3 id="tablette">Ouvrir l’application sur la tablette</h3>
+  <ol class="steps">
+    <li>Ouvrez le lien de l’application dans <b>Chrome</b> (touchez le lien reçu par e-mail ou message ; s’il s’ouvre dans une autre application, choisissez « Ouvrir dans Chrome »).</li>
+    <li>L’application s’affiche. Patientez quelques secondes : un message « L’application est maintenant disponible hors connexion sur cet appareil » confirme qu’elle est enregistrée sur la tablette.</li>
+    <li>Pour la retrouver d’un geste, installez-la sur l’écran d’accueil : touchez le menu <span class="ui">⋮</span> de Chrome (en haut à droite), puis <span class="ui">Ajouter à l’écran d’accueil</span> ou <span class="ui">Installer l’application</span> (le libellé dépend de la version de Chrome), puis confirmez. Chrome peut aussi vous le proposer de lui-même dans un bandeau.</li>
+    <li>Une icône « Questionnaire JDR » (un dé rouge) apparaît sur l’écran d’accueil. Touchez-la : l’application s’ouvre en plein écran, comme une application normale, <b>même sans connexion</b>.</li>
+  </ol>
+  <figure><img src="images/40-tablette-accueil.png" alt="L’application sur une tablette en mode portrait : onglets en haut, cadre « Choisissez le fichier des réponses » avec les boutons Choisir un fichier… et Charger l’exemple, puis les étapes Google Sheets"><figcaption>L’application sur la tablette, à l’ouverture.</figcaption></figure>
+
+  <div class="box warn"><b class="t">Ce lien est privé</b><p>L’adresse de l’application n’est pas publiée et n’apparaît pas dans les moteurs de recherche. <b>Ne la diffusez pas</b> (pas sur un forum, pas dans un groupe de joueurs) : gardez-la pour vous et les personnes qui gèrent le questionnaire. Les joueurs n’en ont pas besoin, ils reçoivent leur rapport sous forme de fichier.</p></div>
+  <div class="box info"><b class="t">Les réponses des joueurs ne quittent pas la tablette</b><p>Le lien sert seulement à télécharger l’application elle-même. Le fichier des réponses que vous choisissez ensuite est <b>lu et traité sur l’appareil uniquement</b> : il n’est envoyé à aucun serveur, ni au site qui héberge l’application, ni à personne d’autre. La configuration et les réponses chargées sont gardées dans la mémoire de Chrome, sur cette tablette.</p></div>
+
+  <h3 id="maj">Mettre à jour l’application</h3>
+  <p>Quand une nouvelle version est publiée, vous n’avez rien à réinstaller. À l’ouverture suivante (avec une connexion), l’application la télécharge discrètement, puis affiche en bas de l’écran :</p>
+  <figure class="small"><img src="images/47-mise-a-jour.png" alt="Message « Nouvelle version disponible. » avec un bouton Recharger et une croix pour fermer"></figure>
+  <p>Touchez <span class="ui p">Recharger</span> : la page se recharge avec la nouvelle version. Vos réponses chargées et votre configuration sont conservées. Si vous fermez le message avec la croix, la nouvelle version sera utilisée la prochaine fois que vous rouvrirez l’application.</p>
+
+  <h3>Premier coup d’œil</h3>
+  <ul>
+    <li><span class="tab">Données</span> : c’est ici que vous chargez le fichier des réponses.</li>
+    <li><span class="tab">Rapports individuels</span> : le rapport de chaque joueur, à consulter, exporter, partager ou imprimer.</li>
+    <li><span class="tab">Rapport global</span> : la synthèse de toutes les réponses, avec graphiques.</li>
+    <li><span class="tab">Configuration</span> : pour modifier les textes, les niveaux, les points des réponses, les questions.</li>
+    <li><span class="tab">Aide</span> : ce guide.</li>
+  </ul>
+  <p>Sur un téléphone, la rangée d’onglets glisse de côté avec le doigt. Tout fonctionne aussi en tenant la tablette à l’horizontale, qui donne plus de place aux rapports.</p>
+  <div class="box tip"><b class="t">Pour essayer sans attendre</b><p>Touchez <span class="ui">Charger l’exemple</span> dans l’onglet <span class="tab">Données</span> : 30 réponses fictives sont chargées. Vous pouvez alors visiter tous les onglets. Quand vous aurez vos vraies réponses, touchez <span class="ui">Changer de fichier…</span>.</p></div>
+
+  <h3 id="ordinateur">Sur un ordinateur Windows (autre possibilité)</h3>
+  <p>Sur un ordinateur, le plus simple est d’ouvrir <b>le même lien</b> dans Chrome ou Edge : tout fonctionne de la même façon, et Chrome/Edge proposent aussi « Installer l’application ». On peut aussi utiliser l’application <b>sans Internet du tout</b>, à partir d’un fichier compressé, par exemple <code>QuestionnaireJDR.zip</code> :</p>
   <ol class="steps">
     <li>Enregistrez le fichier .zip quelque part sur votre ordinateur (par exemple dans <b>Documents</b>).</li>
     <li>Faites un <b>clic droit</b> sur le fichier .zip, puis <span class="ui">Extraire tout…</span>, puis <span class="ui">Extraire</span>. Windows crée un dossier normal à côté du .zip.</li>
     <li>Ouvrez ce nouveau dossier, puis le dossier <code>QuestionnaireJDR</code> qu’il contient.</li>
-    <li><b>Double-cliquez sur <code>Questionnaire JDR.html</code></b>. L’application s’ouvre dans votre navigateur.</li>
+    <li><b>Double-cliquez sur <code>Questionnaire JDR.html</code></b>. L’application s’ouvre dans votre navigateur (Microsoft Edge ou Google Chrome de préférence ; Firefox et Safari fonctionnent aussi, avec une petite différence pour l’enregistrement, voir <a href="#enregistrer">7.8</a>).</li>
   </ol>
   <div class="box warn"><b class="t">Important : ne lancez pas l’application depuis l’intérieur du .zip</b>
     <p>Quand on double-clique sur un .zip, Windows en montre le contenu comme s’il s’agissait d’un dossier, mais ce n’en est pas un : l’application s’ouvrirait incomplète et ne pourrait rien enregistrer. Faites toujours <span class="ui">Extraire tout…</span> d’abord, puis travaillez dans le dossier extrait.</p></div>
@@ -185,31 +216,34 @@
   <h4>Ce que contient le dossier</h4>
   <table class="t">
     <tr><th style="width:38%">Élément</th><th>Rôle</th></tr>
-    <tr><td><code>Questionnaire JDR.html</code></td><td>L’application. C’est le seul fichier à ouvrir.</td></tr>
+    <tr><td><code>Questionnaire JDR.html</code></td><td>L’application. C’est le seul fichier à ouvrir (<code>index.html</code> est la même page, utilisée par la version en ligne).</td></tr>
     <tr><td><code>configuration/</code></td><td>Les fichiers de configuration (questions, points, textes des rapports). Voir <a href="#config">parties 7</a> et <a href="#fichiers">8</a>.</td></tr>
     <tr><td><code>documentation/</code></td><td>Ce guide (<code>guide.html</code>) et ses images.</td></tr>
     <tr><td><code>exemples/</code></td><td>Un fichier de réponses fictives pour essayer.</td></tr>
-    <tr><td><code>app/</code></td><td>Le moteur de l’application. Ne rien modifier ici.</td></tr>
+    <tr><td><code>app/</code></td><td>Le moteur de l’application. Ne rien modifier ici (les autres petits fichiers, comme <code>sw.js</code> ou <code>manifest.webmanifest</code>, servent à la version en ligne).</td></tr>
   </table>
   <p>Gardez ces éléments ensemble : si vous déplacez l’application, déplacez tout le dossier <code>QuestionnaireJDR</code>.</p>
-
-  <h3>Premier coup d’œil</h3>
-  <figure><img src="images/01-accueil.png" alt="L’application à l’ouverture : onglet Données, zone de dépôt du fichier et rappel des étapes Google Forms"><figcaption>L’application à l’ouverture. En haut, les cinq onglets ; en dessous, le bandeau qui indique quelle configuration est utilisée.</figcaption></figure>
-  <ul>
-    <li><span class="tab">Données</span> : c’est ici que vous chargez le fichier des réponses.</li>
-    <li><span class="tab">Rapports individuels</span> : le rapport de chaque joueur, à consulter, exporter ou imprimer.</li>
-    <li><span class="tab">Rapport global</span> : la synthèse de toutes les réponses, avec graphiques.</li>
-    <li><span class="tab">Configuration</span> : pour modifier les textes, les niveaux, les points des réponses, les questions.</li>
-    <li><span class="tab">Aide</span> : ce guide.</li>
-  </ul>
-  <div class="box tip"><b class="t">Pour essayer sans attendre</b><p>Cliquez sur <span class="ui">Charger l’exemple</span> dans l’onglet <span class="tab">Données</span> : 30 réponses fictives sont chargées. Vous pouvez alors visiter tous les onglets. Quand vous aurez vos vraies réponses, cliquez sur <span class="ui">Changer de fichier…</span>.</p></div>
+  <figure><img src="images/01-accueil.png" alt="L’application sur un ordinateur : onglet Données, zone de dépôt du fichier et rappel des étapes Google Forms"><figcaption>La même application sur un ordinateur : on peut y glisser le fichier des réponses dans le cadre pointillé.</figcaption></figure>
   <p class="back"><a href="#haut">↑ Sommaire</a></p>
 </section>
 
 <!-- ============================================================ 2 -->
 <section class="chap" id="forms">
-  <h2><span class="num">2.</span>Récupérer les réponses depuis Google Forms</h2>
-  <p>Google Forms permet de télécharger toutes les réponses reçues dans un seul fichier. C’est ce fichier que l’application lit.</p>
+  <h2><span class="num">2.</span>Récupérer les réponses</h2>
+  <p>Les réponses au formulaire Google sont rangées dans une feuille de calcul Google Sheets associée au formulaire. Il faut en faire un fichier que l’application lira : un classeur Excel (<code>.xlsx</code>) ou un fichier <code>.csv</code>.</p>
+
+  <h3 id="sheets">Sur la tablette, avec l’application Google Sheets</h3>
+  <ol class="steps">
+    <li>Si ce n’est pas déjà fait, reliez le formulaire à une feuille : dans Google Forms, onglet <span class="ui">Réponses</span>, bouton <span class="ui">Associer à Sheets</span> (ou <span class="ui">Afficher dans Sheets</span>). Cette étape se fait une seule fois, et plus facilement depuis un ordinateur.</li>
+    <li>Sur la tablette, ouvrez l’application <b>Google Sheets</b> et ouvrez la feuille des réponses (souvent nommée « <i>Titre du formulaire</i> (réponses) »).</li>
+    <li>Touchez le menu <span class="ui">⋮</span> (trois points, en haut à droite), puis <span class="ui">Partager et exporter</span>, puis <span class="ui">Enregistrer sous</span> (selon la version, l’entrée peut s’appeler « Exporter » ou « Télécharger »).</li>
+    <li>Choisissez <span class="ui">Excel (.xlsx)</span> — ou <span class="ui">CSV</span> — et confirmez. Le fichier est enregistré sur la tablette, en général dans le dossier <b>Téléchargements</b> (ou bien Sheets vous demande où l’enregistrer).</li>
+    <li>Revenez dans l’application Questionnaire JDR, onglet <span class="tab">Données</span>, et touchez <span class="ui p">Choisir un fichier…</span> (voir <a href="#charger">partie 3</a>).</li>
+  </ol>
+  <div class="box info"><b class="t">Les menus de Google bougent souvent</b><p>Les libellés exacts peuvent varier un peu d’une version de Google Sheets à l’autre. Cherchez ce qui ressemble à « Partager et exporter », « Enregistrer sous », « Exporter » ou « Télécharger », puis le format Excel ou CSV : les deux conviennent. Si Sheets vous propose « Envoyer une copie », choisissez plutôt « Enregistrer sous » : le but est d’avoir le fichier sur la tablette.</p></div>
+
+  <h3>Sur un ordinateur, avec Google Forms</h3>
+  <p>Google Forms permet aussi de télécharger toutes les réponses reçues dans un seul fichier.</p>
   <ol class="steps">
     <li>Ouvrez votre formulaire dans Google Forms (en mode édition, pas le lien envoyé aux joueurs).</li>
     <li>Cliquez sur l’onglet <span class="ui">Réponses</span>, en haut du formulaire.</li>
@@ -217,8 +251,9 @@
     <li>Choisissez <span class="ui">Télécharger les réponses (.csv)</span>.</li>
     <li>Votre navigateur enregistre un fichier dans votre dossier <b>Téléchargements</b>. Selon les cas, c’est un fichier <code>.csv</code> ou une archive <code>.zip</code> qui contient le .csv : <b>les deux conviennent tels quels</b>, inutile de décompresser.</li>
   </ol>
+  <p>Vous pouvez ensuite ouvrir l’application sur l’ordinateur, ou vous envoyer ce fichier (e-mail, Google Drive…) pour l’ouvrir sur la tablette.</p>
   <div class="box info"><b class="t">Formats acceptés</b>
-    <p>L’application lit les fichiers <code>.csv</code> (et <code>.txt</code>, <code>.tsv</code>), les archives <code>.zip</code> de Google Forms, et les classeurs Excel <code>.xlsx</code> (par exemple si vous avez d’abord ouvert les réponses dans Google Sheets puis fait <span class="ui">Fichier</span> → <span class="ui">Télécharger</span> → <span class="ui">Microsoft Excel (.xlsx)</span>). Les anciens formats <code>.xls</code> et <code>.ods</code> ne sont pas acceptés : un message vous le dira.</p></div>
+    <p>L’application lit les fichiers <code>.csv</code> (et <code>.txt</code>, <code>.tsv</code>), les archives <code>.zip</code> de Google Forms, et les classeurs Excel <code>.xlsx</code> (par exemple depuis Google Sheets sur ordinateur : <span class="ui">Fichier</span> → <span class="ui">Télécharger</span> → <span class="ui">Microsoft Excel (.xlsx)</span>). Seule la première feuille d’un classeur est lue. Les anciens formats <code>.xls</code> et <code>.ods</code> ne sont pas acceptés : un message vous le dira.</p></div>
   <div class="box tip"><b class="t">Conseil</b><p>Gardez le fichier tel que Google l’a produit. Si vous l’ouvrez dans Excel et que vous l’enregistrez à nouveau, Excel change parfois le séparateur et les accents. L’application s’en sort en général (voir <a href="#faq">partie 9</a>), mais le fichier d’origine est le plus sûr.</p></div>
   <p class="back"><a href="#haut">↑ Sommaire</a></p>
 </section>
@@ -228,7 +263,7 @@
   <h2><span class="num">3.</span>Charger les réponses</h2>
   <ol class="steps">
     <li>Ouvrez l’onglet <span class="tab">Données</span>.</li>
-    <li>Glissez le fichier téléchargé (le .csv ou le .zip) dans le grand cadre pointillé, ou cliquez sur <span class="ui p">Choisir un fichier…</span> et sélectionnez-le.</li>
+    <li>Touchez <span class="ui p">Choisir un fichier…</span> : le sélecteur de fichiers d’Android s’ouvre. Allez dans <b>Téléchargements</b> (ou l’emplacement choisi à l’étape précédente) et touchez le fichier .xlsx, .csv ou .zip. Sur un ordinateur, vous pouvez aussi glisser le fichier dans le grand cadre pointillé.</li>
     <li>Un résumé s’affiche : vous pouvez passer aux rapports.</li>
   </ol>
   <figure><img src="images/03-donnees-chargees.png" alt="Résumé du fichier chargé : 30 répondants, période des réponses, 32 questions reconnues sur 32, encodage UTF-8 et séparateur virgule"><figcaption>Le résumé après chargement. Vérifiez surtout « questions reconnues » : ici 32 / 32, tout est reconnu.</figcaption></figure>
@@ -238,9 +273,10 @@
     <li><b>questions reconnues</b> : combien de questions de la configuration ont été retrouvées dans le fichier. Si ce n’est pas « n / n », lisez les avertissements juste en dessous.</li>
     <li><b>encodage · séparateur</b> : détails techniques sur le fichier. « UTF-8 · virgule » est le cas normal d’un fichier Google Forms.</li>
   </ul>
-  <p>Les boutons <span class="ui">Changer de fichier…</span> et <span class="ui">Oublier les données</span> permettent de charger un autre fichier ou de retirer les réponses de l’application (le fichier sur votre ordinateur n’est pas touché).</p>
+  <p>Les boutons <span class="ui">Changer de fichier…</span> et <span class="ui">Oublier les données</span> permettent de charger un autre fichier ou de retirer les réponses de l’application (le fichier d’origine n’est pas touché).</p>
+  <div class="box tip"><b class="t">Le fichier n’apparaît pas, ou est grisé, dans le sélecteur ?</b><p>Dans le sélecteur d’Android, touchez le menu (☰ ou ⋮) pour parcourir les autres emplacements : <b>Téléchargements</b>, <b>Drive</b>, la mémoire de la tablette… Un fichier resté uniquement dans Google Drive peut aussi être choisi depuis l’entrée « Drive » du sélecteur.</p></div>
 
-  <div class="box info"><b class="t">L’application se souvient</b><p>Le fichier chargé et la configuration en cours sont mémorisés par le navigateur, sur cet ordinateur. Si vous fermez l’application et la rouvrez, vous retrouvez tout. Un fichier très volumineux peut ne pas être mémorisé : un message vous prévient alors qu’il faudra le recharger la prochaine fois.</p></div>
+  <div class="box info"><b class="t">L’application se souvient</b><p>Le fichier chargé et la configuration en cours sont mémorisés par le navigateur, sur cet appareil (tablette ou ordinateur). Si vous fermez l’application et la rouvrez, vous retrouvez tout. Un fichier très volumineux peut ne pas être mémorisé : un message vous prévient alors qu’il faudra le recharger la prochaine fois.</p></div>
 
   <h3>Lire la « Vérification du fichier »</h3>
   <p>Sous le résumé, l’application compare le fichier à la configuration (les questions et réponses qu’elle connaît). Quand tout correspond, un message vert « Tout est en ordre » s’affiche. Avec le fichier d’exemple, il n’y a qu’une simple information, parce qu’un répondant a laissé une question vide :</p>
@@ -279,11 +315,15 @@
 
   <h3>Consulter</h3>
   <ul>
-    <li>Cliquez sur un nom dans la liste de gauche. Le point de couleur rappelle l’attente principale du joueur ; la date est celle de sa réponse.</li>
+    <li>Cliquez sur un nom dans la liste de gauche. Le point de couleur rappelle l’attente principale du joueur ; la date est celle de sa réponse. Sur une tablette tenue verticalement (ou un téléphone), la liste est repliée pour laisser la place au rapport : touchez la barre <span class="ui">Joueurs (30) · …</span> pour la déplier, puis touchez un nom.</li>
     <li>Le champ <span class="ui">Rechercher un joueur…</span> filtre la liste.</li>
     <li>Les boutons <span class="ui">‹</span> et <span class="ui">›</span> passent au joueur précédent ou suivant.</li>
   </ul>
   <figure><img src="images/07-individuels-barre.png" alt="Barre d’outils : nom du répondant, boutons précédent et suivant, Exporter ce rapport (.html), Imprimer / PDF"></figure>
+  <div class="two">
+    <figure><img src="images/42-tablette-liste.png" alt="Sur la tablette en portrait : la liste des joueurs dépliée, avec le champ de recherche et le bouton Tout exporter (ZIP)"><figcaption>Sur la tablette en portrait : la liste dépliée.</figcaption></figure>
+    <figure><img src="images/41-tablette-individuel.png" alt="Sur la tablette à l’horizontale : liste des joueurs à gauche et rapport du répondant 3 à droite, avec les boutons Exporter, Partager… et Imprimer / PDF"><figcaption>À l’horizontale, la liste et le rapport sont côte à côte.</figcaption></figure>
+  </div>
 
   <h3>Ce que contient un rapport</h3>
   <figure><img src="images/08b-individuel-haut.png" alt="Haut d’un rapport : graphique radar à six axes et encart « Votre attente principale : Convivialité, L’animateur de soirées – 55 % »"><figcaption>Le radar et l’encart de l’attente principale.</figcaption></figure>
@@ -296,16 +336,33 @@
   </ol>
   <figure><img src="images/08-individuel-attente.png" alt="Section d’une attente : « Quel joueur social êtes-vous ? », barre de score à 55 %, badge Niveau 3/4, titre « L’animateur de soirées » et texte du niveau"><figcaption>Une section d’attente. Les traits sur la barre marquent les seuils des niveaux (ici 20, 40 et 60 %).</figcaption></figure>
 
-  <h3>Exporter et envoyer un rapport à un joueur</h3>
+  <h3 id="partager">Envoyer un rapport à un joueur depuis la tablette</h3>
+  <figure class="small"><img src="images/43-tablette-barre.png" alt="Barre d’outils sur la tablette : Répondant 1, boutons précédent et suivant avec 1 / 30, Exporter ce rapport (.html), Partager… et Imprimer / PDF"></figure>
+  <ol class="steps">
+    <li>Sélectionnez le joueur, puis touchez <span class="ui">Partager…</span>.</li>
+    <li>Le panneau de partage d’Android s’ouvre : choisissez <b>WhatsApp</b>, <b>Gmail</b>, <b>Messages</b>, <b>Drive</b>… puis le destinataire. Le rapport part en pièce jointe, sous le nom <code>Rapport - <i>Nom du joueur</i>.html</code>.</li>
+    <li>Le joueur touche (ou double-clique) la pièce jointe : le rapport s’ouvre dans son navigateur, sur téléphone comme sur ordinateur, sans connexion Internet. Le fichier contient tout, graphique compris, et se lit bien sur un petit écran.</li>
+  </ol>
+  <figure class="phone center"><img src="images/46-telephone-rapport.png" alt="Le rapport d’un joueur ouvert sur un téléphone : titre Votre profil de joueur, introduction, graphique radar puis encart de l’attente principale"><figcaption>Ce que voit le joueur sur son téléphone.</figcaption></figure>
+  <p>Le bouton <span class="ui">Partager…</span> n’apparaît que si l’appareil sait partager des fichiers (c’est le cas de Chrome sur Android). Sinon, ou si vous préférez : touchez <span class="ui">Exporter ce rapport (.html)</span> ; le fichier est enregistré dans <b>Téléchargements</b>, d’où vous pouvez l’envoyer comme n’importe quelle pièce jointe.</p>
+
+  <h3>Exporter et envoyer un rapport depuis un ordinateur</h3>
   <ol class="steps">
     <li>Sélectionnez le joueur, puis cliquez sur <span class="ui">Exporter ce rapport (.html)</span>.</li>
     <li>Le navigateur enregistre un fichier nommé <code>Rapport - <i>Nom du joueur</i>.html</code> dans votre dossier <b>Téléchargements</b> (ou vous demande où l’enregistrer).</li>
-    <li>Envoyez ce fichier au joueur en pièce jointe d’un e-mail (ou par messagerie). Il l’ouvre d’un double-clic, dans n’importe quel navigateur, sans connexion Internet : le fichier contient tout, graphique compris.</li>
+    <li>Envoyez ce fichier au joueur en pièce jointe d’un e-mail (ou par messagerie). Il l’ouvre d’un double-clic, dans n’importe quel navigateur, sans connexion Internet.</li>
   </ol>
-  <div class="box tip"><b class="t">Plutôt un PDF ?</b><p>Cliquez sur <span class="ui p">Imprimer / PDF</span>. Dans la fenêtre d’impression, choisissez comme imprimante <b>« Enregistrer au format PDF »</b> (ou « Microsoft Print to PDF ») puis <span class="ui">Enregistrer</span>. Vous obtenez un PDF prêt à envoyer. La même méthode sert pour imprimer sur papier.</p></div>
+
+  <h3 id="pdf">Faire un PDF ou imprimer</h3>
+  <p>Touchez <span class="ui p">Imprimer / PDF</span>.</p>
+  <ul>
+    <li><b>Sur la tablette</b> : le rapport s’ouvre dans un nouvel onglet et la fenêtre d’impression d’Android apparaît. En haut, choisissez l’imprimante <b>« Enregistrer au format PDF »</b>, puis touchez le bouton PDF (rond, bleu ou jaune) et choisissez où ranger le fichier. Vous pouvez aussi choisir une vraie imprimante. Quand c’est fini, fermez cet onglet (bouton <span class="ui">Fermer</span> en haut du rapport, ou le carré des onglets de Chrome) pour revenir à l’application. Si la fenêtre d’impression ne s’ouvre pas toute seule, touchez <span class="ui p">Imprimer / PDF</span> en haut de l’onglet.</li>
+    <li><b>Sur un ordinateur</b> : dans la fenêtre d’impression, choisissez comme imprimante <b>« Enregistrer au format PDF »</b> (ou « Microsoft Print to PDF ») puis <span class="ui">Enregistrer</span>.</li>
+  </ul>
+  <div class="box info"><b class="t">Si rien ne s’ouvre</b><p>Chrome bloque parfois les nouveaux onglets. Autorisez-les pour cette application si Chrome le propose, ou passez par <span class="ui">Exporter ce rapport (.html)</span> : ouvrez le fichier téléchargé dans Chrome, puis menu <span class="ui">⋮</span> → <span class="ui">Partager…</span> → <span class="ui">Imprimer</span>.</p></div>
 
   <h3>Tout exporter d’un coup</h3>
-  <p>Le bouton <span class="ui">Tout exporter (ZIP)</span>, sous la liste, crée l’archive <code>Rapports individuels.zip</code> qui contient un fichier .html par joueur. Décompressez-la (clic droit → <span class="ui">Extraire tout…</span>) pour obtenir tous les rapports dans un dossier.</p>
+  <p>Le bouton <span class="ui">Tout exporter (ZIP)</span>, sous la liste, crée l’archive <code>Rapports individuels.zip</code> qui contient un fichier .html par joueur. Sur un ordinateur, décompressez-la (clic droit → <span class="ui">Extraire tout…</span>) pour obtenir tous les rapports dans un dossier. Sur la tablette, l’application <b>Fichiers</b> (ou « Files by Google ») sait ouvrir et extraire un .zip ; pour envoyer les rapports un par un, le bouton <span class="ui">Partager…</span> est plus simple.</p>
   <div class="box info"><b class="t">Les noms des fichiers</b><p>Les fichiers portent le nom du joueur tel qu’il apparaît dans la liste. Pour avoir des pseudos plutôt que « Répondant 1 », « Répondant 2 »…, voir <a href="#faq-pseudo">la question dédiée</a> dans la partie 9.</p></div>
   <p class="back"><a href="#haut">↑ Sommaire</a></p>
 </section>
@@ -313,7 +370,7 @@
 <!-- ============================================================ 5 -->
 <section class="chap" id="global">
   <h2><span class="num">5.</span>Le rapport global</h2>
-  <p>L’onglet <span class="tab">Rapport global</span> rassemble toutes les réponses en une synthèse destinée à vous, le créateur du questionnaire. Trois boutons en haut : <span class="ui">Exporter le rapport (.html)</span> (un fichier complet, qui inclut aussi tous les rapports individuels à la fin), <span class="ui">Exporter les scores (.csv pour Excel)</span> (un tableau des scores, voir plus bas) et <span class="ui p">Imprimer / PDF</span>.</p>
+  <p>L’onglet <span class="tab">Rapport global</span> rassemble toutes les réponses en une synthèse destinée à vous, le créateur du questionnaire. Les boutons en haut : <span class="ui">Exporter le rapport (.html)</span> (un fichier complet, qui inclut aussi tous les rapports individuels à la fin), <span class="ui">Partager…</span> (sur tablette : l’envoyer par e-mail, WhatsApp, Drive…), <span class="ui">Exporter les scores (.csv pour Excel)</span> (un tableau des scores, voir plus bas) et <span class="ui p">Imprimer / PDF</span> (même fonctionnement que pour un rapport individuel, voir <a href="#pdf">4</a>).</p>
   <figure><img src="images/09-global.png" alt="Onglet Rapport global : titre Synthèse des réponses, quatre chiffres clés (30 répondants, période, 32 questions, 6 attentes), puis les boutons de navigation vers chaque section"><figcaption>Le haut du rapport global. Les petits boutons permettent de sauter directement à une section.</figcaption></figure>
 
   <h3>Profil moyen</h3>
@@ -539,7 +596,17 @@
   <p>Exemple : « Bonjour {joueur}, voici votre profil pour le {questionnaire}. » devient « Bonjour Grimgor, voici votre profil pour le Questionnaire sur les profils-types de joueurs. » Ces mots fonctionnent dans tous les textes de cette section et dans les <b>textes des niveaux</b> ; ils ne sont pas remplacés dans les noms, titres et descriptions des attentes, ni dans les titres des niveaux.</p>
 
   <h3 id="enregistrer">7.8 Enregistrer la configuration (et la rouvrir)</h3>
-  <p>La configuration est un dossier nommé <code>configuration</code>, placé à côté de l’application, qui contient quelques fichiers texte (voir <a href="#fichiers">partie 8</a>). Enregistrer, c’est écrire vos réglages dans ces fichiers.</p>
+  <p>La configuration est un petit ensemble de fichiers texte (voir <a href="#fichiers">partie 8</a>), rangés dans un dossier <code>configuration</code> ou dans un fichier <code>configuration.zip</code>. Enregistrer, c’est écrire vos réglages dans ces fichiers.</p>
+
+  <h4 id="enregistrer-tablette">Sur la tablette : le fichier configuration.zip</h4>
+  <p>Bonne nouvelle d’abord : <b>Chrome mémorise de lui-même vos modifications</b> sur la tablette. Si vous fermez l’application et la rouvrez, vous retrouvez votre configuration, même modifiée. Enregistrer sert donc à garder une <b>sauvegarde</b> (au cas où la mémoire de Chrome serait effacée), à la <b>transmettre</b> à quelqu’un ou à la reprendre sur un autre appareil.</p>
+  <figure><img src="images/45-tablette-config-fichiers.png" alt="Sur la tablette, bloc « Fichiers de configuration » : explication, boutons Télécharger la configuration (.zip) et Ouvrir des fichiers (.zip ou .yaml)…"></figure>
+  <ol class="steps">
+    <li>Ouvrez <span class="tab">Configuration</span> → <span class="ui">Ouvrir / Enregistrer</span> (ou touchez <span class="ui p">Enregistrer…</span> dans le bandeau).</li>
+    <li>Touchez <span class="ui p">Télécharger la configuration (.zip)</span>. Le fichier <code>configuration.zip</code> est enregistré dans <b>Téléchargements</b>. Le bandeau passe à <b>Fichiers</b>.</li>
+    <li>Gardez ce fichier (vous pouvez le renommer, par exemple <code>configuration 2026-11.zip</code>), envoyez-le-vous par e-mail ou copiez-le dans Google Drive : c’est votre sauvegarde.</li>
+  </ol>
+  <p><b>Pour recharger</b> une configuration (la vôtre, ou une configuration reçue) : touchez <span class="ui">Ouvrir des fichiers (.zip ou .yaml)…</span> et choisissez le <code>configuration.zip</code>. Inutile de le décompresser. Sur la tablette, il n’y a pas de dossier à choisir ni de fichier à glisser : tout passe par ce fichier .zip.</p>
 
   <h4>Le bandeau du haut : où en est la configuration ?</h4>
   <figure><img src="images/02-bandeau-defaut.png" alt="Bandeau : Configuration active : Par défaut · configuration livrée avec l’application · configuration valide · bouton Gérer"></figure>
@@ -554,7 +621,7 @@
   </table>
   <p>À droite, « configuration valide », « N remarques » ou « N erreurs » résume la vérification ; <span class="ui">Gérer</span> ouvre directement la section <span class="ui">Ouvrir / Enregistrer</span>.</p>
 
-  <h4>Avec Microsoft Edge ou Google Chrome : enregistrer directement dans le dossier</h4>
+  <h4>Sur un ordinateur avec Microsoft Edge ou Google Chrome : enregistrer directement dans le dossier</h4>
   <figure><img src="images/22-config-fichiers.png" alt="Section Ouvrir / Enregistrer : état de la configuration, bloc « Dossier de configuration (Edge, Chrome) » avec les boutons Choisir le dossier « configuration »… et Enregistrer dans un dossier…, bloc « Autres possibilités » et bloc « Configuration par défaut »"><figcaption>La section Ouvrir / Enregistrer, avant que le dossier ait été choisi.</figcaption></figure>
   <ol class="steps">
     <li>Ouvrez <span class="tab">Configuration</span> → <span class="ui">Ouvrir / Enregistrer</span> (ou cliquez sur <span class="ui p">Enregistrer…</span> dans le bandeau).</li>
@@ -566,7 +633,7 @@
   <p>Le dossier est mémorisé : les fois suivantes, un clic sur <span class="ui p">Enregistrer…</span> (bandeau) ou <span class="ui p">Enregistrer dans le dossier « configuration »</span> suffit. Le navigateur peut redemander l’autorisation après une fermeture : c’est une sécurité normale, cliquez à nouveau sur Autoriser. Rien ne quitte votre ordinateur.</p>
   <div class="box info"><b class="t">Et le bouton « Enregistrer dans un dossier… » ?</b><p>Il permet d’enregistrer dans un <b>autre</b> dossier que celui mémorisé : pratique pour faire une copie de sauvegarde (créez un dossier vide, par exemple <code>configuration – sauvegarde 2026-11</code>, et enregistrez dedans) ou pour préparer une configuration à envoyer à quelqu’un.</p></div>
 
-  <h4>Avec Firefox ou Safari : télécharger un .zip</h4>
+  <h4>Sur un ordinateur avec Firefox ou Safari : télécharger un .zip</h4>
   <p>Ces navigateurs ne savent pas écrire directement dans un dossier. La section <span class="ui">Ouvrir / Enregistrer</span> est alors un peu différente :</p>
   <figure><img src="images/30-config-fichiers-firefox.png" alt="Bloc « Fichiers de configuration » : explication que ce navigateur ne peut pas écrire dans un dossier, boutons Ouvrir le dossier « configuration »…, Ouvrir des fichiers (.yaml ou .zip)…, Télécharger la configuration (.zip), et zone de dépôt"></figure>
   <ol class="steps">
@@ -574,13 +641,13 @@
     <li>Faites un clic droit dessus → <span class="ui">Extraire tout…</span>. Vous obtenez un dossier <code>configuration</code>.</li>
     <li>Dans <code>QuestionnaireJDR</code>, renommez l’ancien dossier <code>configuration</code> (par exemple en <code>configuration – ancien</code>) ou supprimez-le, puis déposez le nouveau à sa place.</li>
   </ol>
-  <p>Pour rouvrir une configuration dans ces navigateurs : <span class="ui">Ouvrir le dossier « configuration »…</span> (sélectionnez le dossier), <span class="ui">Ouvrir des fichiers (.yaml ou .zip)…</span> (sélectionnez les fichiers ou le .zip), ou déposez le dossier ou le .zip dans la zone pointillée. Dans Edge et Chrome, le dossier se choisit avec <span class="ui">Choisir le dossier « configuration »…</span> (plus haut) : le bouton « Ouvrir le dossier… » n’y est pas affiché, mais les fichiers et le dépôt dans la zone pointillée fonctionnent aussi.</p>
+  <p>Pour rouvrir une configuration dans ces navigateurs : <span class="ui">Ouvrir le dossier « configuration »…</span> (sélectionnez le dossier), <span class="ui">Ouvrir des fichiers (.zip ou .yaml)…</span> (sélectionnez les fichiers ou le .zip), ou déposez le dossier ou le .zip dans la zone pointillée. Dans Edge et Chrome, le dossier se choisit avec <span class="ui">Choisir le dossier « configuration »…</span> (plus haut) : le bouton « Ouvrir le dossier… » n’y est pas affiché, mais les fichiers et le dépôt dans la zone pointillée fonctionnent aussi.</p>
 
   <h4>Ce que l’application fait, et ne fait pas, au démarrage</h4>
   <div class="box warn"><b class="t">À retenir</b>
     <ul>
       <li>L’application contient une <b>copie intégrée</b> de la configuration livrée (« Par défaut »). Elle <b>ne lit pas automatiquement</b> le dossier <code>configuration</code> à l’ouverture : un navigateur n’a pas le droit de lire vos fichiers sans que vous le demandiez.</li>
-      <li>Elle retient en revanche la dernière configuration utilisée (chargée ou modifiée) dans la mémoire du navigateur, <b>sur cet ordinateur et dans ce navigateur</b>. Si vous changez d’ordinateur ou de navigateur, il faut recharger le dossier.</li>
+      <li>Elle retient en revanche la dernière configuration utilisée (chargée ou modifiée) dans la mémoire du navigateur, <b>sur cet appareil et dans ce navigateur</b>. Si vous changez de tablette, d’ordinateur ou de navigateur, il faut recharger le dossier ou le fichier configuration.zip.</li>
       <li>Si quelqu’un vous envoie une nouvelle configuration, ou si vous avez modifié les fichiers à la main (<a href="#fichiers">partie 8</a>), chargez-la avec <span class="ui">Recharger depuis « configuration »</span>, <span class="ui">Choisir le dossier « configuration »…</span> (Edge, Chrome) ou <span class="ui">Ouvrir le dossier « configuration »…</span> (autres navigateurs).</li>
       <li>Quand une configuration est modifiée mais pas enregistrée, l’application demande confirmation avant d’en charger une autre (« Remplacer la configuration ? »).</li>
     </ul></div>
@@ -681,6 +748,26 @@
     </div>
   </details>
 
+  <details class="faq" id="faq-hors-ligne">
+    <summary>L’application fonctionne-t-elle sans connexion Internet ?</summary>
+    <div class="a"><p>Oui, après la première ouverture du lien (le message « disponible hors connexion » le confirme). Vous pouvez ensuite l’ouvrir depuis son icône, en avion ou dans une salle de jeu sans réseau : charger un fichier, consulter et exporter les rapports, modifier la configuration. Seules les mises à jour attendent le retour de la connexion. Le partage par WhatsApp ou e-mail part, lui, quand la tablette retrouve le réseau.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Je ne trouve pas « Ajouter à l’écran d’accueil » / « Installer l’application »</summary>
+    <div class="a"><p>Vérifiez que le lien est ouvert dans <b>Chrome</b> lui-même (et non dans l’aperçu intégré de Gmail ou de WhatsApp : utilisez « Ouvrir dans Chrome »). Le menu <span class="ui">⋮</span> de Chrome propose alors l’une ou l’autre entrée, parfois sous <span class="ui">Ajouter à…</span>. Sans installation, l’application fonctionne quand même : ajoutez simplement le lien à vos favoris.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Le message « Nouvelle version disponible » revient ou ne part pas</summary>
+    <div class="a"><p>Touchez <span class="ui p">Recharger</span>. Si l’application est ouverte dans plusieurs onglets, fermez les autres : la nouvelle version s’installe quand tous les onglets de l’application ont été rechargés ou fermés. Vos données et votre configuration ne sont pas touchées par une mise à jour.</p></div>
+  </details>
+
+  <details class="faq">
+    <summary>Où sont les fichiers téléchargés sur la tablette ?</summary>
+    <div class="a"><p>Dans le dossier <b>Téléchargements</b> (« Download »), visible dans l’application <b>Fichiers</b> d’Android, et depuis Chrome : menu <span class="ui">⋮</span> → <span class="ui">Téléchargements</span>. Chrome affiche aussi un petit message en bas de l’écran à chaque téléchargement, avec un bouton <span class="ui">Ouvrir</span>.</p></div>
+  </details>
+
   <details class="faq">
     <summary>Les accents s’affichent bizarrement (Ã©, Ã¨, â€™…)</summary>
     <div class="a"><p>L’application reconnaît automatiquement les deux encodages courants (UTF-8 de Google, « windows-1252 » d’Excel) ; le résumé de l’onglet Données indique celui qu’elle a détecté. Si des caractères restent abîmés, le fichier a probablement été ouvert puis réenregistré dans un logiciel qui a mélangé les deux. Le plus simple : retéléchargez le fichier depuis Google Forms (<a href="#forms">partie 2</a>) et chargez-le tel quel.</p></div>
@@ -718,7 +805,7 @@
 
   <details class="faq">
     <summary>La page est blanche, ou tout est en vrac</summary>
-    <div class="a"><p>Ouvrez <code>Questionnaire JDR.html</code> avec Microsoft Edge, Google Chrome ou Firefox (clic droit → <span class="ui">Ouvrir avec</span>), pas avec un autre programme. Vérifiez que vous l’ouvrez depuis le dossier extrait et non depuis l’intérieur du .zip (<a href="#bref">partie 1</a>), et que les dossiers <code>app</code>, <code>configuration</code> et <code>documentation</code> sont toujours à côté du fichier.</p></div>
+    <div class="a"><p>Sur la tablette : vérifiez que vous utilisez Chrome à jour, puis rechargez la page (tirez l’écran vers le bas, ou menu <span class="ui">⋮</span> → ⟳). Sur un ordinateur : ouvrez <code>Questionnaire JDR.html</code> avec Microsoft Edge, Google Chrome ou Firefox (clic droit → <span class="ui">Ouvrir avec</span>), pas avec un autre programme. Vérifiez que vous l’ouvrez depuis le dossier extrait et non depuis l’intérieur du .zip (<a href="#bref">partie 1</a>), et que les dossiers <code>app</code>, <code>configuration</code> et <code>documentation</code> sont toujours à côté du fichier.</p></div>
   </details>
 
   <details class="faq">
@@ -727,8 +814,8 @@
   </details>
 
   <details class="faq">
-    <summary>Où vont les fichiers exportés ?</summary>
-    <div class="a"><p>Dans le dossier <b>Téléchargements</b> de votre navigateur (sauf si vous lui avez demandé de choisir l’emplacement à chaque fois). Noms des fichiers : <code>Rapport - Nom.html</code>, <code>Rapports individuels.zip</code>, <code>Rapport global.html</code>, <code>Scores des répondants.csv</code>, <code>configuration.zip</code>.</p></div>
+    <summary>Où vont les fichiers exportés sur un ordinateur ?</summary>
+    <div class="a"><p>Dans le dossier <b>Téléchargements</b> de votre navigateur (sauf si vous lui avez demandé de choisir l’emplacement à chaque fois), sur ordinateur comme sur tablette. Noms des fichiers : <code>Rapport - Nom.html</code>, <code>Rapports individuels.zip</code>, <code>Rapport global.html</code>, <code>Scores des répondants.csv</code>, <code>configuration.zip</code>.</p></div>
   </details>
 
   <details class="faq">
@@ -738,17 +825,17 @@
 
   <details class="faq">
     <summary>Comment partager ma configuration avec quelqu’un d’autre ?</summary>
-    <div class="a"><p>Envoyez-lui le dossier <code>configuration</code> (compressé en .zip : clic droit → <span class="ui">Envoyer vers</span> → <span class="ui">Dossier compressé</span>), ou utilisez <span class="ui">Télécharger la configuration (.zip)</span>. Il la charge avec <span class="ui">Ouvrir des fichiers (.yaml ou .zip)…</span> ou en déposant le .zip dans la zone pointillée de <span class="ui">Ouvrir / Enregistrer</span>, puis l’enregistre dans son propre dossier.</p></div>
+    <div class="a"><p>Envoyez-lui le dossier <code>configuration</code> (compressé en .zip : clic droit → <span class="ui">Envoyer vers</span> → <span class="ui">Dossier compressé</span>), ou utilisez <span class="ui">Télécharger la configuration (.zip)</span>. Il la charge avec <span class="ui">Ouvrir des fichiers (.zip ou .yaml)…</span> ou en déposant le .zip dans la zone pointillée de <span class="ui">Ouvrir / Enregistrer</span>, puis l’enregistre dans son propre dossier.</p></div>
   </details>
 
   <details class="faq">
     <summary>Les réponses sont-elles envoyées quelque part ?</summary>
-    <div class="a"><p>Non. L’application fonctionne entièrement dans votre navigateur, sans connexion. Les réponses et la configuration restent sur votre ordinateur (et dans la mémoire du navigateur, pour vous éviter de recharger). Pour les effacer de l’application, utilisez <span class="ui">Oublier les données</span> dans l’onglet Données.</p></div>
+    <div class="a"><p>Non. Le lien de l’application sert uniquement à télécharger l’application elle-même ; ensuite, tout se passe dans Chrome, sur la tablette (ou l’ordinateur). Le fichier des réponses est lu et traité sur l’appareil, il n’est envoyé à aucun serveur. Les réponses et la configuration restent dans la mémoire du navigateur, pour vous éviter de recharger. Pour les effacer de l’application, utilisez <span class="ui">Oublier les données</span> dans l’onglet Données. Seuls les fichiers que <b>vous</b> choisissez de partager (un rapport envoyé par WhatsApp, par exemple) quittent l’appareil.</p></div>
   </details>
   <p class="back"><a href="#haut">↑ Sommaire</a></p>
 </section>
 
-<footer class="end">Questionnaire JDR – guide d’utilisation. Ce guide se trouve dans <code>documentation/guide.html</code> ; il s’imprime depuis le navigateur (Ctrl + P).</footer>
+<footer class="end">Questionnaire JDR – guide d’utilisation. Ce guide se trouve dans <code>documentation/guide.html</code> ; il s’imprime depuis le navigateur (Ctrl + P sur ordinateur, menu ⋮ → Partager… → Imprimer sur Android).</footer>
 </div>
 </body>
 </html>
